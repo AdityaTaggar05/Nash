@@ -1,3 +1,4 @@
+import 'package:app/pages/bet/widgets/recent_bets_modal.dart';
 import 'package:flutter/material.dart';
 
 import '/config/theme.dart';
@@ -12,7 +13,7 @@ class BetTrendsCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+        padding: EdgeInsets.symmetric(horizontal: 32, vertical: 24),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -64,7 +65,28 @@ class BetTrendsCard extends StatelessWidget {
             ),
             const SizedBox(height: 12),
             ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                showModalBottomSheet(
+                  context: context,
+                  isScrollControlled: true,
+                  builder: (BuildContext context) {
+                    return DraggableScrollableSheet(
+                      initialChildSize: 0.5,
+                      minChildSize: 0.25,
+                      maxChildSize: 0.95,
+                      expand: false,
+                      builder:
+                          (
+                            BuildContext context,
+                            ScrollController scrollController,
+                          ) => RecentBetsModalSheet(
+                            controller: scrollController,
+                            transactions: data["transactions"],
+                          ),
+                    );
+                  },
+                );
+              },
               style: ElevatedButton.styleFrom(
                 minimumSize: const Size(double.infinity, 50.0),
                 padding: const EdgeInsets.symmetric(vertical: 8.0),

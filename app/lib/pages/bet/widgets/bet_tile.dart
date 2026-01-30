@@ -16,15 +16,22 @@ class RecentBetTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      shape: showBorder
-          ? Border(
-              bottom: BorderSide(color: context.colorScheme.onSurfaceVariant),
-            )
-          : null,
-      title: Text(transaction["user_id"]),
-      subtitle: Text("\$${(transaction["amount"] as num).formatWithCommas()}"),
-      trailing: Text((transaction["placed_at"] as DateTime).toReadableFormat()),
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4),
+      child: ListTile(
+        shape: showBorder
+            ? Border(
+                bottom: BorderSide(color: context.colorScheme.onSurfaceVariant),
+              )
+            : null,
+        title: Text(transaction["user_id"]),
+        subtitle: Text(
+          "\$${(transaction["amount"] as num).formatWithCommas()}",
+        ),
+        trailing: Text(
+          (transaction["placed_at"] as DateTime).toReadableFormat(),
+        ),
+      ),
     );
   }
 }
