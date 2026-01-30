@@ -3,7 +3,7 @@ CREATE TABLE bets(
 	group_id UUID REFERENCES groups(id) ON DELETE CASCADE,
 	creator_id UUID REFERENCES users(id),
 	title TEXT NOT NULL,
-	status TEXT NOT NULL DEFAULT "open",
+	status TEXT NOT NULL DEFAULT 'open',
 	winning_option TEXT,
 	created_at TIMESTAMP NOT NULL DEFAULT NOW(),
 	expires_at TIMESTAMP NOT NULL,
