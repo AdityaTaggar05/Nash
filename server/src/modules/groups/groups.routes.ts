@@ -11,5 +11,6 @@ router.post('/create',authenticate,validate(CreateGroupSchema),controller.create
 router.get('/:group_id',authenticate,controller.getGroupById);
 router.post('/:group_id/members',authenticate,validate(AddOrRemoveMemberSchema),controller.addMember);
 router.delete('/:group_id/members',authenticate,validate(AddOrRemoveMemberSchema),controller.removeMember);
+router.delete('/:group_id',authenticate,controller.deleteGroup);
 
 export default router;

@@ -37,3 +37,13 @@ export const removeMember = async (req: AuthRequest, res: Response) => {
         res.status(404).json({ error: err.message });
     }
 }
+
+export const deleteGroup = async (req: AuthRequest, res: Response) => {
+    try{
+        const result = await groupService.deleteGroup(req.user,req.params.group_id.toString());
+        res.status(200).json(result);
+    }
+    catch (err:any){
+        res.status(404).json({ error: err.message });
+    }
+}

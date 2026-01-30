@@ -121,13 +121,14 @@ export const addMember = async (
         const result = await client.query(
             `INSERT INTO group_members (group_id, user_id, role, joined_at)
             VALUES ($1, $2, $3, $4)
-        RETURNING *`,
+            RETURNING *`,
             [group_id, memberInfo.rows[0].id, "member", now]
         );
         return {
             email: memberInfo.rows[0].email,
             role: result.rows[0].role,
-            username: username
+            username: username,
+            joined_at: result.rows[0].joined_at,
         };
     } catch (err: any) {
         await client.query("ROLLBACK");
@@ -154,6 +155,21 @@ export const removeMember = async (
             [groupId, memberId.rows[0].id]
         );
     } catch (err: any) {
+        throw err;
+    }
+}
+
+export const deleteGroup = async (
+    groupId: string
+): Promise<void> => {
+    try {
+        await pool.query(
+            `DELETE FROM groups
+            WHERE id = $1`,
+            [groupId]
+        )
+    }
+    catch (err: any) {
         throw err;
     }
 }

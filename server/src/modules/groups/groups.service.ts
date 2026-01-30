@@ -47,7 +47,8 @@ export const addMember = async (
     return {
         username: newMember.username,
         email: newMember.email,
-        role: newMember.role
+        role: newMember.role,
+        joinedAt: newMember.joined_at,
     };
 }
 
@@ -61,4 +62,15 @@ export const removeMember = async (
         throw new Error("Only admin can remove members");
     }
     await groupsRepo.removeMember(groupId, input.username);
+}
+
+export const deleteGroup = async (
+    userId: string,
+    groupId: string,
+): Promise<void> => {
+    const isAdmin = await groupsRepo.isAdmin(groupId,userId);
+    if(!isAdmin){
+        throw new Error("Only admin can delete group");
+    }
+    await groupsRepo.deleteGroup(groupId);
 }
