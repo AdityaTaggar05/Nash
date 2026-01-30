@@ -1,0 +1,8 @@
+CREATE TABLE users (
+	id UUID PRIMARY KEY NOT NULL DEFAULT gen_random_uuid(),
+	username TEXT NOT NULL UNIQUE,
+	email TEXT NOT NULL UNIQUE,
+	wallet_balance NUMBER NOT NULL DEFAULT 0,
+	referral_code TEXT NOT NULL UNIQUE,
+	created_at TIMESTAMP NOT NULL DEFAULT NOW()
+);

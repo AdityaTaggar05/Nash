@@ -1,0 +1,8 @@
+CREATE TABLE refresh_tokens (
+	id UUID PRIMARY KEY NOT NULL DEFAULT gen_random_uuid(),
+	user_id UUID REFERENCES users(id) ON DELETE CASCADE,
+	token TEXT NOT NULL,
+	created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+	expires_at TIMESTAMP NOT NULL,
+	revoked BOOLEAN NOT NULL DEFAULT FALSE
+);
