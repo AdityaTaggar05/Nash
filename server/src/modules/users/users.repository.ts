@@ -21,7 +21,7 @@ export const createUser = async (
   client: PoolClient,
 ): Promise<User> => {
   let referralCode = "";
-  for (let i = length; i > 0; --i) {
+  for (let i = 6; i > 0; --i) {
     referralCode += chars[Math.floor(Math.random() * chars.length)];
   }
 
@@ -49,7 +49,7 @@ export const findUserByEmail = async (email: string) => {
 };
 
 export const getUserFromDB = async (userId: string): Promise<User> => {
-  const result = await pool.query("SELECT * FROM users WHERE id = $1", [
+  const result = await pool.query(`SELECT * FROM users WHERE id = $1`, [
     userId,
   ]);
 
@@ -66,7 +66,7 @@ export const performDailyCheckIn = async (
   try {
     await client.query("BEGIN");
 
-    const result = await client.query("SELECT * FROM auth WHERE user_id = $1", [
+    const result = await client.query("SELECT * FROM users WHERE id = $1", [
       userId,
     ]);
     const lastCheckIn = result.rows[0].last_login;
