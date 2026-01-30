@@ -28,7 +28,7 @@ export const createUser = async (
   client: PoolClient,
 ): Promise<AuthUser> => {
   const result = await client.query(
-    `INSERT INTO auth (id, password_hash)
+    `INSERT INTO auth (user_id, password_hash)
     VALUES ($1, $2)
     RETURNING *`,
     [id, passwordHash],
@@ -40,8 +40,8 @@ export const createUser = async (
 export const findUserByID = async (id: string): Promise<AuthUser | null> => {
   const result = await pool.query(
     `SELECT *
-    FROM users
-    WHERE email=$1`,
+    FROM auth
+    WHERE user_id=$1`,
     [id],
   );
 
