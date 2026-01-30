@@ -5,6 +5,10 @@ class AppTheme {
   static ThemeData get darkTheme {
     return ThemeData(
       scaffoldBackgroundColor: Color(0xff111111),
+      appBarTheme: AppBarTheme(
+        backgroundColor: Color(0xff111111),
+        shape: Border(bottom: BorderSide(color: Color(0xff606060), width: 4.0)),
+      ),
       colorScheme: ColorScheme(
         brightness: Brightness.dark,
         primary: Color(0xff8bf825),
