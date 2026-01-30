@@ -34,6 +34,10 @@ dependencies:
   flutter_riverpod: ^3.2.0
   google_fonts: ^8.0.0
   go_router: ^17.0.1
+<<<<<<< HEAD
+  carousel_slider: ^5.1.1
+=======
+>>>>>>> 4f26b10fa9e828b249be63e7563cbe4e67b42e5e
   intl: ^0.20.2
 
 dev_dependencies:
