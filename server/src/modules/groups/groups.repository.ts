@@ -1,7 +1,6 @@
 import pool from "../../config/db.js";
 import { v4 as uuidv4 } from "uuid";
 import { Group, Member } from "./groups.model.js";
-import { ca, fi } from "zod/locales";
 
 const mapRowToGroup = (row: any): Group => {
     return {
