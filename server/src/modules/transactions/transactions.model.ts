@@ -10,7 +10,7 @@ export interface BetTransactions {
 }
 
 export interface UserTransaction {
-    bet_id: string,
+    bet_id?: string,
     amount: number,
     placed_at: Date,
     description: string

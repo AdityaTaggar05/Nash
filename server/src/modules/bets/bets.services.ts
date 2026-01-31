@@ -1,6 +1,8 @@
 import * as betRespository from "./bets.repository.js";
 import { BetResponseDTO } from "./dtos/bet-response.dto.js";
 import { Bet, UserBet } from "./bets.model.js";
+import * as userRepository from "../users/users.repository.js";
+import * as transactionRepository from "../transactions/transactions.repository.js";
 import { User } from "../users/users.model.js";
 import { string } from "zod";
 
@@ -10,7 +12,7 @@ const hasUserBet = (bets: UserBet[], b_id: string): boolean => {
     else return true
 }
 
-export const getBet = async (betId: string, userId: string): Promise<BetResponseDTO> => {
+export const getBet = async (betId: string, authUserID: string): Promise<BetResponseDTO> => {
     const bet = await betRespository.getBetFromDB(betId);
     const betsMade = (await betRespository.getAllUserBetsFromDB()).filter(singleBet => singleBet.bet_id === betId)
 
@@ -28,12 +30,12 @@ export const getBet = async (betId: string, userId: string): Promise<BetResponse
         return acc + singleBet.amount;
     },0);
 
-    const betsMadeByUser = (await betRespository.getAllUserBetsFromDB()).filter(singleBet => singleBet.user_id === userId)
+    const betsMadeByUser = (await betRespository.getAllUserBetsFromDB()).filter(singleBet => singleBet.user_id === authUserID)
 
     let payout = 0;
 
     if(hasUserBet(betsMadeByUser, betId)) {
-        const betMadeByUser = betsMade.find(singleBet => singleBet.user_id === userId)
+        const betMadeByUser = betsMade.find(singleBet => singleBet.user_id === authUserID)
         if(betMadeByUser.selected_option==="for") {
             payout = Math.round(betMadeByUser.amount/pool_for*total_pot)
         } else {
@@ -81,7 +83,23 @@ export const getAllBets = async (groupId: string): Promise<Bet[]> => {
     return bets;
 }
 
-export const postBet = async (user: User, groupId: string, title: string, expires_at: Date): Promise<Bet> => {
-    const bet = await betRespository.postBet(user, groupId, title, expires_at);
+export const postBet = async (authUserID: string, groupId: string, title: string, expires_at: number): Promise<Bet> => {
+    const bet = await betRespository.postBet(authUserID, groupId, title, expires_at);
     return bet;
+}
+
+export const placeBet = async (authUserID: string, betId: string, amount: number, option: string): Promise<UserBet> => {
+    const bet = await betRespository.getBetFromDB(betId);
+    const user = await userRepository.getUserFromDB(authUserID);
+    if(authUserID === bet.creator_id) {
+        throw new Error("Creator cannot place bet on own bet");
+    } else if(bet.status !== "open") {
+        throw new Error("Bet is not open for placing bets");
+    } else if(user.wallet_balance < amount) {
+        throw new Error("Insufficient wallet balance to place bet");
+    } else {
+        const placedBet = await betRespository.placeBet(authUserID, betId, amount, option);
+        await transactionRepository.createTransaction(authUserID, -amount, `Placed bet of ${amount} on option ${option} for bet ${bet.title}`, placedBet.bet_id);
+        return placedBet;
+    }
 }

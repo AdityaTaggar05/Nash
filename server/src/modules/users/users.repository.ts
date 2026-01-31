@@ -2,6 +2,7 @@ import { PoolClient } from "pg";
 import pool from "../../config/db.js";
 import { User } from "./users.model.js";
 import { Group, Member, GroupMember } from "../groups/groups.model.js";
+import { UserBet } from "../bets/bets.model.js";
 
 const chars = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 

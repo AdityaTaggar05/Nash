@@ -10,6 +10,6 @@ const router = Router();
 router.get('/:group_id/bet/:bet_id', authenticate, betControllers.getBet)
 router.get('/:group_id/bet', authenticate, betControllers.getAllBets)
 router.post('/:group_id/bet', authenticate, betControllers.postBet)
-// router.post('/:group_id/bet/:bet_id', authenticate, betControllers.decideBet)
+router.post('/:group_id/bet/:bet_id', authenticate, betControllers.placeBet)
 
 export default router;

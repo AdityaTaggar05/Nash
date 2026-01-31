@@ -18,6 +18,17 @@ const mapRowToBet = (row: any): Bet => {
     }
 }
 
+const mapRowToUserBet = (row: any): UserBet => {
+    return {
+        bet_id: row.bet_id,
+        user_id: row.user_id,
+        amount: row.amount,
+        selected_option: row.selected_option,
+        status: row.status,
+        created_at: row.created_at
+    }
+}
+
 const mapRowToPlacedBet = (row:any): PlacedBet => {
     return {
         amount: row.amount,
@@ -48,7 +59,29 @@ export const getAllUserBetsFromDB = async (): Promise<UserBet[]> => {
     return result.rows.map((row)=> mapRowToBet(row));
 }
 
-export const postBet = async (user: User, groupId: string, title: string, expires_at: Date): Promise<Bet> => {
-    const result = await pool.query(`INSERT INTO bets (group_id, creator_id, title, status, expires_at) VALUES ($1,$2,$3,'open',$4) RETURNING *`,[groupId,user.id,title, expires_at])
+export const postBet = async (authUserID:string , groupId: string, title: string, expires_at: number): Promise<Bet> => {
+    const result = await pool.query(`INSERT INTO bets (group_id, creator_id, title, status, expires_at) VALUES ($1,$2,$3,'open',$4) RETURNING *`,[groupId,authUserID,title, new Date(expires_at)])
     return mapRowToBet(result.rows[0]);
+}
+
+export const placeBet = async (userId: string, betId: string, amount: number, option: string): Promise<UserBet> => {
+  const client = await pool.connect();
+
+  try {
+    
+    await client.query("BEGIN");
+
+    const result = await client.query(`INSERT INTO user_bets (bet_id,user_id,amount,selected_option,status,created_at) VALUE ($1,$2$3,$4,$5) RETURNING *`,[betId,userId,amount,option,'open', new Date(Date.now())])
+    await client.query(`UPDATE bets SET total_pot = total_pot + $1 WHERE id = $2`, [amount, betId]);
+    await client.query(`UPDATE users SET wallet_balance = wallet_balance - $1 WHERE id = $2`, [amount, userId]);
+
+    await client.query("COMMIT");
+    return mapRowToUserBet(result.row[0]);
+
+  } catch (err: any) {
+    await client.query('ROLLBACK');
+    throw err;
+  } finally {
+    client.release()
+  }
 }
