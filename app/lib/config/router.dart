@@ -13,7 +13,7 @@ import '/pages/register/register.dart';
 
 final routerProvider = Provider<GoRouter>((ref) {
   return GoRouter(
-    initialLocation: '/profile/123',
+    initialLocation: '/home',
     routes: [
       StatefulShellRoute(
         builder: (context, state, navigationShell) {

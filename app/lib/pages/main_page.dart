@@ -1,7 +1,7 @@
 import 'package:app/config/theme.dart';
+import 'package:app/extensions/number.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:app/extensions/number.dart';
 import 'package:go_router/go_router.dart';
 
 class MainScaffold extends ConsumerStatefulWidget {
@@ -29,7 +29,14 @@ class _MainScaffoldState extends ConsumerState<MainScaffold> {
           padding: const EdgeInsetsGeometry.all(4.0),
           child: Image.asset('assets/logo.png', fit: BoxFit.contain),
         ),
-        title: Text("NASH", style: TextStyle(color: context.colorScheme.secondary, fontSize: 32, fontWeight: FontWeight.bold))
+        title: Text(
+          "NASH",
+          style: TextStyle(
+            color: context.colorScheme.secondary,
+            fontSize: 32,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
       ),
       body: widget.navigationShell,
       bottomNavigationBar: Container(
@@ -39,33 +46,42 @@ class _MainScaffoldState extends ConsumerState<MainScaffold> {
           border: Border(top: BorderSide(color: Color(0xff404040), width: 2.0)),
         ),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Row(
-              children: [
-                _NavBarItem(
-                  icon: Icons.home,
-                  label: "Home",
-                  isSelected: widget.navigationShell.currentIndex == 0,
-                  onTap: () => _onTap(0),
-                ),
-                const SizedBox(width: 16.0),
-                _NavBarItem(
-                  icon: Icons.search,
-                  label: "Search",
-                  isSelected: widget.navigationShell.currentIndex == 1,
-                  onTap: () => _onTap(1),
-                ),
-                const SizedBox(width: 16.0),
-                _NavBarItem(
-                  icon: Icons.group,
-                  label: "Groups",
-                  isSelected: widget.navigationShell.currentIndex == 2,
-                  onTap: () => _onTap(2),
-                ),
-              ],
+            Expanded(
+              child: Row(
+                children: [
+                  Expanded(
+                    child: _NavBarItem(
+                      icon: Icons.home,
+                      label: "Home",
+                      isSelected: widget.navigationShell.currentIndex == 0,
+                      onTap: () => _onTap(0),
+                    ),
+                  ),
+                  Expanded(
+                    child: _NavBarItem(
+                      icon: Icons.search,
+                      label: "Search",
+                      isSelected: widget.navigationShell.currentIndex == 1,
+                      onTap: () => _onTap(1),
+                    ),
+                  ),
+                  Expanded(
+                    child: _NavBarItem(
+                      icon: Icons.group,
+                      label: "Groups",
+                      isSelected: widget.navigationShell.currentIndex == 2,
+                      onTap: () => _onTap(2),
+                    ),
+                  ),
+                ],
+              ),
             ),
-            Container(height: 40, width: 1.5, color: Colors.grey.shade700),
+            VerticalDivider(
+              thickness: 2,
+              width: 32,
+              color: Colors.grey.shade700,
+            ),
             Row(
               children: [
                 const CircleAvatar(
@@ -74,11 +90,11 @@ class _MainScaffoldState extends ConsumerState<MainScaffold> {
                     "https://i.pravatar.cc/150?img=11",
                   ),
                 ),
-                const SizedBox(width: 24),
+                const SizedBox(width: 16),
                 Container(
                   padding: const EdgeInsets.symmetric(
-                    horizontal: 20.0,
-                    vertical: 4.0,
+                    horizontal: 12,
+                    vertical: 4,
                   ),
                   decoration: BoxDecoration(
                     border: Border.all(
