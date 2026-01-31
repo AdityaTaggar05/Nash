@@ -112,8 +112,7 @@ class _MainScaffoldState extends ConsumerState<MainScaffold> {
                     ),
                     child: Hero(
                       tag: 'wallet-main',
-                      child: Text(
-                        ('\$${200.formatWithCommas()}'),
+                      child: 200.nashFormat(
                         style: TextStyle(
                           color: context.colorScheme.primary,
                           fontWeight: FontWeight.bold,

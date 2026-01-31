@@ -25,8 +25,8 @@ class BetDetailsCard extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 8),
-            Text(
-              "\$${(data["total_pot"] as num).formatWithCommas()}",
+            (data["total_pot"] as num).nashFormat(
+              iconSize: 52,
               style: TextStyle(
                 fontSize: 52,
                 color: context.colorScheme.secondary,

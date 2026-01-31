@@ -39,8 +39,8 @@ class BetsCarouselCard extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    "\$${totalPot.formatWithCommas()}",
+                  totalPot.nashFormat(
+                    iconSize: 36,
                     style: TextStyle(
                       fontSize: 36,
                       fontWeight: FontWeight.bold,
@@ -49,13 +49,18 @@ class BetsCarouselCard extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 4),
-                  Text(
-                    "PLACED BET: \$${placedBet.formatWithCommas()}",
+                  placedBet.nashFormat(
+                    iconSize: 12,
                     style: TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.w600,
                       color: Colors.black54,
                     ),
+                    leading: Text("PLACED BET: ",  style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.black54,
+                    ))
                   ),
                 ],
               ),

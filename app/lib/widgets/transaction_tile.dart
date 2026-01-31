@@ -25,9 +25,7 @@ class TransactionTile extends StatelessWidget {
               )
             : null,
         title: Text(transaction["user_id"] ?? transaction["bet_id"]),
-        subtitle: Text(
-          "\$${(transaction["amount"] as num).formatWithCommas()}",
-        ),
+        subtitle: (transaction["amount"] as num).nashFormat(),
         trailing: Text(
           ((transaction["placed_at"] ?? transaction["created_at"]) as DateTime)
               .toReadableFormat(),

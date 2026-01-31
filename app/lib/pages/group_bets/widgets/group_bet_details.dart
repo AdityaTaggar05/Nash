@@ -17,8 +17,7 @@ class GroupBetDetailsCard extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                "\$${(data["total_pot"] as num).formatWithCommas()}",
+              (data["total_pot"] as num).nashFormat(
                 style: TextStyle(
                   fontSize: 30,
                   color: context.colorScheme.secondary,

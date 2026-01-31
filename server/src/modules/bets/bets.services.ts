@@ -64,6 +64,7 @@ export const getAllBets = async (groupId: string): Promise<Bet[]> => {
 
 export const postBet = async (authUserID: string, groupId: string, title: string, expires_at: number): Promise<Bet> => {
     const bet = await betRespository.postBet(authUserID, groupId, title, expires_at);
+    userRepository.updateUserWalletBalance(authUserID,-100);
     return bet;
 }
 
@@ -77,6 +78,8 @@ export const placeBet = async (authUserID: string, betId: string, amount: number
         throw new Error("Bet already placed by the user");
     } else if (bet.status !== "open") {
         throw new Error("Bet is not open for placing bets");
+    } else if (amount<=0) {
+        throw new Error("Bet Amount cannot be negative")
     } else if (user.wallet_balance < amount) {
         throw new Error("Insufficient wallet balance to place bet");
     } else {

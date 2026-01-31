@@ -25,14 +25,13 @@ class BalanceCard extends StatelessWidget {
             ),
             Hero(
               tag: heroTag,
-              child: Text(
-                "\$${200.formatWithCommas()}",
+              child:200.nashFormat(
+                iconSize: 36,
                 style: TextStyle(
                   fontSize: 36,
                   color: context.colorScheme.primary,
                   fontWeight: FontWeight.bold,
-                ),
-              ),
+                ),) 
             ),
             const SizedBox(height: 16),
             Row(
@@ -41,8 +40,8 @@ class BalanceCard extends StatelessWidget {
                   "LAST MONTH:   ",
                   style: TextStyle(color: context.colorScheme.onSurfaceVariant),
                 ),
-                Text(
-                  "\$${(data["last_month"] as num).formatWithCommas()}",
+                (data["last_month"] as num).nashFormat(
+                  iconSize: 18,
                   style: TextStyle(
                     fontSize: 18,
                     color: context.colorScheme.onSurface,
