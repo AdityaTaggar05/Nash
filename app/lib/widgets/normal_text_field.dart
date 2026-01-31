@@ -5,11 +5,17 @@ class CustomTextField extends StatelessWidget {
   final String hintText;
   final TextEditingController? controller;
   final String? Function(String?)? validator;
+  final int minLines;
+  final int maxLines;
+  final TextInputType keyboardType;
   const CustomTextField({
     super.key,
     required this.hintText,
     this.controller,
     this.validator,
+    this.minLines = 1,
+    this.maxLines = 1,
+    this.keyboardType = TextInputType.text,
   });
 
   @override
@@ -17,6 +23,9 @@ class CustomTextField extends StatelessWidget {
     return TextFormField(
       controller: controller,
       validator: validator,
+      minLines: minLines,
+      maxLines: maxLines,
+      keyboardType: keyboardType,
       decoration: InputDecoration(
         hintText: hintText,
         filled: true,
@@ -27,6 +36,7 @@ class CustomTextField extends StatelessWidget {
             width: 2,
           ),
         ),
+        alignLabelWithHint: true,
         fillColor: Colors.grey[100],
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(20.0),
@@ -34,7 +44,7 @@ class CustomTextField extends StatelessWidget {
         ),
         contentPadding: const EdgeInsets.symmetric(
           horizontal: 16.0,
-          vertical: 8.0,
+          vertical: 16.0,
         ),
       ),
     );

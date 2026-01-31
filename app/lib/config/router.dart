@@ -1,4 +1,6 @@
-import 'package:app/pages/group/groups.dart';
+import 'package:app/pages/group_creation/group_creation.dart';
+import 'package:app/pages/group_info/group_info.dart';
+import 'package:app/pages/groups/groups.dart';
 import 'package:app/pages/search/search.dart';
 import 'package:app/widgets/sliding_shell_stack.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -61,6 +63,15 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: '/bet/:bet_id',
         builder: (context, state) =>
             BetPage(betID: state.pathParameters["bet_id"]!),
+      ),
+      GoRoute(
+        path: '/group_creation',
+        builder: (context, state) => const GroupCreation(),
+      ),
+      GoRoute(
+        path: '/groups/:group_id',
+        builder: (context, state) =>
+            GroupInfo(groupID: state.pathParameters["group_id"]!),
       ),
       GoRoute(
         path: '/profile/:user_id',
