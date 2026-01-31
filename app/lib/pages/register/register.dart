@@ -1,4 +1,5 @@
 import 'package:app/config/theme.dart';
+import 'package:app/widgets/creation_button.dart';
 import 'package:app/widgets/normal_text_field.dart';
 import 'package:app/widgets/password_text_field.dart';
 import 'package:flutter/gestures.dart';
@@ -91,9 +92,9 @@ class _RegisterPageState extends State<RegisterPage> {
                                   controller: passwordController,
                                 ),
                                 const SizedBox(height: 32.0),
-                                LoginButton(onPressed: () {
+                                CreationButton(onPressed: () {
                                   return null;
-                                }),
+                                }, title: "Register"),
                               ],
                             ),
                           ),
@@ -143,39 +144,6 @@ class _RegisterPageState extends State<RegisterPage> {
             );
           },
         ),
-      ),
-    );
-  }
-}
-
-class LoginButton extends StatefulWidget {
-  final Future? Function() onPressed;
-
-  const LoginButton({super.key, required this.onPressed});
-
-  @override
-  State<LoginButton> createState() => _LoginButtonState();
-}
-
-class _LoginButtonState extends State<LoginButton> {
-  bool status = true;
-
-  @override
-  Widget build(BuildContext context) {
-    return ElevatedButton(
-      onPressed: () {},
-      style: ElevatedButton.styleFrom(
-        minimumSize: const Size(double.infinity, 50.0),
-        padding: const EdgeInsets.symmetric(vertical: 12.0),
-        backgroundColor: context.colorScheme.primary,
-        foregroundColor: context.colorScheme.onPrimary,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20.0),
-        ),
-      ),
-      child: const Text(
-        'Register',
-        style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
       ),
     );
   }

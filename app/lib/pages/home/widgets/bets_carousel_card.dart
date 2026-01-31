@@ -1,4 +1,5 @@
 import 'package:app/config/theme.dart';
+import 'package:app/extensions/number.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -36,11 +37,12 @@ class BetsCarouselCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  totalPot.toString(),
+                  totalPot.formatWithCommas(),
                   style: TextStyle(
                     fontSize: 32,
                     fontWeight: FontWeight.bold,
                     color: context.colorScheme.onPrimary,
+                    letterSpacing: 1.2
                   ),
                 ),
                 const SizedBox(height: 4),
