@@ -4,88 +4,27 @@ import 'package:google_fonts/google_fonts.dart';
 class AppTheme {
   static ThemeData get darkTheme {
     return ThemeData(
-      scaffoldBackgroundColor: Color.from(
-        alpha: 1,
-        red: 17 / 255,
-        green: 17 / 255,
-        blue: 17 / 255,
+      scaffoldBackgroundColor: Color(0xff111111),
+      appBarTheme: AppBarTheme(
+        backgroundColor: Color(0xff111111),
+        shape: Border(bottom: BorderSide(color: Color(0xff606060), width: 4.0)),
       ),
       colorScheme: ColorScheme(
         brightness: Brightness.dark,
-        primary: Color.from(
-          alpha: 1,
-          red: 139 / 255,
-          green: 248 / 255,
-          blue: 37 / 255,
-        ),
-        secondary: Color.from(
-          alpha: 1,
-          red: 249 / 255,
-          green: 172 / 255,
-          blue: 65 / 255,
-        ),
-        surface: Color.from(
-          alpha: 1,
-          red: 34 / 255,
-          green: 34 / 255,
-          blue: 34 / 255,
-        ),
-        secondaryContainer: Color.from(
-          alpha: 1,
-          red: 64 / 255,
-          blue: 64 / 255,
-          green: 64 / 255,
-        ),
-        error: Color.from(
-          alpha: 1,
-          red: 255 / 255,
-          green: 49 / 255,
-          blue: 49 / 255,
-        ),
-        onPrimary: Color.from(
-          alpha: 1,
-          red: 17 / 255,
-          green: 17 / 255,
-          blue: 17 / 255,
-        ),
-        onSecondary: Color.from(
-          alpha: 1,
-          red: 17 / 255,
-          green: 17 / 255,
-          blue: 17 / 255,
-        ),
-        onSurface: Color.from(
-          alpha: 1,
-          red: 229 / 255,
-          green: 229 / 255,
-          blue: 229 / 255,
-        ),
-        onSurfaceVariant: Color.from(
-          alpha: 1,
-          red: 128 / 255,
-          green: 128 / 255,
-          blue: 128 / 255,
-        ),
-        onError: Color.from(
-          alpha: 1,
-          red: 229 / 255,
-          green: 229 / 255,
-          blue: 229 / 255,
-        ),
-        onSecondaryContainer: Color.from(
-          alpha: 1,
-          red: 229 / 255,
-          green: 229 / 255,
-          blue: 229 / 255,
-        ),
+        primary: Color(0xff8bf825),
+        secondary: Color(0xfff9ac41),
+        surface: Color(0xff222222),
+        secondaryContainer: Color(0xff404040),
+        error: Color(0xffff3131),
+        onPrimary: Color(0xff111111),
+        onSecondary: Color(0xff111111),
+        onSurface: Color(0xffe5e5e5),
+        onSurfaceVariant: Color(0xff808080),
+        onError: Color(0xffe5e5e5),
+        onSecondaryContainer: Color(0xffe5e5e5),
       ),
       cardTheme: CardThemeData(
-        color: Color.from(
-          alpha: 1,
-          red: 34 / 255,
-          green: 34 / 255,
-          blue: 34 / 255,
-        ),
+        color: Color(0xff222222),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(24.0),
         ),
