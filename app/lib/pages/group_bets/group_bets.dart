@@ -80,7 +80,7 @@ class GroupBets extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          context.push('/group/:group_id/bet_creation');
+          context.push('/groups/:group_id/bet_creation');
         },
         backgroundColor: context.colorScheme.secondary,
         child: Icon(Icons.add, color: context.colorScheme.onSecondary),

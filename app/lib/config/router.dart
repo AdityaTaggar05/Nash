@@ -18,7 +18,7 @@ import '/pages/register/register.dart';
 
 final routerProvider = Provider<GoRouter>((ref) {
   return GoRouter(
-    initialLocation: '/home',
+    initialLocation: '/groups',
     routes: [
       StatefulShellRoute(
         builder: (context, state, navigationShell) {
@@ -90,10 +90,10 @@ final routerProvider = Provider<GoRouter>((ref) {
       ),
       GoRoute(
         path: '/groups/:group_id/bets/:bet_id/resolve',
-        builder: (context, state) => const BetResolve()
+        builder: (context, state) => BetResolve(groupID: state.pathParameters['group_id']!, betID: state.pathParameters['bet_id']!)
       ),
       GoRoute(
-        path:'/group/:group_id/bet_creation',
+        path:'/groups/:group_id/bet_creation',
         builder:(context, state) => BetCreation(groupID: state.pathParameters["group_id"]!),
       )
     ],

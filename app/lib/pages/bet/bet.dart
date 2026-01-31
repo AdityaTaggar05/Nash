@@ -150,13 +150,27 @@ class _BetPageState extends State<BetPage> {
           ],
         ),
       ),
-      floatingActionButton: page == 0 ? FloatingActionButton(
-        onPressed: () {
-          context.push('/group/:group_id/bets/:bet_id/resolve');
-        },
-        backgroundColor: context.colorScheme.secondary,
-        child: Icon(Icons.add, color: context.colorScheme.onSecondary),
-      ) : null,
+      floatingActionButton: page == 0
+          ? FloatingActionButton.extended(
+              onPressed: () {
+                context.push('/groups/:group_id/bets/:bet_id/resolve');
+              },
+              backgroundColor: context.colorScheme.secondary,
+              label: Row(
+                children: [
+                  Icon(
+                    Icons.flaky_rounded,
+                    color: context.colorScheme.onSecondary,
+                    size: 24,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(4.0),
+                    child: Text('Resolve', style: TextStyle()),
+                  ),
+                ],
+              ),
+            )
+          : null,
     );
   }
 }

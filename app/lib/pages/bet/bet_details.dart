@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-
-import 'widgets/bet_details_card.dart';
 import 'widgets/bet_placement_card.dart';
 import 'widgets/bet_trends_card.dart';
 
