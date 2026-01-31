@@ -1,5 +1,4 @@
 import 'package:app/config/theme.dart';
-import 'package:app/pages/home/widgets/group_card.dart';
 import 'package:app/pages/home/widgets/group_card_scroll_view.dart';
 import 'package:app/pages/home/widgets/home_created_bets_carousel.dart';
 import 'package:app/pages/home/widgets/home_placed_bets_carousel.dart';
@@ -18,8 +17,8 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         leading: Padding(
-          padding: const EdgeInsets.all(4.0), 
-          child: Image.asset("assets/logo.png"), 
+          padding: const EdgeInsets.all(4.0),
+          child: Image.asset("assets/logo.png"),
         ),
         title: Padding(
           padding: EdgeInsets.only(left: 4.0),
@@ -64,40 +63,49 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
                 SizedBox(height: 20.0),
-                Text("Ongoing Placed Bets", style: context.textTheme.bodyLarge!.copyWith(
-                  color: context.colorScheme.onSurface,
-                  fontSize: 24.0,
-                  fontWeight: FontWeight.bold
-                )),
+                Text(
+                  "Ongoing Placed Bets",
+                  style: context.textTheme.bodyLarge!.copyWith(
+                    color: context.colorScheme.onSurface,
+                    fontSize: 24.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
                 SizedBox(height: 16.0),
                 OngoingBetsCarousel(),
-                SizedBox(height: 32.0,),
+                SizedBox(height: 32.0),
                 Row(
                   children: [
-                    Text("Your Groups", style: context.textTheme.bodyLarge!.copyWith(
-                      color: context.colorScheme.onSurface,
-                      fontSize: 24.0,
-                      fontWeight: FontWeight.bold
-                    )),
+                    Text(
+                      "Your Groups",
+                      style: context.textTheme.bodyLarge!.copyWith(
+                        color: context.colorScheme.onSurface,
+                        fontSize: 24.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                     Spacer(),
                     Text(
                       "See all >",
                       style: TextStyle(
-                        color: context.colorScheme.onSurfaceVariant
-                      )
-                    )
+                        color: context.colorScheme.onSurfaceVariant,
+                      ),
+                    ),
                   ],
                 ),
                 SizedBox(height: 16.0),
                 GroupCardScrollView(),
                 SizedBox(height: 32.0),
-                Text("Ongoing Created Bets", style: context.textTheme.bodyLarge!.copyWith(
-                  color: context.colorScheme.onSurface,
-                  fontSize: 24.0,
-                  fontWeight: FontWeight.bold
-                )),
+                Text(
+                  "Ongoing Created Bets",
+                  style: context.textTheme.bodyLarge!.copyWith(
+                    color: context.colorScheme.onSurface,
+                    fontSize: 24.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
                 SizedBox(height: 16.0),
-                HomeCreatedBetsCarousel()
+                HomeCreatedBetsCarousel(),
               ],
             ),
           ),

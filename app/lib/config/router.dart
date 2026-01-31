@@ -3,11 +3,12 @@ import 'package:go_router/go_router.dart';
 
 import '/pages/bet/bet.dart';
 import '/pages/login/login.dart';
+import '/pages/profile/profile.dart';
 import '/pages/register/register.dart';
 
 final routerProvider = Provider<GoRouter>((ref) {
   return GoRouter(
-    initialLocation: '/bet/123',
+    initialLocation: '/profile/123',
     routes: [
       GoRoute(path: '/login', builder: (context, state) => const LoginPage()),
       GoRoute(
@@ -18,6 +19,11 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: '/bet/:bet_id',
         builder: (context, state) =>
             BetPage(betID: state.pathParameters["bet_id"]!),
+      ),
+      GoRoute(
+        path: '/profile/:user_id',
+        builder: (context, state) =>
+            ProfilePage(userID: state.pathParameters["user_id"]!),
       ),
     ],
   );
