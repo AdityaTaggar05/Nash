@@ -1,8 +1,10 @@
+import 'package:app/config/router.dart';
 import 'package:app/config/theme.dart';
 import 'package:app/pages/home/widgets/group_card_scroll_view.dart';
 import 'package:app/pages/home/widgets/home_created_bets_carousel.dart';
 import 'package:app/pages/home/widgets/home_placed_bets_carousel.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -66,11 +68,11 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                   Spacer(),
-                  Text(
-                    "See all >",
-                    style: TextStyle(
-                      color: context.colorScheme.onSurfaceVariant,
-                    ),
+                  TextButton(
+                    onPressed: () {
+                      context.go('/groups');
+                    },
+                    child: Text("See all >"),
                   ),
                 ],
               ),
