@@ -1,5 +1,4 @@
 import pool from "../../config/db.js";
-import { BetTransactionsResponseDTO } from "./dtos/bet-transactions.dto.js";
 import { BetTransactions, BetTransaction, UserTransaction, UserTransactions } from "./transactions.model.js";
 
 const mapRowToBetTransaction = (row: any): BetTransaction => {
@@ -7,7 +6,8 @@ const mapRowToBetTransaction = (row: any): BetTransaction => {
         amount: row.amount,
         option: row.selected_option,
         placed_at: row.created_at,
-        user_id: row.user_id
+        user_id: row.user_id,
+        username: row.username
     }
 }
 
@@ -21,12 +21,13 @@ const mapRowToUserTransaction = (row: any): UserTransaction => {
 }
 
 export const getBetTransactions = async (
-    betId: string
+    betId?: string
 ): Promise<BetTransactions> => {
     try {
         const userBets = pool.query(
             `SELECT *
             FROM user_bets
+            JOIN users ON user_bets.user_id = users.id
             WHERE bet_id = $1`,
             [betId]
         );
@@ -46,6 +47,7 @@ export const getUserTransactions = async (
         const userBets = pool.query(
             `SELECT *
             FROM transactions
+
             WHERE bet_id = $1`,
             [userId]
         );
@@ -61,10 +63,10 @@ export const getUserTransactions = async (
 }
 
 export const createTransaction = async (
-    betId: string,
     userId: string,
     amount: number,
-    description: string
+    description: string,
+    betId?: string,
 ): Promise<any> => {
     try {
         const now: Date = new Date(Date.now());
