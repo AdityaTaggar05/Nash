@@ -8,7 +8,7 @@ export const toSameUserResponse = (user: User): SameUserDTO => {
     username: user.username,
     email: user.email,
     wallet_balance: user.wallet_balance,
-    referal_code: user.referral_code,
+    referral_code: user.referral_code,
     created_at: user.created_at,
   };
 };
