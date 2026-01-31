@@ -53,10 +53,9 @@ export const getAllBetsOfGroupFromDB = async (groupId: string): Promise<Bet[]> =
     return result.rows.map((row)=> mapRowToBet(row));
 }
 
-export const getAllUserBetsFromDB = async (): Promise<UserBet[]> => {
-    const result = await pool.query(`SELECT * FROM user_bets`)
-    // return result.rows.map((row)=> mapRowToBet(row));
-    return result.rows;
+export const getAllUserBetsFromDB = async (betID: string): Promise<UserBet[]> => {
+    const result = await pool.query(`SELECT * FROM user_bets WHERE bet_id=$1`, [betID])
+    return result.rows.map((row)=> mapRowToUserBet(row));
 }
 
 export const postBet = async (authUserID:string , groupId: string, title: string, expires_at: number): Promise<Bet> => {
@@ -76,7 +75,7 @@ export const placeBet = async (userId: string, betId: string, amount: number, op
     await client.query(`UPDATE users SET wallet_balance = wallet_balance - $1 WHERE id = $2`, [amount, userId]);
 
     await client.query("COMMIT");
-    return mapRowToUserBet(result.row[0]);
+    return mapRowToUserBet(result.rows[0]);
 
   } catch (err: any) {
     await client.query('ROLLBACK');

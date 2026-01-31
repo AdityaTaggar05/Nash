@@ -15,5 +15,5 @@ export interface BetResponseDTO {
         amount: number,
         option: string,
         payout: number,
-    },
+},
 }

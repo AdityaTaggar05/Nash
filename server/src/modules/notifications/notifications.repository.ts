@@ -29,10 +29,9 @@ export const createNotification = async (
     userId: string,
     content: string
 ): Promise<void> => {
-    const now: Date = new Date(Date.now());
     await pool.query(
-        `INSERT INTO notifications (user_id, content, created_at)
-            VALUES ($1, $2, $3)`,
-        [userId, content, now]
+        `INSERT INTO notifications (user_id, content)
+            VALUES ($1, $2)`,
+        [userId, content]
     );
 }

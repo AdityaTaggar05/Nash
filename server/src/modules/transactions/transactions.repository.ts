@@ -69,7 +69,7 @@ export const createTransaction = async (
 ): Promise<void> => {
     await pool.query(
         `INSERT INTO transactions (bet_id, user_id, amount, description)
-        VALUES ($1, $2, $3, $4, $5)`,
+        VALUES ($1, $2, $3, $4)`,
         [betId, userId, amount, description]
     )
 }
