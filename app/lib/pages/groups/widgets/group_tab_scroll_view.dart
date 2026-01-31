@@ -15,7 +15,7 @@ class GroupTabScrollView extends StatelessWidget {
             padding: const EdgeInsets.all(8.0),
             child: const GroupTabCard(
               groupName: "Random Ass Group",
-              groupDescription: "This Group is made to bet on Keshav Ka nahana",
+              groupDescription: "This Group is made to bet on Keshav Ka Chudaap",
               memberNumber: 4,
             ),
           );
