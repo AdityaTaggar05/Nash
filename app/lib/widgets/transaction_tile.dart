@@ -4,8 +4,8 @@ import '/config/theme.dart';
 import '/extensions/datetime.dart';
 import '/extensions/number.dart';
 
-class RecentBetTile extends StatelessWidget {
-  const RecentBetTile({
+class TransactionTile extends StatelessWidget {
+  const TransactionTile({
     super.key,
     required this.transaction,
     this.showBorder = true,
@@ -24,12 +24,13 @@ class RecentBetTile extends StatelessWidget {
                 bottom: BorderSide(color: context.colorScheme.onSurfaceVariant),
               )
             : null,
-        title: Text(transaction["user_id"]),
+        title: Text(transaction["user_id"] ?? transaction["bet_id"]),
         subtitle: Text(
           "\$${(transaction["amount"] as num).formatWithCommas()}",
         ),
         trailing: Text(
-          (transaction["placed_at"] as DateTime).toReadableFormat(),
+          ((transaction["placed_at"] ?? transaction["created_at"]) as DateTime)
+              .toReadableFormat(),
         ),
       ),
     );

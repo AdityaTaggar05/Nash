@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import { AuthRequest } from "../../middleware/auth.middleware.js";
-import * as transactionService from "./transactions.service.js"
-import { error } from "node:console";
+import * as transactionService from "./transactions.service.js";
 
 export const getBetTransactions = async (req: AuthRequest, res: Response) => {
     try {

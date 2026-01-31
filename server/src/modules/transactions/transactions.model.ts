@@ -1,4 +1,5 @@
 export interface BetTransaction {
+    username:string
     user_id: string,
     amount: number,
     placed_at: Date,

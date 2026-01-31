@@ -5,6 +5,7 @@ import 'package:app/pages/profile/widgets/balance_card.dart';
 import 'package:flutter/material.dart';
 
 import 'widgets/header.dart';
+import 'widgets/transaction_history.dart';
 
 const String currentUser = "123";
 
@@ -115,11 +116,25 @@ class _ProfilePageState extends State<ProfilePage>
                 ProfileHeader(data: data, headerKey: headerKey),
               ],
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [BalanceCard(data: data)],
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  vertical: 16,
+                  horizontal: 8,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    BalanceCard(data: data),
+                    const SizedBox(height: 12),
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                        child: TransactionHistorySection(data: data),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ],

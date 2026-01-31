@@ -45,6 +45,7 @@ export const addMember = async (
     }
     const newMember = await groupsRepo.addMember(groupId, input.username);
     return {
+        user_id: newMember.user_id,
         username: newMember.username,
         email: newMember.email,
         role: newMember.role,

@@ -27,8 +27,8 @@ class ProfileHeader extends StatelessWidget {
                 ),
               const Spacer(),
               RoundedIconButton(
-                icon: Icons.settings_rounded,
-                onTap: () => print("CLICKED ME!"),
+                icon: Icons.power_settings_new_rounded,
+                onTap: () => print("LOGOUT!"),
                 color: context.colorScheme.surface,
               ),
             ],
@@ -66,7 +66,7 @@ class ProfileHeader extends StatelessWidget {
           style: TextStyle(fontSize: 18, color: Colors.black54),
         ),
         Padding(
-          padding: const EdgeInsets.symmetric(),
+          padding: const EdgeInsets.symmetric(vertical: 12),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [

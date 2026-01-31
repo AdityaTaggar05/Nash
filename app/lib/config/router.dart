@@ -8,11 +8,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '/pages/bet/bet.dart';
+import '/pages/home/home.dart';
 import '/pages/login/login.dart';
+import '/pages/main_page.dart';
 import '/pages/profile/profile.dart';
 import '/pages/register/register.dart';
-import '/pages/home/home.dart';
-import '/pages/main_page.dart';
 
 final routerProvider = Provider<GoRouter>((ref) {
   return GoRouter(

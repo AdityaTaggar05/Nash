@@ -14,6 +14,7 @@ const mapRowToGroup = (row: any): Group => {
 
 const mapRowToMember = (row: any) => {
     return {
+        user_id: row.user_id,
         username: row.username,
         email: row.email,
         role: row.role,
@@ -66,7 +67,7 @@ export const getGroupById = async (groupId: string): Promise<Group> => {
         if (!groupResponse.rows[0]) throw new Error("Group not found");
 
         const membersResponse = await client.query(
-            `SELECT username, email, role, joined_at
+            `SELECT user_id, username, email, role, joined_at
             FROM group_members
             JOIN users ON group_members.user_id = users.id
             WHERE group_id = $1`,
@@ -125,6 +126,7 @@ export const addMember = async (
             [group_id, memberInfo.rows[0].id, "member", now]
         );
         return {
+            user_id: memberInfo.rows[0].id,
             email: memberInfo.rows[0].email,
             role: result.rows[0].role,
             username: username,

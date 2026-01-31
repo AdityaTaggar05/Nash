@@ -1,6 +1,6 @@
 import { BetTransaction, UserTransaction } from "../transactions.model.js";
 
 export interface UserTransactionsResponseDTO {
-    total : number,
+    last_month : number,
     transactions : Array <UserTransaction>;
 }

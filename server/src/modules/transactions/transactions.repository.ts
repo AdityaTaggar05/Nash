@@ -1,5 +1,4 @@
 import pool from "../../config/db.js";
-import { BetTransactionsResponseDTO } from "./dtos/bet-transactions.dto.js";
 import { BetTransactions, BetTransaction, UserTransaction, UserTransactions } from "./transactions.model.js";
 
 const mapRowToBetTransaction = (row: any): BetTransaction => {
@@ -7,7 +6,8 @@ const mapRowToBetTransaction = (row: any): BetTransaction => {
         amount: row.amount,
         option: row.selected_option,
         placed_at: row.created_at,
-        user_id: row.user_id
+        user_id: row.user_id,
+        username: row.username
     }
 }
 
@@ -21,33 +21,37 @@ const mapRowToUserTransaction = (row: any): UserTransaction => {
 }
 
 export const getBetTransactions = async (
-    betId: string
+    betId?: string
 ): Promise<BetTransactions> => {
-    const userBets = await pool.query(
-        `SELECT *
-        FROM user_bets
-        WHERE bet_id = $1`,
-        [betId]
-    );
-    const result = userBets.rows.map((row: any) => {
-        mapRowToBetTransaction(row);
-    })
-    
-    return { transactions: result };
+    try {
+        const userBets =await pool.query(
+            `SELECT *
+            FROM user_bets
+            JOIN users ON user_bets.user_id = users.id
+            WHERE bet_id = $1`,
+            [betId]
+        );
+        const result = userBets.rows.map((row: any) => {
+            return mapRowToBetTransaction(row);
+        })
+        return { transactions: result };
+    } catch (err: any) {
+        throw err;
+    }
 }
 
 export const getUserTransactions = async (
     userId: string
 ): Promise<UserTransactions> => {
     try {
-        const userBets = pool.query(
+        const userTransactions = await pool.query(
             `SELECT *
             FROM transactions
-            WHERE bet_id = $1`,
+            WHERE user_id = $1`,
             [userId]
         );
-        const result = userBets.rows.map((row: any) => {
-            mapRowToUserTransaction(row);
+        const result = userTransactions.rows.map((row: any) => {
+            return mapRowToUserTransaction(row);
         })
         return {
             transactions: result
