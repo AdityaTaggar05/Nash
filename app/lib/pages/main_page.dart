@@ -24,9 +24,16 @@ class _MainScaffoldState extends ConsumerState<MainScaffold> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        leading: Padding(
+          padding: const EdgeInsetsGeometry.all(4.0),
+          child: Image.asset('assets/logo.png', fit: BoxFit.contain),
+        ),
+        title: Text("NASH", style: TextStyle(color: context.colorScheme.secondary, fontSize: 32, fontWeight: FontWeight.bold))
+      ),
       body: widget.navigationShell,
       bottomNavigationBar: Container(
-        height: 80,
+        height: 75,
         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
         decoration: BoxDecoration(
           border: Border(top: BorderSide(color: Color(0xff404040), width: 2.0)),
@@ -62,15 +69,15 @@ class _MainScaffoldState extends ConsumerState<MainScaffold> {
             Row(
               children: [
                 const CircleAvatar(
-                  radius: 18,
+                  radius: 20,
                   backgroundImage: NetworkImage(
                     "https://i.pravatar.cc/150?img=11",
                   ),
                 ),
-                const SizedBox(width: 12),
+                const SizedBox(width: 24),
                 Container(
                   padding: const EdgeInsets.symmetric(
-                    horizontal: 24.0,
+                    horizontal: 20.0,
                     vertical: 4.0,
                   ),
                   decoration: BoxDecoration(
@@ -129,7 +136,7 @@ class _NavBarItem extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(icon, color: color, size: 26),
+              Icon(icon, color: color, size: 24),
               const SizedBox(height: 4.0),
               AnimatedDefaultTextStyle(
                 style: TextStyle(
