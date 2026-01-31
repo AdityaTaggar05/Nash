@@ -34,9 +34,8 @@ class _BetPageState extends State<BetPage> {
   @override
   Widget build(BuildContext context) {
     final Map<String, dynamic> data = {
-      "totalPot": 6587.79,
-      "payout": 120,
-      "my_bet": {"amount": 100},
+      "total_pot": 6587.79,
+      "my_bet": {"amount": 100, "expected_payout": 120},
       "title": "Will Keshav bathe today?",
       "transactions": List.generate(
         20,
