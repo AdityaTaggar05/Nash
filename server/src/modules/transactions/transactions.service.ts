@@ -18,11 +18,13 @@ export const getUserTransactions = async (
 ): Promise<UserTransactionsResponseDTO> => {
 
     const userTransactions = await transactionsRepo.getUserTransactions(input);
-    const sum = userTransactions.transactions.reduce(function (acc, transaction) {
-        return acc + transaction.amount;
-    }, 0)
+    const recentTransactions = userTransactions.transactions.
+        filter((transaction) => { return transaction.placed_at >= oneMonthAgo })
+    const sum = recentTransactions.reduce((acc, transaction) => acc + transaction.amount, 0);
+    const oneMonthAgo = new Date();
+    oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
     return {
-        total: sum,
+        last_month: sum,
         transactions: userTransactions.transactions
     };
 }

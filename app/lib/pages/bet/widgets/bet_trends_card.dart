@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '/config/theme.dart';
 import '/widgets/transaction_history_modal.dart';
-import '../../../widgets/transaction_tile.dart';
+import '/widgets/transaction_tile.dart';
 
 class BetTrendsCard extends StatelessWidget {
   const BetTrendsCard({super.key, required this.data});

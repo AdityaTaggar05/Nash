@@ -6,5 +6,6 @@ const router = Router();
 
 router.get('/:user_id', authenticate, userControllers.getUser)
 router.post('/check_in', authenticate, userControllers.dailyCheckIn)
+router.get('/:user_id/groups', authenticate, userControllers.getGroups)
 
 export default router;

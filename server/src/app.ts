@@ -1,6 +1,7 @@
 import express, { Request, Response } from "express";
 import authRoutes from "./modules/auth/auth.routes.js";
 import userRoutes from "./modules/users/users.routes.js";
+import betRoutes from "./modules/bets/bets.routes.js";
 import groupRoutes from "./modules/groups/groups.routes.js";
 import transactionRoutes from "./modules/transactions/transactions.routes.js"
 //import roomRoutes from "./modules/chat-room/chat-room.routes.js";
@@ -18,6 +19,7 @@ app.get("/health", (_req: Request, res: Response) => {
 
 app.use('/auth',authRoutes);
 app.use('/users',userRoutes);
+app.use('/group',betRoutes);
 app.use('/group', groupRoutes);
 app.use('/transaction',transactionRoutes);
 

@@ -8,8 +8,16 @@ export interface Group {
 }
 
 export interface Member {
+    user_id:string,
     username:string,
     email:string,
     role:string,
     joined_at:Date,
+}
+
+export interface GroupMember {
+    group_id: string,
+    user_id: string,
+    role: string,
+    joined_at: Date
 }

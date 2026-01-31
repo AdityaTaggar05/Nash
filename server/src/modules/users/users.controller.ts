@@ -19,3 +19,12 @@ export const dailyCheckIn = async (req: AuthRequest, res: Response) => {
         res.status(400).json({error: err.message});
     }
 }
+
+export const getGroups = async (req: AuthRequest, res: Response) => {
+    try {
+        const result = await userServices.getGroups(req.user);
+        res.status(201).json(result);
+    } catch (err: any) {
+        res.status(404).json({error: err.message});
+    }
+}

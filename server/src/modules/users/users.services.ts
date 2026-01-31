@@ -3,6 +3,7 @@ import {SameUserDTO as SameUserResponseDTO} from "./dtos/same-user.dto.js";
 import {DifferentUserDTO as DifferentUserResponseDTO} from "./dtos/different-user.dto.js";
 import { toDifferentUserResponse, toSameUserResponse } from "./users.mapper.js";
 import { CheckInResponseDTO } from "./dtos/check-in-response.dto.js";
+import { Group } from "../groups/groups.model.js";
 
 export const getUser = async (authUserID: string, requestedUserID: string): Promise<SameUserResponseDTO | DifferentUserResponseDTO> => {
     const user = await userRepository.getUserFromDB(requestedUserID);
@@ -16,4 +17,11 @@ export const getUser = async (authUserID: string, requestedUserID: string): Prom
 export const dailyCheckIn = async (authUserID: string): Promise<CheckInResponseDTO> => {
     const response = await userRepository.performDailyCheckIn(authUserID);
     return response;
+}
+
+export const getGroups = async (authUserID: string): Promise<Group[]> => {
+    const response = await userRepository.getGroupMembers(authUserID);
+    const groupIds = response.map(group => group.group_id)
+    const groups = await userRepository.getGroups(groupIds)
+    return groups
 }

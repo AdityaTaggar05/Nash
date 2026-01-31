@@ -1,5 +1,4 @@
 import pool from "../../config/db.js";
-import { BetTransactionsResponseDTO } from "./dtos/bet-transactions.dto.js";
 import { BetTransactions, BetTransaction, UserTransaction, UserTransactions } from "./transactions.model.js";
 
 const mapRowToBetTransaction = (row: any): BetTransaction => {
@@ -7,7 +6,8 @@ const mapRowToBetTransaction = (row: any): BetTransaction => {
         amount: row.amount,
         option: row.selected_option,
         placed_at: row.created_at,
-        user_id: row.user_id
+        user_id: row.user_id,
+        username: row.username
     }
 }
 
@@ -15,23 +15,24 @@ const mapRowToUserTransaction = (row: any): UserTransaction => {
     return {
         amount: row.amount,
         placed_at: row.created_at,
+        description: row.description,
         bet_id: row.bet_id,
-        description: row.description
     }
 }
 
 export const getBetTransactions = async (
-    betId: string
+    betId?: string
 ): Promise<BetTransactions> => {
     try {
-        const userBets = pool.query(
+        const userBets =await pool.query(
             `SELECT *
             FROM user_bets
+            JOIN users ON user_bets.user_id = users.id
             WHERE bet_id = $1`,
             [betId]
         );
         const result = userBets.rows.map((row: any) => {
-            mapRowToBetTransaction(row);
+            return mapRowToBetTransaction(row);
         })
         return { transactions: result };
     } catch (err: any) {
@@ -43,14 +44,14 @@ export const getUserTransactions = async (
     userId: string
 ): Promise<UserTransactions> => {
     try {
-        const userBets = pool.query(
+        const userTransactions = await pool.query(
             `SELECT *
             FROM transactions
-            WHERE bet_id = $1`,
+            WHERE user_id = $1`,
             [userId]
         );
-        const result = userBets.rows.map((row: any) => {
-            mapRowToUserTransaction(row);
+        const result = userTransactions.rows.map((row: any) => {
+            return mapRowToUserTransaction(row);
         })
         return {
             transactions: result
@@ -61,19 +62,14 @@ export const getUserTransactions = async (
 }
 
 export const createTransaction = async (
-    betId: string,
     userId: string,
     amount: number,
-    description: string
-): Promise<any> => {
-    try {
-        const now: Date = new Date(Date.now());
-        const result = pool.query(
-            `INSERT INTO transactions (bet_id, user_id, amount, description, created_at)
-            VALUES ($1, $2, $3, $4, $5)`,
-            [betId, userId, amount, description, now]
-        )
-    } catch (err: any) {
-        throw err;
-    }
+    description: string,
+    betId?: string,
+): Promise<void> => {
+    await pool.query(
+        `INSERT INTO transactions (bet_id, user_id, amount, description)
+        VALUES ($1, $2, $3, $4, $5)`,
+        [betId, userId, amount, description]
+    )
 }

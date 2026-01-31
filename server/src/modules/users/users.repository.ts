@@ -1,6 +1,8 @@
 import { PoolClient } from "pg";
 import pool from "../../config/db.js";
 import { User } from "./users.model.js";
+import { Group, Member, GroupMember } from "../groups/groups.model.js";
+import { UserBet } from "../bets/bets.model.js";
 
 const chars = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
@@ -58,6 +60,16 @@ export const getUserFromDB = async (userId: string): Promise<User> => {
   return mapRowToUser(result.rows[0]);
 };
 
+export const getGroupMembers = async (userId: string): Promise<GroupMember[]> => {
+  const result = await pool.query(`SELECT * FROM group_members WHERE user_id=$1`,[userId])
+  return result.rows
+}
+
+export const getGroups = async (groupIds: string[]): Promise<Group[]> => {
+  const result = await pool.query(`SELECT * FROM groups WHERE id=ANY($1)`,[groupIds])
+  return result.rows
+}
+
 export const performDailyCheckIn = async (
   userId: string,
 ): Promise<{ status: string }> => {
@@ -66,13 +78,20 @@ export const performDailyCheckIn = async (
   try {
     await client.query("BEGIN");
 
-    const result = await client.query("SELECT * FROM users WHERE id = $1", [
+    const result = await client.query("SELECT * FROM auth WHERE user_id = $1", [
       userId,
     ]);
-    const lastCheckIn = result.rows[0].last_login;
-    const currentDate = new Date(Date.now());
+    const lastCheckIn_date = result.rows[0].last_login.getDate();
+    const lastCheckIn_month = result.rows[0].last_login.getMonth();
+    const lastCheckIn_year = result.rows[0].last_login.getFullYear();
+    const currentDate_date = new Date(Date.now()).getDate();
+    const currentDate_month = new Date(Date.now()).getMonth();
+    const currentDate_year = new Date(Date.now()).getFullYear();
 
-    if (lastCheckIn !== currentDate) {
+    if (lastCheckIn_date !== currentDate_date ||
+        lastCheckIn_month !== currentDate_month ||
+        lastCheckIn_year !== currentDate_year) {
+      const currentDate = new Date(Date.now());
       await client.query(
         "UPDATE users SET wallet_balance = wallet_balance + 100 WHERE id = $1",
         [userId],
@@ -93,3 +112,10 @@ export const performDailyCheckIn = async (
     client.release();
   }
 };
+
+export const updateUserWalletBalance = async (
+  userId:string,
+  payout:number
+): Promise<void> => {
+  await pool.query(`UPDATE users SET wallet_balance = wallet_balance + $1 WHERE id = $2`,[payout,userId])
+}
