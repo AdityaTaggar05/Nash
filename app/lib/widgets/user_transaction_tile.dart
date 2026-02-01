@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '/config/theme.dart';
-import '/extensions/datetime.dart';
 import '/extensions/number.dart';
 import '/models/user_transaction.dart';
 
@@ -25,9 +24,15 @@ class UserTransactionTile extends StatelessWidget {
                 bottom: BorderSide(color: context.colorScheme.onSurfaceVariant),
               )
             : null,
-        title: Text(transaction.description),
-        subtitle: transaction.amount.nashFormat(),
-        trailing: Text(transaction.placedAt.toReadableFormat()),
+        title: Text(transaction.description, style: TextStyle(fontSize: 12)),
+        trailing: transaction.amount.nashFormat(
+          style: TextStyle(
+            color: transaction.amount < 0
+                ? context.colorScheme.error
+                : context.colorScheme.primary,
+          ),
+        ),
+        // trailing: Text(transaction.placedAt.toReadableFormat()),
       ),
     );
   }

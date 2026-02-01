@@ -25,7 +25,7 @@ export const getUserTransactions = async (
     },
   );
   const sum = recentTransactions.reduce(
-    (acc, transaction) => acc + transaction.amount,
+    (acc, transaction) => Number(acc) + Number(transaction.amount),
     0,
   );
 

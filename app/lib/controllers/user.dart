@@ -12,9 +12,14 @@ final userControllerProvider = AsyncNotifierProvider<UserController, User>(
 class UserController extends AsyncNotifier<User> {
   @override
   FutureOr<User> build() async {
-    final dio = ref.read(dioProvider);
-    final response = await dio.get('/users/me');
-    return User.fromJson(response.data);
+    try {
+      final dio = ref.read(dioProvider);
+      final response = await dio.get('/users/me');
+      return User.fromJson(response.data);
+    } catch (e) {
+      print("LOG ERR: $e");
+    }
+    return User(id: "s", username: "s", email: "s");
   }
 
   void updateBalance(int newBalance) =>

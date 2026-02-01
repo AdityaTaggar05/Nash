@@ -5,13 +5,18 @@ class UserTransaction {
   final DateTime placedAt;
 
   UserTransaction({
-    required this.betID, required this.description, required this.amount, required this.placedAt
+    required this.betID,
+    required this.description,
+    required this.amount,
+    required this.placedAt,
   });
 
-  factory UserTransaction.fromJSON(Map<String, dynamic> json) => UserTransaction(
-    amount: json['amount'],
-    description: json['desscription'],
-    betID: json['bet_id'],
-    placedAt: DateTime.parse(json['placed_at'])
-  );
+  factory UserTransaction.fromJSON(Map<String, dynamic> json) {
+    return UserTransaction(
+      amount: int.parse(json['amount']),
+      description: json['description'],
+      betID: json['bet_id'],
+      placedAt: DateTime.parse(json['placed_at']),
+    );
+  }
 }

@@ -14,11 +14,11 @@ class TransactionHistorySection extends ConsumerWidget {
     final dio = ref.read(dioProvider);
     final response = await dio.get("/transaction/user");
 
-    print("LOG: ${response.data}");
-
-    return response.data["transactions"]?.map<UserTransaction>(
-      (transaction) => UserTransaction.fromJSON(transaction),
-    );
+    return response.data["transactions"]
+        ?.map<UserTransaction>(
+          (transaction) => UserTransaction.fromJSON(transaction),
+        )
+        .toList();
   }
 
   @override
@@ -45,8 +45,16 @@ class TransactionHistorySection extends ConsumerWidget {
                 }
 
                 if (asyncSnapshot.hasError) {
-                  print("LOG ERROR: ${asyncSnapshot.error}");
-                  return const Center(child: Text("Something went wrong"));
+                  print("LOG: ERROR ${asyncSnapshot.error}");
+                  return Center(
+                    child: Text(
+                      "Something went wrong",
+                      style: TextStyle(
+                        color: context.colorScheme.onSurface,
+                        fontSize: 18,
+                      ),
+                    ),
+                  );
                 }
 
                 if (asyncSnapshot.data == null) {
@@ -75,32 +83,33 @@ class TransactionHistorySection extends ConsumerWidget {
                       );
                     }),
                     const SizedBox(height: 12),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: ElevatedButton(
-                        onPressed: () {
-                          showModalBottomSheet(
-                            context: context,
-                            isScrollControlled: true,
-                            builder: (BuildContext context) =>
-                                UserTransactionsModalSheet(
-                                  heading: "Transaction History",
-                                  transactions: transactions,
-                                ),
-                          );
-                        },
-                        style: ElevatedButton.styleFrom(
-                          minimumSize: const Size(double.infinity, 50.0),
-                          padding: const EdgeInsets.symmetric(vertical: 8.0),
-                          backgroundColor: context.colorScheme.primary,
-                          foregroundColor: context.colorScheme.onPrimary,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20.0),
+                    if (transactions.length > 5)
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        child: ElevatedButton(
+                          onPressed: () {
+                            showModalBottomSheet(
+                              context: context,
+                              isScrollControlled: true,
+                              builder: (BuildContext context) =>
+                                  UserTransactionsModalSheet(
+                                    heading: "Transaction History",
+                                    transactions: transactions,
+                                  ),
+                            );
+                          },
+                          style: ElevatedButton.styleFrom(
+                            minimumSize: const Size(double.infinity, 50.0),
+                            padding: const EdgeInsets.symmetric(vertical: 8.0),
+                            backgroundColor: context.colorScheme.primary,
+                            foregroundColor: context.colorScheme.onPrimary,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20.0),
+                            ),
                           ),
+                          child: Text("See More >"),
                         ),
-                        child: Text("See More >"),
                       ),
-                    ),
                   ],
                 );
               },
