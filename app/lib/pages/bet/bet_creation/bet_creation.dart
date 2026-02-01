@@ -1,8 +1,9 @@
+import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+
 import '/config/theme.dart';
 import '/widgets/creation_button.dart';
 import '/widgets/normal_text_field.dart';
-import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
 class BetCreation extends StatefulWidget {
   final String groupID;
@@ -14,6 +15,7 @@ class BetCreation extends StatefulWidget {
 
 class _BetCreationState extends State<BetCreation> {
   final betTitleController = TextEditingController();
+  DateTime? date;
   String bet_title = "";
 
   @override
@@ -55,7 +57,8 @@ class _BetCreationState extends State<BetCreation> {
                       "Get Set Bet!",
                       style: TextStyle(
                         color: context.colorScheme.onSurface,
-                        fontSize: 24,
+                        fontSize: 26,
+                        fontWeight: FontWeight.bold,
                       ),
                       textAlign: TextAlign.center,
                     ),
@@ -65,7 +68,55 @@ class _BetCreationState extends State<BetCreation> {
                       controller: betTitleController,
                       maxLength: 32,
                     ),
-                    SizedBox(height: 24.0),
+                    SizedBox(height: 24),
+                    Row(
+                      children: [
+                        Text(
+                          "Choose the End Date: ",
+                          style: TextStyle(
+                            color: context.colorScheme.onSurfaceVariant,
+                            fontSize: 18,
+                          ),
+                        ),
+                        InkWell(
+                          onTap: () async {
+                            final DateTime minDate = DateTime.now().add(
+                              const Duration(days: 1),
+                            );
+
+                            final DateTime? picked = await showDatePicker(
+                              context: context,
+                              initialDate: date ?? minDate,
+                              firstDate: minDate,
+                              lastDate: minDate.add(const Duration(days: 180)),
+                            );
+
+                            if (picked != null) {
+                              setState(() {
+                                date = picked;
+                              });
+                            }
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 20,
+                              vertical: 12,
+                            ),
+                            child: Text(
+                              date == null
+                                  ? "Select Date"
+                                  : "${date!.day}/${date!.month}/${date!.year}",
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: Colors.grey.shade400,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 16),
                     CreationButton(
                       onPressed: () {
                         setState(() {
