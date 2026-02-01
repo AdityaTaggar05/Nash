@@ -1,10 +1,10 @@
-import 'package:app/config/theme.dart';
-import 'package:app/providers/dio_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '/config/theme.dart';
 import '/models/group.dart';
-import '/pages/home/widgets/group_card.dart';
+import '/providers/dio_provider.dart';
+import 'group_card.dart';
 
 class GroupCardScrollView extends ConsumerWidget {
   const GroupCardScrollView({super.key});
@@ -51,18 +51,19 @@ class GroupCardScrollView extends ConsumerWidget {
 
         final List<Group> data = asyncSnapshot.data!;
 
+        print("LOG DATA: $data");
+
         return SizedBox(
           height: 100,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
             padding: const EdgeInsets.symmetric(horizontal: 4.0),
             itemCount: data.length,
-            itemBuilder: (context, index) {
-              return GroupCard(
-                groupName: data[index].name,
-                description: data[index].description,
-              );
-            },
+            itemBuilder: (context, index) => GroupCard(
+              id: data[index].id,
+              name: data[index].name,
+              description: data[index].description,
+            ),
           ),
         );
       },

@@ -74,9 +74,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                   Spacer(),
                   TextButton(
-                    onPressed: () {
-                      context.go('/groups');
-                    },
+                    onPressed: () => context.go('/groups'),
                     child: Text("See all >"),
                   ),
                 ],

@@ -3,8 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '/config/theme.dart';
 import '/models/group.dart';
-import '/pages/groups/widgets/group_tab_card.dart';
 import '/providers/dio_provider.dart';
+import 'group_tab_card.dart';
 
 class GroupTabScrollView extends ConsumerWidget {
   const GroupTabScrollView({super.key});

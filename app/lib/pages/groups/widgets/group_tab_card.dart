@@ -50,7 +50,7 @@ class GroupTabCard extends StatelessWidget {
                   SizedBox(height: 2.0),
                   Text(
                     description,
-                    style: TextStyle(fontSize: 10, color: Colors.grey.shade700),
+                    style: TextStyle(fontSize: 12, color: Colors.grey.shade700),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
