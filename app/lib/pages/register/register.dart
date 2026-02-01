@@ -127,7 +127,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                           ),
                                       recognizer: TapGestureRecognizer()
                                         ..onTap = () {
-                                          context.push('/login');
+                                          context.go('/auth/login');
                                         },
                                     ),
                                   ],

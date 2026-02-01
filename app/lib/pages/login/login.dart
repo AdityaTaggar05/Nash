@@ -1,19 +1,21 @@
 import 'package:app/config/theme.dart';
+import 'package:app/providers/auth_interceptor.dart';
 import 'package:app/widgets/creation_button.dart';
 import 'package:app/widgets/normal_text_field.dart';
 import 'package:app/widgets/password_text_field.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-class LoginPage extends StatefulWidget {
+class LoginPage extends ConsumerStatefulWidget {
   const LoginPage({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  ConsumerState<LoginPage> createState() => _LoginPageConsumerState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _LoginPageConsumerState extends ConsumerState<LoginPage> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
@@ -85,8 +87,8 @@ class _LoginPageState extends State<LoginPage> {
                                   controller: passwordController,
                                 ),
                                 const SizedBox(height: 32.0),
-                                CreationButton(onPressed: () {
-                                  return null;
+                                CreationButton(onPressed: () async {
+                                  ref.read(authInterceptorProvider).login(email: emailController.text, password: passwordController.text);
                                 },
                                 title: "Login"
                                 ),
@@ -122,7 +124,7 @@ class _LoginPageState extends State<LoginPage> {
                                           ),
                                       recognizer: TapGestureRecognizer()
                                         ..onTap = () {
-                                          context.push('/register');
+                                          context.go('/auth/register');
                                         },
                                     ),
                                   ],
