@@ -1,5 +1,5 @@
 import 'package:app/config/theme.dart';
-import 'package:app/pages/group_bets/widgets/group_bet_details.dart';
+import 'package:app/pages/groups/group_bets/widgets/group_bet_details.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -55,7 +55,7 @@ class GroupBets extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: const EdgeInsets.fromLTRB(8,0,0,0),
+              padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
               child: Text(
                 "Group's Ongoing Bets",
                 style: TextStyle(

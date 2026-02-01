@@ -1,21 +1,22 @@
-import 'package:app/pages/bet_creation/bet_creation.dart';
-import 'package:app/pages/group_bets/group_bets.dart';
-import 'package:app/pages/group_creation/group_creation.dart';
-import 'package:app/pages/group_info/group_info.dart';
-import 'package:app/pages/groups/groups.dart';
-import 'package:app/pages/search/search.dart';
-import 'package:app/pages/splash/splash.dart';
-import 'package:app/providers/auth_state_provider.dart';
-import 'package:app/utils/auth_router_notifier.dart';
-import 'package:app/widgets/sliding_shell_stack.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+
 import '/pages/bet/bet.dart';
+import '/pages/bet/bet_creation/bet_creation.dart';
+import '/pages/groups/group_bets/group_bets.dart';
+import '/pages/groups/group_creation/group_creation.dart';
+import '/pages/groups/group_info/group_info.dart';
+import '/pages/groups/groups.dart';
 import '/pages/home/home.dart';
 import '/pages/login/login.dart';
 import '/pages/main_page.dart';
 import '/pages/profile/profile.dart';
 import '/pages/register/register.dart';
+import '/pages/search/search.dart';
+import '/pages/splash/splash.dart';
+import '/providers/auth_state_provider.dart';
+import '/utils/auth_router_notifier.dart';
+import '/widgets/sliding_shell_stack.dart';
 
 final routerProvider = Provider<GoRouter>((ref) {
   final authState = ref.watch(authStateProvider);
@@ -113,9 +114,10 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (context, state) => const SplashScreen(),
       ),
       GoRoute(
-        path:'/group/:group_id/bet_creation',
-        builder:(context, state) => BetCreation(groupID: state.pathParameters["group_id"]!),
-      )
+        path: '/group/:group_id/bet_creation',
+        builder: (context, state) =>
+            BetCreation(groupID: state.pathParameters["group_id"]!),
+      ),
     ],
   );
 });

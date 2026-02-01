@@ -6,7 +6,7 @@ import '/config/theme.dart';
 import '/extensions/number.dart';
 
 class BetPlacementCard extends StatefulWidget {
-  BetPlacementCard({
+  const BetPlacementCard({
     super.key,
     required this.data,
     required this.onBetConfirmed,
@@ -38,7 +38,8 @@ class _BetPlacementCardState extends State<BetPlacementCard> {
               ),
             ),
             const SizedBox(height: 8),
-            (widget.data["total_pot"] as num).nashFormat(iconSize: 52,
+            (widget.data["total_pot"] as num).nashFormat(
+              iconSize: 52,
               style: TextStyle(
                 fontSize: 52,
                 color: context.colorScheme.secondary,
@@ -49,10 +50,8 @@ class _BetPlacementCardState extends State<BetPlacementCard> {
             if (!expanded)
               CreationButton(
                 onPressed: () {
-                  setState(() {
-                    expanded = true;
-                    return null;
-                  });
+                  setState(() => expanded = true);
+                  return null;
                 },
                 title: "Place Bet",
               )
