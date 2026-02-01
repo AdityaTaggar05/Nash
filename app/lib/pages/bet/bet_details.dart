@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'widgets/bet_details_card.dart';
 import 'widgets/bet_placement_card.dart';
 import 'widgets/bet_trends_card.dart';
@@ -34,7 +35,7 @@ class _BetDetailsPageState extends State<BetDetailsPage> {
                   });
                 },
               ),
-            
+
             const SizedBox(height: 16),
             BetTrendsCard(data: widget.data),
           ],

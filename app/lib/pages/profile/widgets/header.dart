@@ -30,11 +30,12 @@ class ProfileHeader extends ConsumerWidget {
                   color: context.colorScheme.surface,
                 ),
               const Spacer(),
-              RoundedIconButton(
-                icon: Icons.power_settings_new_rounded,
-                onTap: ref.read(authControllerProvider.notifier).logout,
-                color: context.colorScheme.surface,
-              ),
+              if (user.balance != null)
+                RoundedIconButton(
+                  icon: Icons.power_settings_new_rounded,
+                  onTap: ref.read(authControllerProvider.notifier).logout,
+                  color: context.colorScheme.surface,
+                ),
             ],
           ),
         ),

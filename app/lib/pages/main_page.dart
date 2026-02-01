@@ -88,7 +88,8 @@ class _MainScaffoldState extends ConsumerState<MainScaffold> {
               color: Colors.grey.shade700,
             ),
             GestureDetector(
-              onTap: () => context.push('/profile/${user.id}'),
+              onTap: () =>
+                  context.push('/profile/91ab048c-a22e-4537-b144-798d7698563f'),
               child: Row(
                 children: [
                   const CircleAvatar(

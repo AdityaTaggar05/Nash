@@ -67,8 +67,12 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
       return ref.read(userControllerProvider).value!;
     }
 
+    print("LOG: BEFORE HERE");
     final dio = ref.read(dioProvider);
+    print("LOG: HERE");
     final response = await dio.get('/users/${widget.userID}');
+
+    print("LOG: ${response.data}");
 
     return User.fromJson(response.data);
   }
