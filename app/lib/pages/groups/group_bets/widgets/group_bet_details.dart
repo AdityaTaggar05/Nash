@@ -13,7 +13,7 @@ class GroupBetDetailsCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => context.push("/bet/${bet.id}"),
+      onTap: () => context.push("/bet/${bet.groupID}/${bet.id}"),
       child: Card(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),

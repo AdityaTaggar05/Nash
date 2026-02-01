@@ -12,6 +12,6 @@ class PlacedBet {
   static fromJSON(Map<String, dynamic> data) => PlacedBet(
     amount: int.parse(data['amount']),
     option: data['option'],
-    expectedPayout: data['payout'] != null ? int.parse(data["payout"]) : 0,
+    expectedPayout: data['payout'] ?? 0,
   );
 }

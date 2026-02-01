@@ -1,3 +1,4 @@
+import 'package:app/models/bet.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
@@ -6,25 +7,15 @@ import '/config/theme.dart';
 import '/extensions/number.dart';
 
 class BetsCarouselCard extends StatelessWidget {
-  final int totalPot;
-  final int? placedBet;
-  final String title;
+  final Bet bet;
   final Color color;
-  final DateTime endsAt;
 
-  const BetsCarouselCard({
-    super.key,
-    required this.totalPot,
-    required this.title,
-    required this.endsAt,
-    required this.color,
-    this.placedBet,
-  });
+  const BetsCarouselCard({super.key, required this.bet, required this.color});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => context.push("/bet/123"),
+      onTap: () => context.push("/bet/${bet.groupID}/${bet.id}"),
       child: Container(
         width: MediaQuery.of(context).size.width,
         decoration: BoxDecoration(
@@ -40,7 +31,7 @@ class BetsCarouselCard extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  totalPot.nashFormat(
+                  bet.totalPot.nashFormat(
                     iconSize: 36,
                     style: TextStyle(
                       fontSize: 36,
@@ -49,9 +40,9 @@ class BetsCarouselCard extends StatelessWidget {
                       letterSpacing: 1.2,
                     ),
                   ),
-                  if (placedBet != null) ...[
+                  if (bet.myBet != null) ...[
                     const SizedBox(height: 4),
-                    placedBet!.nashFormat(
+                    bet.myBet!.amount.nashFormat(
                       iconSize: 12,
                       style: TextStyle(
                         fontSize: 12,
@@ -75,7 +66,7 @@ class BetsCarouselCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    title,
+                    bet.title,
                     style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
@@ -86,7 +77,7 @@ class BetsCarouselCard extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    "ENDS AT ${DateFormat('MMM d, yyyy').format(endsAt)}",
+                    "ENDS AT ${DateFormat('MMM d, yyyy').format(bet.expiresAt)}",
                     style: const TextStyle(
                       fontSize: 10,
                       fontWeight: FontWeight.bold,

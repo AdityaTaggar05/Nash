@@ -1,16 +1,17 @@
 import 'dart:math';
 
-import '/config/theme.dart';
-import '/pages/bet/bet_discussion.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '/config/theme.dart';
+import '/pages/bet/bet_discussion.dart';
 import 'bet_details.dart';
 
 class BetPage extends StatefulWidget {
+  final String groupID;
   final String betID;
 
-  const BetPage({super.key, required this.betID});
+  const BetPage({super.key, required this.betID, required this.groupID});
 
   @override
   State<BetPage> createState() => _BetPageState();
@@ -151,7 +152,7 @@ class _BetPageState extends State<BetPage> {
                 controller: controller,
                 onPageChanged: (value) => setState(() => page = value),
                 children: [
-                  BetDetailsPage(data: data),
+                  BetDetailsPage(groupID: widget.groupID, betID: widget.betID),
                   BetDiscussionPage(),
                 ],
               ),

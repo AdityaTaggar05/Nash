@@ -1,10 +1,12 @@
+import 'package:app/models/bet_transaction.dart';
+import 'package:flutter/material.dart';
+
 import '/config/theme.dart';
 import '/widgets/transaction_tile.dart';
-import 'package:flutter/material.dart';
 
 class TransactionsModalSheet extends StatelessWidget {
   final String heading;
-  final List<Map<String, dynamic>> transactions;
+  final List<BetTransaction> transactions;
 
   const TransactionsModalSheet({
     super.key,

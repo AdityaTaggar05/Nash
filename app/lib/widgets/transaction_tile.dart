@@ -1,3 +1,4 @@
+import 'package:app/models/bet_transaction.dart';
 import 'package:flutter/material.dart';
 
 import '/config/theme.dart';
@@ -11,7 +12,7 @@ class TransactionTile extends StatelessWidget {
     this.showBorder = true,
   });
 
-  final Map<String, dynamic> transaction;
+  final BetTransaction transaction;
   final bool showBorder;
 
   @override
@@ -24,12 +25,9 @@ class TransactionTile extends StatelessWidget {
                 bottom: BorderSide(color: context.colorScheme.onSurfaceVariant),
               )
             : null,
-        title: Text(transaction["user_id"] ?? transaction["bet_id"]),
-        subtitle: (transaction["amount"] as num).nashFormat(),
-        trailing: Text(
-          ((transaction["placed_at"] ?? transaction["created_at"]) as DateTime)
-              .toReadableFormat(),
-        ),
+        title: Text(transaction.username),
+        subtitle: transaction.amount.nashFormat(),
+        trailing: Text(transaction.placedAt.toReadableFormat()),
       ),
     );
   }

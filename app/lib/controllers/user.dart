@@ -15,7 +15,6 @@ class UserController extends AsyncNotifier<User> {
     try {
       final dio = ref.read(dioProvider);
       final response = await dio.get('/users/me');
-      print("RESP: ${response.data}");
       return User.fromJson(response.data);
     } catch (e) {
       print("LOG ERR: $e");

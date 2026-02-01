@@ -14,10 +14,10 @@ import '/pages/groups/group_info/group_info.dart';
 import '/pages/home/home.dart';
 import '/pages/login/login.dart';
 import '/pages/main_page.dart';
+import '/pages/notifications/notifications.dart';
 import '/pages/profile/profile.dart';
 import '/pages/register/register.dart';
 import '/pages/splash/splash.dart';
-import '/pages/notifications/notifications.dart';
 
 final routerProvider = Provider<GoRouter>((ref) {
   final authState = ref.watch(authControllerProvider);
@@ -92,9 +92,11 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (context, state) => const RegisterPage(),
       ),
       GoRoute(
-        path: '/bet/:bet_id',
-        builder: (context, state) =>
-            BetPage(betID: state.pathParameters["bet_id"]!),
+        path: '/bet/:group_id/:bet_id',
+        builder: (context, state) => BetPage(
+          betID: state.pathParameters["bet_id"]!,
+          groupID: state.pathParameters["group_id"]!,
+        ),
       ),
       GoRoute(
         path: '/group_creation',
@@ -134,7 +136,7 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/notifications',
         builder: (context, state) => NotificationPage(),
-      )
+      ),
     ],
   );
 });

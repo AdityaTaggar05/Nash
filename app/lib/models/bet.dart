@@ -4,6 +4,7 @@ enum Status { open, resolved, locked }
 
 class Bet {
   final String id;
+  final String groupID;
   final String title;
   final int totalPot;
   final int poolFor;
@@ -16,6 +17,7 @@ class Bet {
 
   Bet({
     required this.id,
+    required this.groupID,
     required this.title,
     required this.totalPot,
     required this.poolFor,
@@ -40,12 +42,15 @@ class Bet {
 
     return Bet(
       id: json['id'],
+      groupID: json['group_id'],
       status: status,
       title: json['title'],
-      totalPot: int.parse(json['total_pot']),
-      poolFor: json['pool_for'] != null ? int.parse(json['pool_for']) : 0,
-      poolAgainst: json['pool_against'] != null
-          ? int.parse(json['pool_against'])
+      totalPot: int.parse(json['total_pot'].toString()),
+      poolFor: json['pool_for']?.toString() != null
+          ? int.parse(json['pool_for'].toString())
+          : 0,
+      poolAgainst: json['pool_against']?.toString() != null
+          ? int.parse(json['pool_against'].toString())
           : 0,
       createdAt: DateTime.parse(json['created_at']),
       createdBy: json['creator_id'] ?? "",

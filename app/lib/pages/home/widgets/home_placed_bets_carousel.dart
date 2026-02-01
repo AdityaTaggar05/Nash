@@ -68,10 +68,7 @@ class OngoingBetsCarousel extends ConsumerWidget {
             return Builder(
               builder: (BuildContext context) {
                 return BetsCarouselCard(
-                  totalPot: bet.totalPot,
-                  placedBet: bet.myBet!.amount,
-                  title: bet.title,
-                  endsAt: bet.expiresAt,
+                  bet: bet,
                   color: context.colorScheme.primary,
                 );
               },
