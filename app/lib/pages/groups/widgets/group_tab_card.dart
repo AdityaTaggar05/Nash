@@ -1,16 +1,18 @@
-import '/config/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '/config/theme.dart';
+
 class GroupTabCard extends StatelessWidget {
-  final String groupName;
-  final String groupDescription;
-  final int memberNumber;
+  final String id;
+  final String name;
+  final String description;
+
   const GroupTabCard({
     super.key,
-    required this.groupName,
-    required this.groupDescription,
-    required this.memberNumber,
+    required this.id,
+    required this.name,
+    required this.description,
   });
 
   @override
@@ -22,9 +24,7 @@ class GroupTabCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(16.0),
       ),
       child: GestureDetector(
-        onTap: () {
-          context.push('/groups/:group_id/bets');
-        },
+        onTap: () => context.push('/groups/$id/bets'),
         child: Row(
           children: [
             CircleAvatar(
@@ -38,7 +38,7 @@ class GroupTabCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    groupName,
+                    name,
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
@@ -49,18 +49,10 @@ class GroupTabCard extends StatelessWidget {
                   ),
                   SizedBox(height: 2.0),
                   Text(
-                    groupDescription,
-                    style: TextStyle(fontSize: 10, color: Colors.grey.shade700),
+                    description,
+                    style: TextStyle(fontSize: 12, color: Colors.grey.shade700),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                  ),
-                  SizedBox(height: 8),
-                  Text(
-                    '$memberNumber members',
-                    style: TextStyle(
-                      color: context.colorScheme.onSurfaceVariant,
-                      fontSize: 12,
-                    ),
                   ),
                 ],
               ),

@@ -24,7 +24,7 @@ class AppTheme {
         secondary: Color(0xfff9ac41),
         surface: Color(0xff222222),
         secondaryContainer: Color(0xff404040),
-        error: Color(0xffff3131),
+        error: Colors.red.shade500,
         onPrimary: Color(0xff111111),
         onSecondary: Color(0xff111111),
         onSurface: Color(0xffe5e5e5),

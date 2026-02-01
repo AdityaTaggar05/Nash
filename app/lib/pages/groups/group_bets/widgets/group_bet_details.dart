@@ -1,23 +1,26 @@
-import '/config/theme.dart';
-import '/extensions/number.dart';
+import 'package:app/extensions/datetime.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '/config/theme.dart';
+import '/extensions/number.dart';
+import '/models/bet.dart';
+
 class GroupBetDetailsCard extends StatelessWidget {
-  final Map<String, dynamic> data;
-  const GroupBetDetailsCard({super.key, required this.data});
+  final Bet bet;
+  const GroupBetDetailsCard({super.key, required this.bet});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => context.push("/bet/123"),
+      onTap: () => context.push("/bet/${bet.id}"),
       child: Card(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              (data["total_pot"] as num).nashFormat(
+              bet.totalPot.nashFormat(
                 iconSize: 30,
                 style: TextStyle(
                   fontSize: 30,
@@ -26,23 +29,20 @@ class GroupBetDetailsCard extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 12),
-              Text(
-                "EXPECTED PAYOUT: \$${data['my_bet']['expected_payout']}",
-                style: TextStyle(
-                  fontSize: 14,
-                  color: context.colorScheme.onSurfaceVariant,
-                ),
-              ),
-              Text(
-                "BET PLACED: \$${data['my_bet']['amount']}",
-                style: TextStyle(
-                  fontSize: 14,
-                  color: context.colorScheme.onSurfaceVariant,
-                ),
+              Row(
+                children: [
+                  Text(
+                    "ENDS AT: ${bet.expiresAt.toReadableFormat()}",
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: context.colorScheme.onSurfaceVariant,
+                    ),
+                  ),
+                ],
               ),
               const SizedBox(height: 16),
               Text(
-                data['title'].toString(),
+                bet.title,
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,

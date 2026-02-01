@@ -1,4 +1,6 @@
 import 'package:app/controllers/auth.dart';
+import 'package:app/utils/validators.dart';
+import 'package:app/widgets/snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -24,6 +26,28 @@ class _LoginPageConsumerState extends ConsumerState<LoginPage> {
     emailController.dispose();
     passwordController.dispose();
     super.dispose();
+  }
+
+  Future<void> onSubmit() async {
+    final emailError = emailValidator(emailController.text);
+
+    if(emailError != null) {
+      showSnackBar(context, emailError);
+      return;
+    }
+
+    if(passwordController.text.isEmpty) {
+      showSnackBar(context, "Please enter a password");      
+      return;
+    }
+
+    try {
+      await ref.read(authControllerProvider.notifier).login(email: emailController.text, password: passwordController.text); 
+    } catch(_) {
+      if(context.mounted) {
+        showSnackBar(context, "Login Failed");
+      }
+    }
   }
 
   @override
@@ -84,6 +108,7 @@ class _LoginPageConsumerState extends ConsumerState<LoginPage> {
                                 CustomTextField(
                                   hintText: "E-mail",
                                   controller: emailController,
+                                  validator: emailValidator,
                                 ),
                                 const SizedBox(height: 20.0),
                                 PasswordTextField(
@@ -94,30 +119,7 @@ class _LoginPageConsumerState extends ConsumerState<LoginPage> {
                                 CreationButton(
                                   onPressed: isLoading
                                       ? null
-                                      : () async {
-                                          try {
-                                            await ref
-                                                .read(
-                                                  authControllerProvider
-                                                      .notifier,
-                                                )
-                                                .login(
-                                                  email: emailController.text,
-                                                  password:
-                                                      passwordController.text,
-                                                );
-                                          } catch (_) {
-                                            if (context.mounted) {
-                                              ScaffoldMessenger.of(
-                                                context,
-                                              ).showSnackBar(
-                                                const SnackBar(
-                                                  content: Text('Login failed'),
-                                                ),
-                                              );
-                                            }
-                                          }
-                                        },
+                                      : onSubmit,
                                   title: isLoading ? "Logging in..." : "Login",
                                 ),
                               ],

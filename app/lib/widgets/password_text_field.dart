@@ -40,7 +40,7 @@ class _PasswordTextFieldState extends State<PasswordTextField> {
                 borderRadius: BorderRadius.circular(20.0),
                 borderSide: BorderSide(
                   color: context.colorScheme.primary,
-                  width: 2,
+                  width: 4,
                 ),
               ),
               fillColor: Colors.grey[850],

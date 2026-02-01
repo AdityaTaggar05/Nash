@@ -1,12 +1,13 @@
-import '/config/theme.dart';
-import '/extensions/number.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
+import '/config/theme.dart';
+import '/extensions/number.dart';
+
 class BetsCarouselCard extends StatelessWidget {
   final int totalPot;
-  final int placedBet;
+  final int? placedBet;
   final String title;
   final Color color;
   final DateTime endsAt;
@@ -14,10 +15,10 @@ class BetsCarouselCard extends StatelessWidget {
   const BetsCarouselCard({
     super.key,
     required this.totalPot,
-    required this.placedBet,
     required this.title,
     required this.endsAt,
     required this.color,
+    this.placedBet,
   });
 
   @override
@@ -48,23 +49,25 @@ class BetsCarouselCard extends StatelessWidget {
                       letterSpacing: 1.2,
                     ),
                   ),
-                  const SizedBox(height: 4),
-                  placedBet.nashFormat(
-                    iconSize: 12,
-                    style: TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.black54,
-                    ),
-                    leading: Text(
-                      "PLACED BET: ",
+                  if (placedBet != null) ...[
+                    const SizedBox(height: 4),
+                    placedBet!.nashFormat(
+                      iconSize: 12,
                       style: TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w600,
                         color: Colors.black54,
                       ),
+                      leading: Text(
+                        "PLACED BET: ",
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.black54,
+                        ),
+                      ),
                     ),
-                  ),
+                  ],
                 ],
               ),
               Column(

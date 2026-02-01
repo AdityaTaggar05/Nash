@@ -1,32 +1,25 @@
-import '/config/theme.dart';
-import '/pages/groups/group_bets/widgets/group_bet_details.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-class GroupBets extends StatelessWidget {
+import '/config/theme.dart';
+import '/models/bet.dart';
+import '/pages/groups/group_bets/widgets/group_bet_details.dart';
+import '/providers/dio_provider.dart';
+
+class GroupBets extends ConsumerWidget {
   final String groupID;
   const GroupBets({super.key, required this.groupID});
 
-  @override
-  Widget build(BuildContext context) {
-    List<Map<String, dynamic>> data = [
-      {
-        'total_pot': 300,
-        'my_bet': {'amount': 100, 'expected_payout': 200},
-        'title': "Keshav Ki iss sem Dassi?",
-      },
-      {
-        'total_pot': 400,
-        'my_bet': {'amount': 50, 'expected_payout': 150},
-        'title': "Shrey ka khel khatam is sem?",
-      },
-      {
-        'total_pot': 320,
-        'my_bet': {'amount': 60, 'expected_payout': 200},
-        'title': "Garv bhai try again on Maheek?",
-      },
-    ];
+  Future<List<Bet>> getGroupBets(WidgetRef ref) async {
+    final dio = ref.read(dioProvider);
+    final res = await dio.get("/group/$groupID/bet");
 
+    return res.data.map<Bet>((bet) => Bet.fromJSON(bet)).toList();
+  }
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -42,7 +35,7 @@ class GroupBets extends StatelessWidget {
             padding: const EdgeInsets.all(8.0),
             child: IconButton(
               onPressed: () {
-                context.push('/groups/:group_id');
+                context.push('/groups/$groupID');
               },
               icon: Icon(Icons.info_outline_rounded),
             ),
@@ -67,12 +60,48 @@ class GroupBets extends StatelessWidget {
             ),
             SizedBox(height: 12),
             Expanded(
-              child: ListView.builder(
-                shrinkWrap: true,
-                scrollDirection: Axis.vertical,
-                itemCount: data.length,
-                itemBuilder: (context, index) =>
-                    GroupBetDetailsCard(data: data[index]),
+              child: FutureBuilder(
+                future: getGroupBets(ref),
+                builder: (context, asyncSnapshot) {
+                  if (asyncSnapshot.connectionState ==
+                      ConnectionState.waiting) {
+                    return Center(child: CircularProgressIndicator());
+                  }
+
+                  if (asyncSnapshot.hasError) {
+                    return Center(
+                      child: Text(
+                        "Something went wrong",
+                        style: TextStyle(
+                          color: context.colorScheme.onSurface,
+                          fontSize: 18,
+                        ),
+                      ),
+                    );
+                  }
+
+                  if (asyncSnapshot.data == null) {
+                    return Center(
+                      child: Text(
+                        "No bets created in this group!",
+                        style: TextStyle(
+                          color: context.colorScheme.onSurface,
+                          fontSize: 18,
+                        ),
+                      ),
+                    );
+                  }
+
+                  final List<Bet> data = asyncSnapshot.data!;
+
+                  return ListView.builder(
+                    shrinkWrap: true,
+                    scrollDirection: Axis.vertical,
+                    itemCount: data.length,
+                    itemBuilder: (context, index) =>
+                        GroupBetDetailsCard(bet: data[index]),
+                  );
+                },
               ),
             ),
           ],

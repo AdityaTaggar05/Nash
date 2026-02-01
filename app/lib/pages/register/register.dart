@@ -1,19 +1,24 @@
+import 'package:flutter/gestures.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+
 import '/config/theme.dart';
+import '/controllers/auth.dart';
+import '/utils/validators.dart';
 import '/widgets/creation_button.dart';
 import '/widgets/normal_text_field.dart';
 import '/widgets/password_text_field.dart';
-import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+import '/widgets/snackbar.dart';
 
-class RegisterPage extends StatefulWidget {
+class RegisterPage extends ConsumerStatefulWidget {
   const RegisterPage({super.key});
 
   @override
-  State<RegisterPage> createState() => _RegisterPageState();
+  ConsumerState<RegisterPage> createState() => _RegisterPageState();
 }
 
-class _RegisterPageState extends State<RegisterPage> {
+class _RegisterPageState extends ConsumerState<RegisterPage> {
   final usernameController = TextEditingController();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
@@ -26,6 +31,34 @@ class _RegisterPageState extends State<RegisterPage> {
     super.dispose();
   }
 
+  Future<void> onSubmit() async {
+    final emailError = emailValidator(emailController.text);
+
+    if (emailError != null) {
+      showSnackBar(context, emailError);
+      return;
+    }
+
+    if (passwordController.text.isEmpty) {
+      showSnackBar(context, "Please enter a password");
+      return;
+    }
+
+    try {
+      await ref
+          .read(authControllerProvider.notifier)
+          .register(
+            username: usernameController.text,
+            email: emailController.text,
+            password: passwordController.text,
+          );
+    } catch (_) {
+      if (context.mounted) {
+        showSnackBar(context, "Login Failed");
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,6 +66,10 @@ class _RegisterPageState extends State<RegisterPage> {
       body: SafeArea(
         child: LayoutBuilder(
           builder: (context, constraints) {
+            final bool isLoading = ref
+                .read(authControllerProvider.notifier)
+                .isLoggingIn;
+
             return SingleChildScrollView(
               child: ConstrainedBox(
                 constraints: BoxConstraints(minHeight: constraints.maxHeight),
@@ -93,9 +130,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                 ),
                                 const SizedBox(height: 32.0),
                                 CreationButton(
-                                  onPressed: () {
-                                    return null;
-                                  },
+                                  onPressed: isLoading ? null : onSubmit,
                                   title: "Register",
                                 ),
                               ],
