@@ -150,8 +150,6 @@ export const getOpenPlacedBets = async (userID: string): Promise<any> => {
     `SELECT * FROM bets JOIN user_bets ON bets.id=user_bets.bet_id WHERE status='open' AND user_id=$1`,
     [userID],
   );
-
-  return result.rows;
 };
 
 export const getUserCreatedOpenBets = async (
