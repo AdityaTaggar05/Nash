@@ -13,7 +13,10 @@ export const getCurrentUser = async (req: AuthRequest, res: Response) => {
 
 export const getUser = async (req: AuthRequest, res: Response) => {
   try {
-    const result = await userServices.getUser(req.user, req.params.user_id as string);
+    const result = await userServices.getUser(
+      req.user,
+      req.params.user_id as string,
+    );
     res.status(201).json(result);
   } catch (err: any) {
     res.status(400).json({ error: err.message });
@@ -38,20 +41,26 @@ export const getGroups = async (req: AuthRequest, res: Response) => {
   }
 };
 
-export const getUserPlacedOpenBets = async (req: AuthRequest, res: Response) => {
-    try {
-        const result = await userServices.getUserPlacedOpenBets(req.user);
-        res.status(201).json(result);
-    } catch (err: any) {
-        res.status(404).json({error: err.message})
-    }
-}
+export const getUserPlacedOpenBets = async (
+  req: AuthRequest,
+  res: Response,
+) => {
+  try {
+    const result = await userServices.getUserPlacedOpenBets(req.user);
+    res.status(201).json(result);
+  } catch (err: any) {
+    res.status(404).json({ error: err.message });
+  }
+};
 
-export const getUserCreatedOpenBets = async (req: AuthRequest, res: Response) => {
-    try {
-        const result = await userServices.getUserCreatedOpenBets(req.user);
-        res.status(201).json(result);
-    } catch (err: any) {
-        res.status(404).json({error: err.message})
-    }
-}
+export const getUserCreatedOpenBets = async (
+  req: AuthRequest,
+  res: Response,
+) => {
+  try {
+    const result = await userServices.getUserCreatedOpenBets(req.user);
+    res.status(201).json(result);
+  } catch (err: any) {
+    res.status(404).json({ error: err.message });
+  }
+};

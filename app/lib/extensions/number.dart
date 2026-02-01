@@ -15,6 +15,7 @@ extension NumberExtension on num {
     parts[0] = parts[0].replaceAll(reg, ',');
 
     return Row(
+      mainAxisSize: MainAxisSize.min,
       children: [
         if (leading != null) leading,
         Image.asset("assets/currency.png", width: iconSize, height: iconSize),

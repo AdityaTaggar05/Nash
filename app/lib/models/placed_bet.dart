@@ -1,7 +1,7 @@
 class PlacedBet {
-  final double amount;
+  final int amount;
   final String option;
-  final double expectedPayout;
+  final int expectedPayout;
 
   PlacedBet({
     required this.amount,

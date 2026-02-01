@@ -1,16 +1,28 @@
-import '/widgets/transactions_modal.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '/config/theme.dart';
-import '/widgets/transaction_tile.dart';
+import '/models/user_transaction.dart';
+import '/providers/dio_provider.dart';
+import '/widgets/user_transaction_tile.dart';
+import '/widgets/user_transactions_modal.dart';
 
-class TransactionHistorySection extends StatelessWidget {
-  const TransactionHistorySection({super.key, required this.data});
+class TransactionHistorySection extends ConsumerWidget {
+  const TransactionHistorySection({super.key});
 
-  final Map<String, dynamic> data;
+  Future<List<UserTransaction>?> getTransactionData(WidgetRef ref) async {
+    final dio = ref.read(dioProvider);
+    final response = await dio.get("/transaction/user");
+
+    return response.data["transactions"]
+        ?.map<UserTransaction>(
+          (transaction) => UserTransaction.fromJSON(transaction),
+        )
+        .toList();
+  }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -25,48 +37,82 @@ class TransactionHistorySection extends StatelessWidget {
         const SizedBox(height: 8),
         Expanded(
           child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                ...List.generate(data["transactions"].length.clamp(0, 5), (
-                  index,
-                ) {
-                  final Map<String, dynamic> transaction =
-                      data["transactions"][index];
+            child: FutureBuilder(
+              future: getTransactionData(ref),
+              builder: (context, asyncSnapshot) {
+                if (asyncSnapshot.connectionState == ConnectionState.waiting) {
+                  return Center(child: CircularProgressIndicator());
+                }
 
-                  return TransactionTile(
-                    transaction: transaction,
-                    showBorder: index < 4,
-                  );
-                }),
-                const SizedBox(height: 12),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: ElevatedButton(
-                    onPressed: () {
-                      showModalBottomSheet(
-                        context: context,
-                        isScrollControlled: true,
-                        builder: (BuildContext context) =>
-                            TransactionsModalSheet(
-                              heading: "Transaction History",
-                              transactions: data["transactions"],
-                            ),
-                      );
-                    },
-                    style: ElevatedButton.styleFrom(
-                      minimumSize: const Size(double.infinity, 50.0),
-                      padding: const EdgeInsets.symmetric(vertical: 8.0),
-                      backgroundColor: context.colorScheme.primary,
-                      foregroundColor: context.colorScheme.onPrimary,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20.0),
+                if (asyncSnapshot.hasError) {
+                  print("LOG: ERROR ${asyncSnapshot.error}");
+                  return Center(
+                    child: Text(
+                      "Something went wrong",
+                      style: TextStyle(
+                        color: context.colorScheme.onSurface,
+                        fontSize: 18,
                       ),
                     ),
-                    child: Text("See More >"),
-                  ),
-                ),
-              ],
+                  );
+                }
+
+                if (asyncSnapshot.data == null) {
+                  return Center(
+                    child: Text(
+                      "No transactions made till now!",
+                      style: TextStyle(
+                        color: context.colorScheme.onSurface,
+                        fontSize: 18,
+                      ),
+                    ),
+                  );
+                }
+
+                final List<UserTransaction> transactions = asyncSnapshot.data!;
+
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    ...List.generate(transactions.length.clamp(0, 5), (index) {
+                      final UserTransaction transaction = transactions[index];
+
+                      return UserTransactionTile(
+                        transaction: transaction,
+                        showBorder: index < 4,
+                      );
+                    }),
+                    const SizedBox(height: 12),
+                    if (transactions.length > 5)
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        child: ElevatedButton(
+                          onPressed: () {
+                            showModalBottomSheet(
+                              context: context,
+                              isScrollControlled: true,
+                              builder: (BuildContext context) =>
+                                  UserTransactionsModalSheet(
+                                    heading: "Transaction History",
+                                    transactions: transactions,
+                                  ),
+                            );
+                          },
+                          style: ElevatedButton.styleFrom(
+                            minimumSize: const Size(double.infinity, 50.0),
+                            padding: const EdgeInsets.symmetric(vertical: 8.0),
+                            backgroundColor: context.colorScheme.primary,
+                            foregroundColor: context.colorScheme.onPrimary,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20.0),
+                            ),
+                          ),
+                          child: Text("See More >"),
+                        ),
+                      ),
+                  ],
+                );
+              },
             ),
           ),
         ),

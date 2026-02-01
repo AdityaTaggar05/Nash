@@ -1,10 +1,11 @@
-import * as userRepository from "./users.repository.js";
-import {SameUserDTO as SameUserResponseDTO} from "./dtos/same-user.dto.js";
-import {DifferentUserDTO as DifferentUserResponseDTO} from "./dtos/different-user.dto.js";
-import { toDifferentUserResponse, toSameUserResponse } from "./users.mapper.js";
-import { CheckInResponseDTO } from "./dtos/check-in-response.dto.js";
+import { Bet } from "../bets/bets.model.js";
 import { Group } from "../groups/groups.model.js";
-import { Bet, UserBet } from "../bets/bets.model.js";
+import { CheckInResponseDTO } from "./dtos/check-in-response.dto.js";
+import { DifferentUserDTO as DifferentUserResponseDTO } from "./dtos/different-user.dto.js";
+import { OpenPlacedBetResponseDTO } from "./dtos/open-placed-bet-response.dto.js";
+import { SameUserDTO as SameUserResponseDTO } from "./dtos/same-user.dto.js";
+import { toDifferentUserResponse, toSameUserResponse } from "./users.mapper.js";
+import * as userRepository from "./users.repository.js";
 
 export const getCurrentUser = async (
   authUserID: string,
@@ -13,39 +14,54 @@ export const getCurrentUser = async (
   return toSameUserResponse(user);
 };
 
-export const getUser = async (authUserID: string, requestedUserID: string): Promise<SameUserResponseDTO | DifferentUserResponseDTO> => {
-    console.log("Requested User ID: ", requestedUserID);
-    const user = await userRepository.getUserFromDB(requestedUserID);
-    if(authUserID === requestedUserID) {
-        return toSameUserResponse(user);
-    } else {
-        return toDifferentUserResponse(user);
-    }
-}
+export const getUser = async (
+  authUserID: string,
+  requestedUserID: string,
+): Promise<SameUserResponseDTO | DifferentUserResponseDTO> => {
+  const user = await userRepository.getUserFromDB(requestedUserID);
+  if (authUserID === requestedUserID) {
+    return toSameUserResponse(user);
+  } else {
+    return toDifferentUserResponse(user);
+  }
+};
 
-export const dailyCheckIn = async (authUserID: string): Promise<CheckInResponseDTO> => {
-    const response = await userRepository.performDailyCheckIn(authUserID);
-    return response;
-}
+export const dailyCheckIn = async (
+  authUserID: string,
+): Promise<CheckInResponseDTO> => {
+  const response = await userRepository.performDailyCheckIn(authUserID);
+  return response;
+};
 
 export const getGroups = async (authUserID: string): Promise<Group[]> => {
-    const response = await userRepository.getGroupMembers(authUserID);
-    const groupIds = response.map(group => group.group_id)
-    const groups = await userRepository.getGroups(groupIds)
-    return groups
-}
+  const response = await userRepository.getGroupMembers(authUserID);
+  const groupIds = response.map((group) => group.group_id);
+  const groups = await userRepository.getGroups(groupIds);
+  return groups;
+};
 
-export const getUserPlacedOpenBets = async (authUserID: string): Promise<UserBet[]> => {
-    const allUserPlacedBets = await userRepository.getUserPlacedBets(authUserID);
-    const allUserPlacedBetIds = allUserPlacedBets.map((bet)=> bet.bet_id)
-    const openBets = await userRepository.getOpenBetsFromPlacedBets(allUserPlacedBetIds);
-    const openBetIds = openBets.map((bet)=> bet.id);
+export const getUserPlacedOpenBets = async (
+  authUserID: string,
+): Promise<OpenPlacedBetResponseDTO[]> => {
+  return (await userRepository.getOpenPlacedBets(authUserID)).map((bet) => {
+    return {
+      id: bet.id,
+      title: bet.title,
+      expires_at: bet.expires_at,
+      created_at: bet.created_at,
+      total_pot: bet.total_pot,
+      my_bet: {
+        amount: bet.amount,
+        option: bet.selected_option,
+      },
+    };
+  });
+};
 
-    const userPlacedOpenBets = allUserPlacedBets.filter((bet)=> openBetIds.includes(bet.bet_id));
-    return userPlacedOpenBets;
-}
-
-export const getUserCreatedOpenBets = async (authUserID: string): Promise<Bet[]> => {
-    const allUserCreatedOpenBets = await userRepository.getUserCreatedOpenBets(authUserID);
-    return allUserCreatedOpenBets;
-}
+export const getUserCreatedOpenBets = async (
+  authUserID: string,
+): Promise<Bet[]> => {
+  const allUserCreatedOpenBets =
+    await userRepository.getUserCreatedOpenBets(authUserID);
+  return allUserCreatedOpenBets;
+};

@@ -1,9 +1,9 @@
 import { PoolClient } from "pg";
 import pool from "../../config/db.js";
-import { User } from "./users.model.js";
-import { Group, Member, GroupMember } from "../groups/groups.model.js";
-import * as transactionRepository from "../transactions/transactions.repository.js";
 import { Bet, UserBet } from "../bets/bets.model.js";
+import { Group, GroupMember } from "../groups/groups.model.js";
+import * as transactionRepository from "../transactions/transactions.repository.js";
+import { User } from "./users.model.js";
 const chars = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
 const mapRowToUser = (row: any): User => {
@@ -60,15 +60,22 @@ export const getUserFromDB = async (userId: string): Promise<User> => {
   return mapRowToUser(result.rows[0]);
 };
 
-export const getGroupMembers = async (userId: string): Promise<GroupMember[]> => {
-  const result = await pool.query(`SELECT * FROM group_members WHERE user_id=$1`,[userId])
-  return result.rows
-}
+export const getGroupMembers = async (
+  userId: string,
+): Promise<GroupMember[]> => {
+  const result = await pool.query(
+    `SELECT * FROM group_members WHERE user_id=$1`,
+    [userId],
+  );
+  return result.rows;
+};
 
 export const getGroups = async (groupIds: string[]): Promise<Group[]> => {
-  const result = await pool.query(`SELECT * FROM groups WHERE id=ANY($1)`,[groupIds])
-  return result.rows
-}
+  const result = await pool.query(`SELECT * FROM groups WHERE id=ANY($1)`, [
+    groupIds,
+  ]);
+  return result.rows;
+};
 
 export const performDailyCheckIn = async (
   userId: string,
@@ -88,9 +95,11 @@ export const performDailyCheckIn = async (
     const currentDate_month = new Date(Date.now()).getMonth();
     const currentDate_year = new Date(Date.now()).getFullYear();
 
-    if (lastCheckIn_date !== currentDate_date ||
-        lastCheckIn_month !== currentDate_month ||
-        lastCheckIn_year !== currentDate_year) {
+    if (
+      lastCheckIn_date !== currentDate_date ||
+      lastCheckIn_month !== currentDate_month ||
+      lastCheckIn_year !== currentDate_year
+    ) {
       const currentDate = new Date(Date.now());
       await client.query(
         "UPDATE users SET wallet_balance = wallet_balance + 100 WHERE id = $1",
@@ -101,7 +110,12 @@ export const performDailyCheckIn = async (
         userId,
       ]);
       await client.query("COMMIT");
-      await transactionRepository.createTransaction(userId, 100, "Daily Check-in Reward", null);
+      await transactionRepository.createTransaction(
+        userId,
+        100,
+        "Daily Check-in Reward",
+        null,
+      );
       return { status: "Check-in successful. 100 credits added to wallet." };
     } else {
       throw new Error("User has already checked in today.");
@@ -115,23 +129,35 @@ export const performDailyCheckIn = async (
 };
 
 export const updateUserWalletBalance = async (
-  userId:string,
-  payout:number
+  userId: string,
+  payout: number,
 ): Promise<void> => {
-  await pool.query(`UPDATE users SET wallet_balance = wallet_balance + $1 WHERE id = $2`,[payout,userId])
-}
+  await pool.query(
+    `UPDATE users SET wallet_balance = wallet_balance + $1 WHERE id = $2`,
+    [payout, userId],
+  );
+};
 
-export const getUserPlacedBets = async (userId:string) : Promise<UserBet[]> => {
-    const result = await pool.query(`SELECT * FROM user_bets WHERE user_id=$1`,[userId])
-    return result.rows
-}
+export const getUserPlacedBets = async (userId: string): Promise<UserBet[]> => {
+  const result = await pool.query(`SELECT * FROM user_bets WHERE user_id=$1`, [
+    userId,
+  ]);
+  return result.rows;
+};
 
-export const getOpenBetsFromPlacedBets = async (betIds:string[]) : Promise<Bet[]> => {
-    const result = await pool.query(`SELECT * FROM bets JOIN user_bets ON bets.id=user_bets.bet_id WHERE id=ANY($1) AND status=$2`,[betIds,'open'])
-    return result.rows
-}
+export const getOpenPlacedBets = async (userID: string): Promise<any> => {
+  const result = await pool.query(
+    `SELECT * FROM bets JOIN user_bets ON bets.id=user_bets.bet_id WHERE status='open' AND user_id=$1`,
+    [userID],
+  );
+};
 
-export const getUserCreatedOpenBets = async (userId:string): Promise<Bet[]> => {
-    const result = await pool.query(`SELECT * FROM bets WHERE creator_id=$1 AND status=$2`,[userId,'open'])
-    return result.rows
-}
+export const getUserCreatedOpenBets = async (
+  userId: string,
+): Promise<Bet[]> => {
+  const result = await pool.query(
+    `SELECT * FROM bets WHERE creator_id=$1 AND status=$2`,
+    [userId, "open"],
+  );
+  return result.rows;
+};

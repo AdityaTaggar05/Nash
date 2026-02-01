@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -67,43 +65,14 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
       return ref.read(userControllerProvider).value!;
     }
 
-    print("LOG: BEFORE HERE");
     final dio = ref.read(dioProvider);
-    print("LOG: HERE");
     final response = await dio.get('/users/${widget.userID}');
-
-    print("LOG: ${response.data}");
 
     return User.fromJson(response.data);
   }
 
   @override
   Widget build(BuildContext context) {
-    final Map<String, dynamic> data = {
-      "id": "id1",
-      "username": "Potata69",
-      "email": "potata@example.com",
-      "wallet_balance": 60342.50,
-      "referral_code": "XiJ8l9",
-      "last_month": 3840.9,
-      "transactions": List.generate(
-        20,
-        (_) => <String, dynamic>{
-          "amount": 1000,
-          "bet_id": "some-random-id",
-          "description": "Placed this much on that bet",
-          "placed_at": DateTime.now().subtract(
-            Duration(
-              days: Random().nextInt(10),
-              minutes: Random().nextInt(10),
-              hours: Random().nextInt(10),
-              seconds: Random().nextInt(10),
-            ),
-          ),
-        },
-      ),
-    };
-
     return Scaffold(
       body: SafeArea(
         child: FutureBuilder<User?>(
@@ -186,7 +155,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
                         Expanded(
                           child: Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 8),
-                            child: TransactionHistorySection(data: data),
+                            child: TransactionHistorySection(),
                           ),
                         ),
                       ],

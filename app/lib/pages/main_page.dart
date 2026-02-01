@@ -32,7 +32,7 @@ class _MainScaffoldState extends ConsumerState<MainScaffold> {
       appBar: AppBar(
         leading: Padding(
           padding: const EdgeInsetsGeometry.all(4.0),
-          child: Image.asset('assets/logo.jpg', fit: BoxFit.contain),
+          child: Image.asset('assets/logo-removebg-preview.png', fit: BoxFit.contain),
         ),
         title: Text(
           "NASH",
@@ -88,8 +88,7 @@ class _MainScaffoldState extends ConsumerState<MainScaffold> {
               color: Colors.grey.shade700,
             ),
             GestureDetector(
-              onTap: () =>
-                  context.push('/profile/91ab048c-a22e-4537-b144-798d7698563f'),
+              onTap: () => context.push('/profile/${user.id}'),
               child: Row(
                 children: [
                   const CircleAvatar(
