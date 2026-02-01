@@ -37,3 +37,21 @@ export const getGroups = async (req: AuthRequest, res: Response) => {
     res.status(404).json({ error: err.message });
   }
 };
+
+export const getUserPlacedOpenBets = async (req: AuthRequest, res: Response) => {
+    try {
+        const result = await userServices.getUserPlacedOpenBets(req.user);
+        res.status(201).json(result);
+    } catch (err: any) {
+        res.status(404).json({error: err.message})
+    }
+}
+
+export const getUserCreatedOpenBets = async (req: AuthRequest, res: Response) => {
+    try {
+        const result = await userServices.getUserCreatedOpenBets(req.user);
+        res.status(201).json(result);
+    } catch (err: any) {
+        res.status(404).json({error: err.message})
+    }
+}

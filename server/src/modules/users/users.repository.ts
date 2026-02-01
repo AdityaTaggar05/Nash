@@ -3,6 +3,7 @@ import pool from "../../config/db.js";
 import { User } from "./users.model.js";
 import { Group, Member, GroupMember } from "../groups/groups.model.js";
 import * as transactionRepository from "../transactions/transactions.repository.js";
+import { Bet, UserBet } from "../bets/bets.model.js";
 const chars = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
 const mapRowToUser = (row: any): User => {
@@ -118,4 +119,19 @@ export const updateUserWalletBalance = async (
   payout:number
 ): Promise<void> => {
   await pool.query(`UPDATE users SET wallet_balance = wallet_balance + $1 WHERE id = $2`,[payout,userId])
+}
+
+export const getUserPlacedBets = async (userId:string) : Promise<UserBet[]> => {
+    const result = await pool.query(`SELECT * FROM user_bets WHERE user_id=$1`,[userId])
+    return result.rows
+}
+
+export const getOpenBetsFromPlacedBets = async (betIds:string[]) : Promise<Bet[]> => {
+    const result = await pool.query(`SELECT * FROM bets WHERE id=ANY($1) AND status=$2`,[betIds,'open'])
+    return result.rows
+}
+
+export const getUserCreatedOpenBets = async (userId:string): Promise<Bet[]> => {
+    const result = await pool.query(`SELECT * FROM bets WHERE creator_id=$1 AND status=$2`,[userId,'open'])
+    return result.rows
 }
