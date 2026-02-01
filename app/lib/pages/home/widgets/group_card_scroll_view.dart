@@ -37,7 +37,7 @@ class GroupCardScrollView extends ConsumerWidget {
           );
         }
 
-        if (asyncSnapshot.data == null) {
+        if (asyncSnapshot.data == null || asyncSnapshot.data!.isEmpty) {
           return Center(
             child: Text(
               "You are not yet a part of any group!",

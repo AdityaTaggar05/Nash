@@ -54,6 +54,42 @@ class AuthController extends Notifier<AuthStatus> {
       ref.notifyListeners();
     }
   }
+
+  Future<void> register({
+    required String username,
+    required String email,
+    required String password,
+  }) async {
+    _isLoggingIn = true;
+    ref.notifyListeners();
+
+    try {
+      final dio = ref.read(dioProvider);
+
+      final res = await dio.post(
+        '/auth/register',
+        data: {'email': email, 'password': password, 'username': username},
+      );
+
+      await storage.write(
+        key: StorageService.keyAccessToken,
+        value: res.data['access_token'],
+      );
+
+      await storage.write(
+        key: StorageService.keyRefreshToken,
+        value: res.data['refresh_token'],
+      );
+
+      state = AuthStatus.authenticated;
+    } catch (e) {
+      state = AuthStatus.unauthenticated;
+      rethrow;
+    } finally {
+      _isLoggingIn = false;
+      ref.notifyListeners();
+    }
+  }
 }
 
 final authControllerProvider = NotifierProvider<AuthController, AuthStatus>(
