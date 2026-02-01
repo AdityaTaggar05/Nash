@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '/providers/auth_state_provider.dart';
 import '/services/storage_service.dart';
+import '../../controllers/auth.dart';
 
 class SplashScreen extends ConsumerStatefulWidget {
   const SplashScreen({super.key});
@@ -19,13 +20,15 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
   }
 
   Future<void> _checkAuth() async {
-    final String? token = await storage.read(
-      key: StorageService.keyAccessToken,
-    );
+    final token = await storage.read(key: StorageService.keyAccessToken);
 
-    ref.read(authStateProvider.notifier).state = token == null
-        ? AuthStatus.unauthenticated
-        : AuthStatus.authenticated;
+    await Future.delayed(Duration.zero);
+
+    if (token == null) {
+      ref.read(authControllerProvider.notifier).logout();
+    } else {
+      ref.read(authControllerProvider.notifier).setAuthenticated();
+    }
   }
 
   @override

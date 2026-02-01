@@ -1,4 +1,3 @@
-import 'package:app/models/user.dart';
 import 'package:app/providers/user_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -21,28 +20,31 @@ class AuthController extends Notifier<AuthStatus> {
   }
 
   Future<void> login({required String email, required String password}) async {
-    final dio = ref.read(dioProvider);
+    state = AuthStatus.loading;
 
-    final res = await dio.post(
-      '/auth/login',
-      data: {'email': email, 'password': password},
-    );
+    try {
+      final dio = ref.read(dioProvider);
 
-    await storage.write(
-      key: StorageService.keyAccessToken,
-      value: res.data['access_token'],
-    );
+      final res = await dio.post(
+        '/auth/login',
+        data: {'email': email, 'password': password},
+      );
 
-    await storage.write(
-      key: StorageService.keyRefreshToken,
-      value: res.data['refresh_token'],
-    );
+      await storage.write(
+        key: StorageService.keyAccessToken,
+        value: res.data['access_token'],
+      );
 
-    final userRes = await dio.get('/users/${res.data['id']}');
+      await storage.write(
+        key: StorageService.keyRefreshToken,
+        value: res.data['refresh_token'],
+      );
 
-    ref.read(userProvider.notifier).state = User.fromJson(userRes.data);
-
-    state = AuthStatus.authenticated;
+      state = AuthStatus.authenticated;
+    } catch (e) {
+      state = AuthStatus.unauthenticated;
+      rethrow;
+    }
   }
 }
 

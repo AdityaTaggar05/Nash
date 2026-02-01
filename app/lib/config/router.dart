@@ -1,3 +1,4 @@
+import 'package:app/controllers/auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -15,34 +16,33 @@ import '/pages/register/register.dart';
 import '/pages/search/search.dart';
 import '/pages/splash/splash.dart';
 import '/providers/auth_state_provider.dart';
-import '/utils/auth_router_notifier.dart';
 import '/widgets/sliding_shell_stack.dart';
 
 final routerProvider = Provider<GoRouter>((ref) {
-  final authState = ref.watch(authStateProvider);
-  final notifier = ref.watch(authRouterNotifierProvider);
+  final authState = ref.watch(authControllerProvider);
 
   return GoRouter(
     initialLocation: '/splash',
-    refreshListenable: notifier,
     redirect: (_, state) {
-      if (authState == AuthStatus.loading) return '/splash';
+      final location = state.matchedLocation;
+
+      if (authState == AuthStatus.loading) {
+        return location == '/splash' ? null : '/splash';
+      }
+
+      final isAuthRoute =
+          location == '/auth/login' || location == '/auth/register';
 
       if (authState == AuthStatus.authenticated) {
-        if (state.matchedLocation == "/auth/register" ||
-            state.matchedLocation == "/auth/login") {
-          return "/home";
-        } else {
-          return null;
+        if (isAuthRoute || location == '/splash') {
+          return '/home';
         }
-      } else {
-        if (state.matchedLocation == "/auth/register" ||
-            state.matchedLocation == "/auth/login") {
-          return null;
-        } else {
-          return "/auth/login";
-        }
+        return null;
       }
+
+      if (isAuthRoute) return null;
+
+      return '/auth/login';
     },
     routes: [
       StatefulShellRoute(

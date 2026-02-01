@@ -20,6 +20,8 @@ class _LoginPageConsumerState extends ConsumerState<LoginPage> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
+  bool status = false;
+
   @override
   void dispose() {
     emailController.dispose();
@@ -89,14 +91,33 @@ class _LoginPageConsumerState extends ConsumerState<LoginPage> {
                                 ),
                                 const SizedBox(height: 32.0),
                                 CreationButton(
-                                  onPressed: () async {
-                                    ref
-                                        .read(authControllerProvider.notifier)
-                                        .login(
-                                          email: emailController.text,
-                                          password: passwordController.text,
-                                        );
-                                  },
+                                  onPressed: status
+                                      ? null
+                                      : () async {
+                                          setState(() => status = true);
+                                          try {
+                                            await ref
+                                                .read(
+                                                  authControllerProvider
+                                                      .notifier,
+                                                )
+                                                .login(
+                                                  email: emailController.text,
+                                                  password:
+                                                      passwordController.text,
+                                                );
+                                          } catch (e) {
+                                            ScaffoldMessenger.of(
+                                              context,
+                                            ).showSnackBar(
+                                              const SnackBar(
+                                                content: Text('Login failed'),
+                                              ),
+                                            );
+                                          }
+
+                                          setState(() => status = false);
+                                        },
                                   title: "Login",
                                 ),
                               ],
