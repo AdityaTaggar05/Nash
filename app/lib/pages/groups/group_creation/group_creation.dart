@@ -14,6 +14,8 @@ class GroupCreation extends StatefulWidget {
 class _GroupCreationState extends State<GroupCreation> {
   final groupNameController = TextEditingController();
   final descriptionController = TextEditingController();
+  String groupName = "";
+  String description = "";
 
   @override
   void dispose() {
@@ -76,6 +78,12 @@ class _GroupCreationState extends State<GroupCreation> {
                     SizedBox(height: 32.0),
                     CreationButton(
                       onPressed: () {
+                        setState(() {
+                          groupName = groupNameController.text.trim();
+                          description = descriptionController.text.trim();
+                        });
+                        print("Group Name = ${groupName}");
+                        print("Group Description = ${description}");
                         context.go('/groups');
                         return null;
                       },

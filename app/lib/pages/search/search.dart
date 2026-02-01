@@ -10,6 +10,7 @@ class SearchPage extends StatefulWidget {
 
 class _SearchPageState extends State<SearchPage> {
   final searchController = TextEditingController();
+  String search = "";
 
   @override
   void dispose() {
@@ -40,7 +41,12 @@ class _SearchPageState extends State<SearchPage> {
                 ),
                 IconButton(
                   icon: Icon(Icons.search, size: 32),
-                  onPressed: () {},
+                  onPressed: () {
+                    setState(() {
+                      search = searchController.text;
+                    });
+                    print("Search for ${search}");
+                  },
                 ),
               ],
             ),

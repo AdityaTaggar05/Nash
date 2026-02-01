@@ -11,6 +11,7 @@ class BetResolve extends StatefulWidget {
 }
 
 class _BetResolveState extends State<BetResolve> {
+  String result = "";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -82,7 +83,11 @@ class _BetResolveState extends State<BetResolve> {
                       children: [
                         Expanded(
                           child: ElevatedButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              setState(() {
+                                result = "for";
+                              });
+                            },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: context.colorScheme.primary,
                               shape: RoundedRectangleBorder(
@@ -105,7 +110,11 @@ class _BetResolveState extends State<BetResolve> {
                         const SizedBox(width: 16),
                         Expanded(
                           child: ElevatedButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              setState(() {
+                                result = "against";
+                              });
+                            },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.red[600],
                               shape: RoundedRectangleBorder(
