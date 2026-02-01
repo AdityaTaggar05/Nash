@@ -18,6 +18,7 @@ class GroupBetDetailsCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               (data["total_pot"] as num).nashFormat(
+                iconSize: 30,
                 style: TextStyle(
                   fontSize: 30,
                   color: context.colorScheme.secondary,
