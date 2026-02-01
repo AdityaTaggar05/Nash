@@ -1,4 +1,4 @@
-import 'package:app/widgets/transactions_modal.dart';
+import '/widgets/transactions_modal.dart';
 import 'package:flutter/material.dart';
 
 import '/config/theme.dart';

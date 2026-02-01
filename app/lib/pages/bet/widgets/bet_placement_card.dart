@@ -1,5 +1,5 @@
-import 'package:app/widgets/creation_button.dart';
-import 'package:app/widgets/normal_text_field.dart';
+import '/widgets/creation_button.dart';
+import '/widgets/normal_text_field.dart';
 import 'package:flutter/material.dart';
 
 import '/config/theme.dart';

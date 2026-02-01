@@ -1,5 +1,5 @@
-import 'package:app/config/theme.dart';
-import 'package:app/extensions/number.dart';
+import '/config/theme.dart';
+import '/extensions/number.dart';
 import 'package:flutter/material.dart';
 
 class BalanceCard extends StatelessWidget {
@@ -25,13 +25,14 @@ class BalanceCard extends StatelessWidget {
             ),
             Hero(
               tag: heroTag,
-              child:200.nashFormat(
+              child: 200.nashFormat(
                 iconSize: 36,
                 style: TextStyle(
                   fontSize: 36,
                   color: context.colorScheme.primary,
                   fontWeight: FontWeight.bold,
-                ),) 
+                ),
+              ),
             ),
             const SizedBox(height: 16),
             Row(

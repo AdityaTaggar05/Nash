@@ -1,4 +1,4 @@
-import 'package:app/config/theme.dart';
+import '/config/theme.dart';
 import 'package:flutter/material.dart';
 
 class CustomTextField extends StatelessWidget {
@@ -31,9 +31,7 @@ class CustomTextField extends StatelessWidget {
       maxLines: maxLines,
       keyboardType: keyboardType,
       cursorColor: context.colorScheme.onSurface,
-      style: TextStyle(
-        color: Colors.grey[100],
-      ),
+      style: TextStyle(color: Colors.grey[100]),
       decoration: InputDecoration(
         hintText: hintText,
         filled: true,

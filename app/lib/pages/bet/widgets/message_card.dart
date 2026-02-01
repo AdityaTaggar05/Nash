@@ -1,5 +1,5 @@
-import 'package:app/config/theme.dart';
-import 'package:app/extensions/datetime.dart';
+import '/config/theme.dart';
+import '/extensions/datetime.dart';
 import 'package:flutter/material.dart';
 
 const String currentUser = "id1";

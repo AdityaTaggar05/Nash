@@ -1,6 +1,6 @@
-import 'package:app/config/theme.dart';
-import 'package:app/pages/groups/group_info/widgets/group_member_card.dart';
-import 'package:app/pages/groups/group_info/widgets/kick_member_dialog.dart';
+import '/config/theme.dart';
+import '/pages/groups/group_info/widgets/group_member_card.dart';
+import '/pages/groups/group_info/widgets/kick_member_dialog.dart';
 import 'package:flutter/material.dart';
 
 class GroupMembersList extends StatelessWidget {

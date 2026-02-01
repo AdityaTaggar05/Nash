@@ -1,5 +1,5 @@
-import 'package:app/config/theme.dart';
-import 'package:app/pages/groups/group_bets/widgets/group_bet_details.dart';
+import '/config/theme.dart';
+import '/pages/groups/group_bets/widgets/group_bet_details.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 

@@ -1,8 +1,8 @@
-import 'package:app/models/user.dart';
-import 'package:app/providers/auth_state_provider.dart';
-import 'package:app/providers/dio_provider.dart';
-import 'package:app/providers/user_provider.dart';
-import 'package:app/services/storage_service.dart';
+import '/models/user.dart';
+import '/providers/auth_state_provider.dart';
+import '/providers/dio_provider.dart';
+import '/providers/user_provider.dart';
+import '/services/storage_service.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

@@ -1,4 +1,4 @@
-import 'package:app/config/theme.dart';
+import '/config/theme.dart';
 import 'package:flutter/material.dart';
 
 class GroupCard extends StatelessWidget {
@@ -48,9 +48,9 @@ class GroupCard extends StatelessWidget {
                   '$memberNumber members',
                   style: TextStyle(
                     color: context.colorScheme.onSurfaceVariant,
-                    fontSize: 12
-                  )
-                )
+                    fontSize: 12,
+                  ),
+                ),
               ],
             ),
           ),

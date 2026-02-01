@@ -1,7 +1,7 @@
 import 'dart:math';
 
-import 'package:app/config/theme.dart';
-import 'package:app/pages/profile/widgets/balance_card.dart';
+import '/config/theme.dart';
+import '/pages/profile/widgets/balance_card.dart';
 import 'package:flutter/material.dart';
 
 import 'widgets/header.dart';

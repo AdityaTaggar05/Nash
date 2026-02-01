@@ -1,5 +1,5 @@
-import 'package:app/config/theme.dart';
-import 'package:app/widgets/transaction_tile.dart';
+import '/config/theme.dart';
+import '/widgets/transaction_tile.dart';
 import 'package:flutter/material.dart';
 
 class TransactionsModalSheet extends StatelessWidget {

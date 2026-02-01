@@ -1,7 +1,7 @@
-import 'package:app/config/theme.dart';
-import 'package:app/pages/home/widgets/group_card_scroll_view.dart';
-import 'package:app/pages/home/widgets/home_created_bets_carousel.dart';
-import 'package:app/pages/home/widgets/home_placed_bets_carousel.dart';
+import '/config/theme.dart';
+import '/pages/home/widgets/group_card_scroll_view.dart';
+import '/pages/home/widgets/home_created_bets_carousel.dart';
+import '/pages/home/widgets/home_placed_bets_carousel.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 

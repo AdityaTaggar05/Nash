@@ -1,7 +1,7 @@
-import 'package:app/config/theme.dart';
-import 'package:app/widgets/creation_button.dart';
-import 'package:app/widgets/normal_text_field.dart';
-import 'package:app/widgets/password_text_field.dart';
+import '/config/theme.dart';
+import '/widgets/creation_button.dart';
+import '/widgets/normal_text_field.dart';
+import '/widgets/password_text_field.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -92,9 +92,12 @@ class _RegisterPageState extends State<RegisterPage> {
                                   controller: passwordController,
                                 ),
                                 const SizedBox(height: 32.0),
-                                CreationButton(onPressed: () {
-                                  return null;
-                                }, title: "Register"),
+                                CreationButton(
+                                  onPressed: () {
+                                    return null;
+                                  },
+                                  title: "Register",
+                                ),
                               ],
                             ),
                           ),

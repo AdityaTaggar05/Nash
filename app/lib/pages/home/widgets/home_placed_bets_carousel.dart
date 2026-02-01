@@ -1,5 +1,5 @@
-import 'package:app/config/theme.dart';
-import 'package:app/pages/home/widgets/bets_carousel_card.dart';
+import '/config/theme.dart';
+import '/pages/home/widgets/bets_carousel_card.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 

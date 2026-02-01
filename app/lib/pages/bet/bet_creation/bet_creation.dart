@@ -1,6 +1,6 @@
-import 'package:app/config/theme.dart';
-import 'package:app/widgets/creation_button.dart';
-import 'package:app/widgets/normal_text_field.dart';
+import '/config/theme.dart';
+import '/widgets/creation_button.dart';
+import '/widgets/normal_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 

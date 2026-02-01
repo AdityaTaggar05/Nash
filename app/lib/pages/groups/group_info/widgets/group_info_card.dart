@@ -1,4 +1,4 @@
-import 'package:app/config/theme.dart';
+import '/config/theme.dart';
 import 'package:flutter/material.dart';
 
 class GroupInfoCard extends StatelessWidget {
@@ -41,7 +41,7 @@ class GroupInfoCard extends StatelessWidget {
                   fontSize: 12,
                 ),
                 textAlign: TextAlign.center,
-              )
+              ),
             ],
           ),
         ),

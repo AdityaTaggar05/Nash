@@ -1,5 +1,5 @@
-import 'package:app/config/theme.dart';
-import 'package:app/extensions/number.dart';
+import '/config/theme.dart';
+import '/extensions/number.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
@@ -56,11 +56,14 @@ class BetsCarouselCard extends StatelessWidget {
                       fontWeight: FontWeight.w600,
                       color: Colors.black54,
                     ),
-                    leading: Text("PLACED BET: ",  style: TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.black54,
-                    ))
+                    leading: Text(
+                      "PLACED BET: ",
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.black54,
+                      ),
+                    ),
                   ),
                 ],
               ),

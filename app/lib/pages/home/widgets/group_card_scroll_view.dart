@@ -1,4 +1,4 @@
-import 'package:app/pages/home/widgets/group_card.dart';
+import '/pages/home/widgets/group_card.dart';
 import 'package:flutter/material.dart';
 
 class GroupCardScrollView extends StatelessWidget {

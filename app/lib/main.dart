@@ -1,5 +1,5 @@
-import 'package:app/config/router.dart';
-import 'package:app/config/theme.dart';
+import '/config/router.dart';
+import '/config/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

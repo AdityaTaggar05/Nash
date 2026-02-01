@@ -1,4 +1,4 @@
-import 'package:app/config/theme.dart';
+import '/config/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -23,7 +23,7 @@ class GroupTabCard extends StatelessWidget {
       ),
       child: GestureDetector(
         onTap: () {
-            context.push('/groups/:group_id/bets');
+          context.push('/groups/:group_id/bets');
         },
         child: Row(
           children: [
@@ -47,13 +47,10 @@ class GroupTabCard extends StatelessWidget {
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  SizedBox(height: 2.0,),
+                  SizedBox(height: 2.0),
                   Text(
                     groupDescription,
-                    style: TextStyle(
-                      fontSize: 10,
-                      color: Colors.grey.shade700,
-                    ),
+                    style: TextStyle(fontSize: 10, color: Colors.grey.shade700),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -62,9 +59,9 @@ class GroupTabCard extends StatelessWidget {
                     '$memberNumber members',
                     style: TextStyle(
                       color: context.colorScheme.onSurfaceVariant,
-                      fontSize: 12
-                    )
-                  )
+                      fontSize: 12,
+                    ),
+                  ),
                 ],
               ),
             ),

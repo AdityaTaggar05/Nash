@@ -1,7 +1,7 @@
 import 'dart:math';
 
-import 'package:app/config/theme.dart';
-import 'package:app/pages/bet/bet_discussion.dart';
+import '/config/theme.dart';
+import '/pages/bet/bet_discussion.dart';
 import 'package:flutter/material.dart';
 
 import 'bet_details.dart';
@@ -35,7 +35,7 @@ class _BetPageState extends State<BetPage> {
   Widget build(BuildContext context) {
     final Map<String, dynamic> data = {
       "total_pot": 6587.79,
-      "my_bet": {"amount": 100, "expected_payout": 120,},
+      "my_bet": {"amount": 100, "expected_payout": 120},
       "title": "Will Keshav bathe today?",
       "transactions": List.generate(
         20,
@@ -56,7 +56,14 @@ class _BetPageState extends State<BetPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("NASH", style: TextStyle(color: context.colorScheme.secondary, fontWeight: FontWeight.bold, fontSize: 26))
+        title: Text(
+          "NASH",
+          style: TextStyle(
+            color: context.colorScheme.secondary,
+            fontWeight: FontWeight.bold,
+            fontSize: 26,
+          ),
+        ),
       ),
       body: SafeArea(
         child: Column(

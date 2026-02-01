@@ -1,4 +1,4 @@
-import 'package:app/pages/groups/widgets/group_tab_card.dart';
+import '/pages/groups/widgets/group_tab_card.dart';
 import 'package:flutter/material.dart';
 
 class GroupTabScrollView extends StatelessWidget {
@@ -15,7 +15,8 @@ class GroupTabScrollView extends StatelessWidget {
             padding: const EdgeInsets.all(8.0),
             child: const GroupTabCard(
               groupName: "Random Ass Group",
-              groupDescription: "This Group is made to bet on Keshav Ka Chudaap",
+              groupDescription:
+                  "This Group is made to bet on Keshav Ka Chudaap",
               memberNumber: 4,
             ),
           );

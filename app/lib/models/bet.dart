@@ -1,4 +1,4 @@
-import 'package:app/models/placed_bet.dart';
+import '/models/placed_bet.dart';
 
 enum Status { open, resolved, locked }
 
