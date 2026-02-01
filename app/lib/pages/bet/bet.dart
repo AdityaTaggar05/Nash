@@ -55,7 +55,9 @@ class _BetPageState extends State<BetPage> {
     };
 
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: Text("NASH", style: TextStyle(color: context.colorScheme.secondary, fontWeight: FontWeight.bold, fontSize: 26))
+      ),
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
