@@ -14,6 +14,7 @@ class BetCreation extends StatefulWidget {
 
 class _BetCreationState extends State<BetCreation> {
   final betTitleController = TextEditingController();
+  String bet_title = "";
 
   @override
   void dispose() {
@@ -67,6 +68,10 @@ class _BetCreationState extends State<BetCreation> {
                     SizedBox(height: 24.0),
                     CreationButton(
                       onPressed: () {
+                        setState(() {
+                          bet_title = betTitleController.text;
+                        });
+                        print("Bet title = ${bet_title}");
                         context.pop();
                         return null;
                       },

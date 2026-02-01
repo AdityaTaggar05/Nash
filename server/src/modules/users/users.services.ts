@@ -14,6 +14,7 @@ export const getCurrentUser = async (
 };
 
 export const getUser = async (authUserID: string, requestedUserID: string): Promise<SameUserResponseDTO | DifferentUserResponseDTO> => {
+    console.log("Requested User ID: ", requestedUserID);
     const user = await userRepository.getUserFromDB(requestedUserID);
     if(authUserID === requestedUserID) {
         return toSameUserResponse(user);

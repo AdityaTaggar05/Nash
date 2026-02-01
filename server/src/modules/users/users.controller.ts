@@ -13,7 +13,7 @@ export const getCurrentUser = async (req: AuthRequest, res: Response) => {
 
 export const getUser = async (req: AuthRequest, res: Response) => {
   try {
-    const result = await userServices.getUser(req.user, req.body);
+    const result = await userServices.getUser(req.user, req.params.user_id as string);
     res.status(201).json(result);
   } catch (err: any) {
     res.status(400).json({ error: err.message });
