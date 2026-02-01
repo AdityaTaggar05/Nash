@@ -37,6 +37,16 @@ class _MainScaffoldState extends ConsumerState<MainScaffold> {
             fit: BoxFit.contain,
           ),
         ),
+        actions: [
+          IconButton(
+            onPressed: () {
+              context.push('/notifications');
+            },
+            icon: Icon(Icons.notification_add),
+            color: context.colorScheme.onSurfaceVariant,
+          ),
+          SizedBox(width: 8),
+        ],
         title: Text(
           "NASH",
           style: TextStyle(

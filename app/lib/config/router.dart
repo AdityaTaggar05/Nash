@@ -17,6 +17,7 @@ import '/pages/main_page.dart';
 import '/pages/profile/profile.dart';
 import '/pages/register/register.dart';
 import '/pages/splash/splash.dart';
+import '/pages/notifications/notifications.dart';
 
 final routerProvider = Provider<GoRouter>((ref) {
   final authState = ref.watch(authControllerProvider);
@@ -130,6 +131,10 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (context, state) =>
             BetCreation(groupID: state.pathParameters["group_id"]!),
       ),
+      GoRoute(
+        path: '/notifications',
+        builder: (context, state) => NotificationPage(),
+      )
     ],
   );
 });
