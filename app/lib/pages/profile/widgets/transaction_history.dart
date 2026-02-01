@@ -45,7 +45,6 @@ class TransactionHistorySection extends ConsumerWidget {
                 }
 
                 if (asyncSnapshot.hasError) {
-                  print("LOG: ERROR ${asyncSnapshot.error}");
                   return Center(
                     child: Text(
                       "Something went wrong",

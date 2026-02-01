@@ -35,7 +35,6 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
     if (token == null) {
       ref.read(authControllerProvider.notifier).logout();
     } else {
-      print("LOG:");
       await ref.read(userControllerProvider.future);
 
       final userState = ref.read(userControllerProvider);

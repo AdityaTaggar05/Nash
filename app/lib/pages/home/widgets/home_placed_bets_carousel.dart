@@ -14,8 +14,6 @@ class OngoingBetsCarousel extends ConsumerWidget {
     final dio = ref.read(dioProvider);
     final res = await dio.get('/users/placed_bets');
 
-    print("LOG: ${res.data}");
-
     return res.data.map<Bet>((bet) => Bet.fromJSON(bet)).toList();
   }
 
