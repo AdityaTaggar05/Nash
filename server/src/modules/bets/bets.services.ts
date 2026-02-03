@@ -23,13 +23,13 @@ export const getBet = async (
     else pool_against += Number(singleBet.amount);
   });
 
-  const total_pot = pool_against + pool_for;
+  const total_pot = Number(pool_against) + Number(pool_for);
 
   const betMadeByUser = betsMade.find(
     (singleBet) => singleBet.user_id === authUserID,
   );
 
-  let payout = 0;
+  let payout: number = 0;
 
   let response: BetResponseDTO = {
     created_at: bet.created_at,
@@ -48,9 +48,9 @@ export const getBet = async (
 
   if (betMadeByUser != undefined) {
     if (betMadeByUser.selected_option === "for") {
-      payout = Math.round((betMadeByUser.amount / pool_for) * total_pot);
+      payout = Math.round((betMadeByUser.amount * total_pot) / pool_for);
     } else {
-      payout = Math.round((betMadeByUser.amount / pool_against) * total_pot);
+      payout = Math.round((betMadeByUser.amount * total_pot) / pool_against);
     }
 
     response.my_bet = {

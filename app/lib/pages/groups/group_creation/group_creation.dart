@@ -1,27 +1,45 @@
-import '/config/theme.dart';
-import '/widgets/creation_button.dart';
-import '/widgets/normal_text_field.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-class GroupCreation extends StatefulWidget {
-  const GroupCreation({super.key});
+import '/config/theme.dart';
+import '/providers/dio_provider.dart';
+import '/widgets/creation_button.dart';
+import '/widgets/normal_text_field.dart';
+import '/widgets/snackbar.dart';
+
+class GroupCreation extends ConsumerStatefulWidget {
+  const GroupCreation({super.key, required this.onGroupCreated});
+
+  final VoidCallback onGroupCreated;
 
   @override
-  State<GroupCreation> createState() => _GroupCreationState();
+  ConsumerState<GroupCreation> createState() => _GroupCreationState();
 }
 
-class _GroupCreationState extends State<GroupCreation> {
+class _GroupCreationState extends ConsumerState<GroupCreation> {
   final groupNameController = TextEditingController();
   final descriptionController = TextEditingController();
-  String groupName = "";
-  String description = "";
 
   @override
   void dispose() {
     groupNameController.dispose();
     descriptionController.dispose();
     super.dispose();
+  }
+
+  Future<void> _createGroup(String groupName, String groupDescription) async {
+    final dio = ref.read(dioProvider);
+    final response = await dio.post(
+      '/group/create',
+      data: {'name': groupName, 'description': groupDescription},
+    );
+    if (response.statusCode == 400) {
+      showSnackBar(context, "Group creation failed");
+    } else {
+      showSnackBar(context, "Group creation successful", error: false);
+    }
+    return;
   }
 
   @override
@@ -77,14 +95,16 @@ class _GroupCreationState extends State<GroupCreation> {
                     ),
                     SizedBox(height: 32.0),
                     CreationButton(
-                      onPressed: () {
-                        setState(() {
-                          groupName = groupNameController.text.trim();
-                          description = descriptionController.text.trim();
+                      onPressed: () async {
+                        await _createGroup(
+                          groupNameController.text.trim(),
+                          descriptionController.text.trim(),
+                        );
+
+                        context.pop();
+                        Future.delayed(Duration(milliseconds: 200), () {
+                          widget.onGroupCreated();
                         });
-                        print("Group Name = ${groupName}");
-                        print("Group Description = ${description}");
-                        context.go('/groups');
                         return null;
                       },
                       title: "Create Group",

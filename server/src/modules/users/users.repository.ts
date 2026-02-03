@@ -1,7 +1,7 @@
 import { PoolClient } from "pg";
 import pool from "../../config/db.js";
 import { Bet, UserBet } from "../bets/bets.model.js";
-import { Group, GroupMember } from "../groups/groups.model.js";
+import { Group } from "../groups/groups.model.js";
 import * as transactionRepository from "../transactions/transactions.repository.js";
 import { User } from "./users.model.js";
 const chars = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -60,20 +60,11 @@ export const getUserFromDB = async (userId: string): Promise<User> => {
   return mapRowToUser(result.rows[0]);
 };
 
-export const getGroupMembers = async (
-  userId: string,
-): Promise<GroupMember[]> => {
+export const getGroups = async (userId: string): Promise<Group[]> => {
   const result = await pool.query(
-    `SELECT * FROM group_members WHERE user_id=$1`,
+    `SELECT g.* FROM groups g INNER JOIN group_members gm ON g.id = gm.group_id WHERE gm.user_id = $1 ORDER BY name ASC`,
     [userId],
   );
-  return result.rows;
-};
-
-export const getGroups = async (groupIds: string[]): Promise<Group[]> => {
-  const result = await pool.query(`SELECT * FROM groups WHERE id=ANY($1)`, [
-    groupIds,
-  ]);
   return result.rows;
 };
 
@@ -139,15 +130,16 @@ export const updateUserWalletBalance = async (
 };
 
 export const getUserPlacedBets = async (userId: string): Promise<UserBet[]> => {
-  const result = await pool.query(`SELECT * FROM user_bets WHERE user_id=$1`, [
-    userId,
-  ]);
+  const result = await pool.query(
+    `SELECT * FROM user_bets WHERE user_id=$1 ORDER BY created_at DESC`,
+    [userId],
+  );
   return result.rows;
 };
 
 export const getOpenPlacedBets = async (userID: string): Promise<any> => {
   const result = await pool.query(
-    `SELECT * FROM bets JOIN user_bets ON bets.id=user_bets.bet_id WHERE status='open' AND user_id=$1`,
+    `SELECT * FROM bets JOIN user_bets ON bets.id=user_bets.bet_id WHERE status='open' AND user_id=$1 ORDER BY bets.created_at DESC`,
     [userID],
   );
   return result.rows;
@@ -157,7 +149,7 @@ export const getUserCreatedOpenBets = async (
   userId: string,
 ): Promise<Bet[]> => {
   const result = await pool.query(
-    `SELECT * FROM bets WHERE creator_id=$1 AND status=$2`,
+    `SELECT * FROM bets WHERE creator_id=$1 AND status=$2 ORDER BY created_at DESC`,
     [userId, "open"],
   );
   return result.rows;

@@ -1,10 +1,12 @@
-import '/config/theme.dart';
 import 'package:flutter/material.dart';
 
-class GroupInfoCard extends StatelessWidget {
-  const GroupInfoCard({super.key, required this.data});
+import '/config/theme.dart';
+import '/models/group.dart';
 
-  final Map<String, dynamic> data;
+class GroupInfoCard extends StatelessWidget {
+  const GroupInfoCard({super.key, required this.group});
+
+  final Group group;
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +28,7 @@ class GroupInfoCard extends StatelessWidget {
               ),
               SizedBox(height: 16.0),
               Text(
-                data['title'].toString(),
+                group.name,
                 style: TextStyle(
                   color: context.colorScheme.onSurface,
                   fontSize: 20,
@@ -35,7 +37,7 @@ class GroupInfoCard extends StatelessWidget {
               ),
               SizedBox(height: 12),
               Text(
-                data['description'].toString(),
+                group.description,
                 style: TextStyle(
                   color: context.colorScheme.onSurfaceVariant,
                   fontSize: 12,

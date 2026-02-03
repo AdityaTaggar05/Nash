@@ -1,9 +1,9 @@
-import 'package:app/models/bet_transaction.dart';
 import 'package:flutter/material.dart';
 
 import '/config/theme.dart';
 import '/extensions/datetime.dart';
 import '/extensions/number.dart';
+import '/models/bet_transaction.dart';
 
 class TransactionTile extends StatelessWidget {
   const TransactionTile({

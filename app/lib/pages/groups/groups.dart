@@ -1,18 +1,24 @@
-import '/config/theme.dart';
-import '/pages/groups/widgets/group_tab_scroll_view.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-class GroupPage extends StatelessWidget {
+import '/config/theme.dart';
+import '/pages/groups/widgets/group_tab_scroll_view.dart';
+
+class GroupPage extends StatefulWidget {
   const GroupPage({super.key});
 
+  @override
+  State<GroupPage> createState() => _GroupPageState();
+}
+
+class _GroupPageState extends State<GroupPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.transparent,
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          context.push('/group_creation');
+          context.push('/group_creation', extra: () => setState(() {}));
         },
         backgroundColor: context.colorScheme.secondary,
         child: Icon(Icons.add, color: context.colorScheme.onSecondary),

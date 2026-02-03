@@ -1,15 +1,25 @@
 import 'package:flutter/material.dart';
 
-void showSnackBar(context, String content) {
-  final snackBar = SnackBar(
-        content: Text(
-          content,
-          style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.onError),
-        ),
-        backgroundColor: Theme.of(context).colorScheme.error,
-        behavior: SnackBarBehavior.floating,
-    );
+import '/config/theme.dart';
 
-    ScaffoldMessenger.of(context).hideCurrentSnackBar();
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+void showSnackBar(BuildContext context, String content, {bool error = true}) {
+  final snackBar = SnackBar(
+    content: Text(
+      content,
+      style: TextStyle(
+        fontSize: 14.0,
+        fontWeight: FontWeight.bold,
+        color: error
+            ? context.colorScheme.onError
+            : context.colorScheme.onPrimary,
+      ),
+    ),
+    backgroundColor: error
+        ? context.colorScheme.error
+        : context.colorScheme.primary,
+    behavior: SnackBarBehavior.floating,
+  );
+
+  ScaffoldMessenger.of(context).hideCurrentSnackBar();
+  ScaffoldMessenger.of(context).showSnackBar(snackBar);
 }

@@ -1,11 +1,15 @@
+import 'package:app/controllers/user.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '/config/theme.dart';
+import '/controllers/bet.dart';
 import '/models/bet.dart';
 import '/providers/dio_provider.dart';
 import '/widgets/creation_button.dart';
 import '/widgets/normal_text_field.dart';
+import '/widgets/snackbar.dart';
 
 class BetPlacementSection extends ConsumerStatefulWidget {
   const BetPlacementSection({
@@ -24,6 +28,7 @@ class BetPlacementSection extends ConsumerStatefulWidget {
 class _BetPlacementCardState extends ConsumerState<BetPlacementSection> {
   final TextEditingController priceController = TextEditingController();
   bool expanded = false;
+  bool placing = false;
 
   Future<void> _placeBet(int amount, String option) async {
     try {
@@ -33,8 +38,18 @@ class _BetPlacementCardState extends ConsumerState<BetPlacementSection> {
             '/group/${widget.bet.groupID}/bet/${widget.bet.id}',
             data: {'amount': amount, 'option': option},
           );
-    } catch (e) {
-      print("LOG: $e");
+
+      ref.read(userControllerProvider.notifier).updateBalance(-amount);
+
+      ref.invalidate(
+        betControllerProvider(
+          BetParams(groupID: widget.bet.groupID, betID: widget.bet.id),
+        ),
+      );
+    } on DioException catch (e) {
+      if (mounted) {
+        showSnackBar(context, e.response!.data["error"]);
+      }
     }
   }
 
@@ -63,10 +78,14 @@ class _BetPlacementCardState extends ConsumerState<BetPlacementSection> {
                 children: [
                   Expanded(
                     child: ElevatedButton(
-                      onPressed: () async {
-                        await _placeBet(int.parse(priceController.text), "for");
-                        widget.onBetConfirmed();
-                      },
+                      onPressed: placing
+                          ? null
+                          : () async {
+                              await _placeBet(
+                                int.parse(priceController.text),
+                                "for",
+                              );
+                            },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: context.colorScheme.primary,
                         shape: RoundedRectangleBorder(
@@ -89,13 +108,14 @@ class _BetPlacementCardState extends ConsumerState<BetPlacementSection> {
                   SizedBox(width: 8),
                   Expanded(
                     child: ElevatedButton(
-                      onPressed: () async {
-                        await _placeBet(
-                          int.parse(priceController.text),
-                          "against",
-                        );
-                        widget.onBetConfirmed();
-                      },
+                      onPressed: placing
+                          ? null
+                          : () async {
+                              await _placeBet(
+                                int.parse(priceController.text),
+                                "against",
+                              );
+                            },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.red[600],
                         shape: RoundedRectangleBorder(

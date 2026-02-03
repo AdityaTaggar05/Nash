@@ -1,8 +1,8 @@
-import 'package:app/extensions/datetime.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '/config/theme.dart';
+import '/extensions/datetime.dart';
 import '/extensions/number.dart';
 import '/models/bet.dart';
 
@@ -22,6 +22,7 @@ class GroupBetDetailsCard extends StatelessWidget {
             children: [
               bet.totalPot.nashFormat(
                 iconSize: 30,
+                iconColor: context.colorScheme.secondary,
                 style: TextStyle(
                   fontSize: 30,
                   color: context.colorScheme.secondary,

@@ -1,37 +1,40 @@
-import pool from "../../config/db.js"
-import { CustomNotification, NotificationsList } from "./notifications.model.js";
+import pool from "../../config/db.js";
+import {
+  CustomNotification,
+  NotificationsList,
+} from "./notifications.model.js";
 
 const mapRowToCustomNotification = (row: any): CustomNotification => {
-    return {
-        notification_id: row.id,
-        content: row.content,
-        created_at: row.created_at
-    }
-}
+  return {
+    notification_id: row.id,
+    content: row.content,
+    created_at: row.created_at,
+  };
+};
 
 export const getNotifications = async (
-    userId: string
+  userId: string,
 ): Promise<NotificationsList> => {
-    const response = await pool.query(
-        `SELECT * 
+  const response = await pool.query(
+    `SELECT * 
         FROM notifications 
-        WHERE user_id = $1`,
-        [userId]
-    );
-    const notifications = response.rows.map((row: any) => {
-        return mapRowToCustomNotification(row);
-    });
-    return { notifications: notifications };
-}
-
+        WHERE user_id = $1
+        ORDER BY created_at DESC`,
+    [userId],
+  );
+  const notifications = response.rows.map((row: any) => {
+    return mapRowToCustomNotification(row);
+  });
+  return { notifications: notifications };
+};
 
 export const createNotification = async (
-    userId: string,
-    content: string
+  userId: string,
+  content: string,
 ): Promise<void> => {
-    await pool.query(
-        `INSERT INTO notifications (user_id, content)
+  await pool.query(
+    `INSERT INTO notifications (user_id, content)
             VALUES ($1, $2)`,
-        [userId, content]
-    );
-}
+    [userId, content],
+  );
+};

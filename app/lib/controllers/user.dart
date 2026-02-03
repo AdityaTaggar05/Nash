@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '/controllers/auth.dart';
 import '/models/user.dart';
 import '/providers/dio_provider.dart';
 
@@ -18,12 +19,14 @@ class UserController extends AsyncNotifier<User> {
       return User.fromJson(response.data);
     } catch (e) {
       print("LOG ERR: $e");
+      ref.read(authControllerProvider.notifier).logout();
+      return User(email: "", username: "", id: "", balance: 0);
     }
-    return User(id: "s", username: "s", email: "s");
   }
 
-  void updateBalance(int newBalance) =>
-      state = state.whenData((user) => user.copyWith(balance: newBalance));
+  void updateBalance(int amount) => state = state.whenData(
+    (user) => user.copyWith(balance: user.balance! + amount),
+  );
 
   void clear() => state = const AsyncLoading();
 }

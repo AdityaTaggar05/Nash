@@ -27,6 +27,7 @@ class BalanceCard extends StatelessWidget {
             ),
             user.balance!.nashFormat(
               iconSize: 36,
+              iconColor: context.colorScheme.primary,
               style: TextStyle(
                 fontSize: 36,
                 color: context.colorScheme.primary,
@@ -40,8 +41,9 @@ class BalanceCard extends StatelessWidget {
                   "LAST MONTH:   ",
                   style: TextStyle(color: context.colorScheme.onSurfaceVariant),
                 ),
-                lastMonth.nashFormat(
+                681.nashFormat(
                   iconSize: 18,
+                  iconColor: context.colorScheme.onSurface,
                   style: TextStyle(
                     fontSize: 18,
                     color: context.colorScheme.onSurface,

@@ -1,31 +1,35 @@
 import 'package:flutter/material.dart';
 
 import '/config/theme.dart';
+import '/models/member.dart';
 import '/pages/groups/group_info/widgets/group_member_card.dart';
 import '/pages/groups/group_info/widgets/kick_member_dialog.dart';
 import 'add_member_dialog.dart';
 
 class GroupMembersList extends StatelessWidget {
-  final List<Map<String, dynamic>> members;
-  final String currentUserId;
+  final List<GroupMember> members;
+  final String userID;
+  final String groupID;
+
   const GroupMembersList({
     super.key,
     required this.members,
-    required this.currentUserId,
+    required this.userID,
+    required this.groupID,
   });
 
   @override
   Widget build(BuildContext context) {
-    final Map<String, dynamic> admin = members.firstWhere(
-      (m) => m['role'] == 'ADMIN',
+    final GroupMember admin = members.firstWhere(
+      (member) => member.role == Role.admin,
       orElse: () => members[0],
     );
 
-    final List<Map<String, dynamic>> otherMembers = members
-        .where((m) => m['role'] != "ADMIN")
+    final List<GroupMember> otherMembers = members
+        .where((member) => member.role == Role.member)
         .toList();
 
-    final bool amIAdmin = (admin['user_id'] == currentUserId);
+    final bool isAdmin = (admin.userID == userID);
 
     return SizedBox(
       child: ListView.builder(
@@ -48,7 +52,10 @@ class GroupMembersList extends StatelessWidget {
           if (index == 1) {
             return Padding(
               padding: const EdgeInsets.only(left: 4, bottom: 4),
-              child: GroupMemberCard(data: admin, isCurrentUserAdmin: amIAdmin),
+              child: GroupMemberCard(
+                member: admin,
+                isCurrentUserAdmin: isAdmin,
+              ),
             );
           }
           if (index == 2) {
@@ -64,11 +71,12 @@ class GroupMembersList extends StatelessWidget {
                       fontSize: 18,
                     ),
                   ),
-                  if (amIAdmin)
+                  if (isAdmin)
                     IconButton(
-                      onPressed: () {
-                        showAddMemberDialog(context);
-                      },
+                      onPressed: () => showDialog(
+                        context: context,
+                        builder: (context) => AddMemberDialog(groupID: groupID),
+                      ),
                       icon: Icon(Icons.add),
                     ),
                 ],
@@ -79,11 +87,9 @@ class GroupMembersList extends StatelessWidget {
           return Padding(
             padding: const EdgeInsets.only(left: 4, bottom: 4),
             child: GroupMemberCard(
-              data: member,
-              isCurrentUserAdmin: amIAdmin,
-              onKicked: () {
-                showAlertDialog(context, member);
-              },
+              member: member,
+              isCurrentUserAdmin: isAdmin,
+              onKicked: () => showKickMemberDialog(context, member),
             ),
           );
         },
