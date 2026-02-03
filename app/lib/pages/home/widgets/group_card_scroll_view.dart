@@ -51,8 +51,6 @@ class GroupCardScrollView extends ConsumerWidget {
 
         final List<Group> data = asyncSnapshot.data!;
 
-        print("LOG DATA: $data");
-
         return SizedBox(
           height: 100,
           child: ListView.builder(

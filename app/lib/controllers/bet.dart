@@ -60,9 +60,10 @@ class BetController extends AsyncNotifier<Bet> {
 
   void _handleNewBet(Map<String, dynamic> data) {
     state = state.whenData((bet) {
-      bet.transactions.add(
+      bet.transactions.insert(
+        0,
         BetTransaction(
-          amount: int.parse(data['amount']),
+          amount: (data['amount'] as int),
           option: data['selected_option'],
           userID: data['user_id'],
           username: data['username'],
@@ -71,12 +72,12 @@ class BetController extends AsyncNotifier<Bet> {
       );
 
       return bet.copyWith(
-        totalPot: bet.totalPot + int.parse(data['amount']),
+        totalPot: bet.totalPot + (data['amount'] as int),
         poolFor: data['selected_option'] == 'for'
-            ? bet.poolFor + int.parse(data['amount'])
+            ? bet.poolFor + (data['amount'] as int)
             : bet.poolFor,
         poolAgainst: data['selected_option'] == 'against'
-            ? bet.poolAgainst + int.parse(data['amount'])
+            ? bet.poolAgainst + (data['amount'] as int)
             : bet.poolAgainst,
       );
     });

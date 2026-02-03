@@ -26,7 +26,10 @@ class TransactionTile extends StatelessWidget {
               )
             : null,
         title: Text(transaction.username),
-        subtitle: transaction.amount.nashFormat(),
+        subtitle: transaction.amount.nashFormat(
+          iconColor: context.colorScheme.onSurfaceVariant,
+          iconSize: 18,
+        ),
         trailing: Text(transaction.placedAt.toReadableFormat()),
       ),
     );

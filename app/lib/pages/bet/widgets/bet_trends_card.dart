@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:app/models/bet.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
@@ -135,7 +137,6 @@ class BetTrendsCard extends ConsumerWidget {
                       topTitles: const AxisTitles(
                         sideTitles: SideTitles(showTitles: false),
                       ),
-                      // leftTitles: AxisTitles(sideTitles: leftTitles()),
                     ),
                     lineTouchData: LineTouchData(
                       touchSpotThreshold: 20,
@@ -147,7 +148,7 @@ class BetTrendsCard extends ConsumerWidget {
                     ),
                     minX: 0,
                     maxX: bet.transactions.length * 1.0,
-                    maxY: 300.0,
+                    maxY: max(bet.poolAgainst, bet.poolFor) * 1.1,
                     minY: 0,
                   ),
                 ),

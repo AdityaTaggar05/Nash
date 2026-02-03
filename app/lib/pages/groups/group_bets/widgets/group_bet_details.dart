@@ -33,7 +33,7 @@ class GroupBetDetailsCard extends StatelessWidget {
               Row(
                 children: [
                   Text(
-                    "ENDS AT: ${bet.expiresAt.toReadableFormat()}",
+                    "${bet.expiresAt.isBefore(DateTime.now()) ? 'ENDED AT' : 'ENDS AT'}: ${bet.expiresAt.toReadableFormat()}",
                     style: TextStyle(
                       fontSize: 14,
                       color: context.colorScheme.onSurfaceVariant,

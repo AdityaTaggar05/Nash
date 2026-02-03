@@ -79,7 +79,7 @@ class BetsCarouselCard extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    "ENDS AT ${DateFormat('MMM d, yyyy').format(bet.expiresAt)}",
+                    "${bet.expiresAt.isBefore(DateTime.now()) ? 'ENDED AT' : 'ENDS AT'} ${DateFormat('MMM d, yyyy').format(bet.expiresAt)}",
                     style: const TextStyle(
                       fontSize: 10,
                       fontWeight: FontWeight.bold,

@@ -71,7 +71,7 @@ class BetResolve extends ConsumerWidget {
                     ),
                     const SizedBox(height: 12),
                     Text(
-                      "Current pot :",
+                      "Current Pot :",
                       style: TextStyle(
                         color: context.colorScheme.onSurface,
                         fontSize: 18,
@@ -81,6 +81,8 @@ class BetResolve extends ConsumerWidget {
                     ),
                     const SizedBox(height: 8),
                     bet.totalPot.nashFormat(
+                      iconSize: 52,
+                      iconColor: context.colorScheme.secondary,
                       style: TextStyle(
                         fontSize: 52,
                         color: context.colorScheme.secondary,
