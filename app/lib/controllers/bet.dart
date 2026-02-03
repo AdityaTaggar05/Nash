@@ -65,7 +65,7 @@ class BetController extends AsyncNotifier<Bet> {
           amount: int.parse(data['amount']),
           option: data['selected_option'],
           userID: data['user_id'],
-          username: data['user_id'],
+          username: data['username'],
           placedAt: DateTime.now(),
         ),
       );

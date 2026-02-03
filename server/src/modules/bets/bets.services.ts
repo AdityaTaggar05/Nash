@@ -3,7 +3,7 @@ import * as groupRepository from "../groups/groups.repository.js";
 import * as notificationRepository from "../notifications/notifications.repository.js";
 import * as transactionRepository from "../transactions/transactions.repository.js";
 import * as userRepository from "../users/users.repository.js";
-import { Bet, UserBet } from "./bets.model.js";
+import { Bet } from "./bets.model.js";
 import * as betRespository from "./bets.repository.js";
 import { BetResponseDTO } from "./dtos/bet-response.dto.js";
 
@@ -89,7 +89,7 @@ export const placeBet = async (
   betId: string,
   amount: number,
   option: string,
-): Promise<UserBet> => {
+): Promise<any> => {
   const bet = await betRespository.getBetFromDB(betId);
   const user = await userRepository.getUserFromDB(authUserID);
   const group = await groupRepository.getGroupById(bet.group_id);
@@ -121,9 +121,23 @@ export const placeBet = async (
       placedBet.bet_id,
     );
 
-    emitToRoom(bet.id, "new_user_bet", placedBet);
+    emitToRoom(bet.id, "new_user_bet", {
+      bet_id: bet.id,
+      user_id: user.id,
+      username: user.username,
+      amount: amount,
+      selected_option: option,
+      created_at: placedBet.created_at,
+    });
 
-    return placedBet;
+    return {
+      bet_id: bet.id,
+      user_id: user.id,
+      username: user.username,
+      amount: amount,
+      selected_option: option,
+      created_at: placedBet.created_at,
+    };
   }
 };
 
