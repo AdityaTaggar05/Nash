@@ -48,9 +48,11 @@ export const getBet = async (
 
   if (betMadeByUser != undefined) {
     if (betMadeByUser.selected_option === "for") {
-      payout = Math.round((betMadeByUser.amount * total_pot) / pool_for);
+      payout = Math.round((betMadeByUser.amount * total_pot * 0.8) / pool_for);
     } else {
-      payout = Math.round((betMadeByUser.amount * total_pot) / pool_against);
+      payout = Math.round(
+        (betMadeByUser.amount * total_pot * 0.8) / pool_against,
+      );
     }
 
     response.my_bet = {
