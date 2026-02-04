@@ -27,7 +27,7 @@ final betControllerProvider = AsyncNotifierProvider.autoDispose
 
 class BetController extends AsyncNotifier<Bet> {
   late final BetParams params;
-  late final SocketService _socketService;
+  SocketService? _socketService;
 
   BetController(this.params);
 
@@ -39,7 +39,7 @@ class BetController extends AsyncNotifier<Bet> {
     final Bet bet = Bet.fromJSON(res.data);
 
     _socketService = SocketService();
-    await _socketService.connect(betID: bet.id, onNewBet: _handleNewBet);
+    await _socketService!.connect(betID: bet.id, onNewBet: _handleNewBet);
 
     res = await dio.get("/transaction/bet/${params.betID}");
 
