@@ -5,7 +5,7 @@
 > *Combine the tension of high-stakes prediction with the banter of your inner circle.*
 
 ## Inspiration
-We wanted to gamify the "I told you so" moments in friend groups. Existing betting apps are too transactional or focused on sports. **Nash** is designed to let you bet on *anything*, from "Will Team Commitment Issues win Merge Conflict '26?" to "Will the code compile on the first try?", all while managing an economy that rewards active participation.
+We wanted to gamify the "I told you so" moments in friend groups. Existing betting apps are too transactional or focused on sports. **Nash** is designed to let you bet on *anything*, from `"Will Team Commitment Issues win Merge Conflict '26?"` to `"Will the code compile on the first try?"`, all while managing an economy that rewards active participation.
 
 ## Key Features
 
@@ -24,7 +24,7 @@ We built a self-sustaining economic model to keep the value of Nash coins regula
 | **Daily Login** | `+100 Nash` (Injection) | Keeps users coming back daily. |
 | **Create Bet** | `-150 Nash` (Sink) | A fee to keep spammers away. |
 | **The "House"** | `18% Decay` (Nirmala Tai Fee) | Removed from the winning pot to control inflation. |
-| **Creator Cut** | `2% Reward` (Incentive) | The creator gets 2% of the total pot, which encourages them to create more bets. |
+| **Creator Cut** | `2% Reward` (Incentive) | The creator receives 2% of the total pot, encouraging them to create more bets. |
 
 ## Tech Stack
 
