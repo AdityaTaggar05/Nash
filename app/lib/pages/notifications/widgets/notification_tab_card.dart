@@ -1,8 +1,13 @@
+import 'package:app/extensions/datetime.dart';
+import 'package:app/models/notification.dart';
+import 'package:flutter/material.dart' hide Notification;
+
 import '/config/theme.dart';
-import 'package:flutter/material.dart';
 
 class NotificationTabCard extends StatelessWidget {
-  const NotificationTabCard({super.key});
+  final Notification notification;
+
+  const NotificationTabCard({super.key, required this.notification});
 
   @override
   Widget build(BuildContext context) {
@@ -18,23 +23,23 @@ class NotificationTabCard extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              "Notification Title",
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                color: context.colorScheme.onSurface,
-              ),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            ),
-            SizedBox(height: 2.0),
-            Text(
-              "Notification description",
-              style: TextStyle(fontSize: 16, color: Colors.grey.shade700),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
+              notification.content,
+              style: TextStyle(color: context.colorScheme.onSurface),
             ),
             SizedBox(height: 8),
+            Align(
+              alignment: Alignment.centerRight,
+              child: Text(
+                notification.createdAt.toReadableFormat(),
+                style: TextStyle(
+                  fontSize: 12,
+                  color: context.colorScheme.onSurfaceVariant,
+                ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+            SizedBox(height: 4),
           ],
         ),
       ),

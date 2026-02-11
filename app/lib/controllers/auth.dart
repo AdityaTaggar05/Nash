@@ -1,6 +1,6 @@
-import 'package:app/controllers/user.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '/controllers/user.dart';
 import '/providers/dio_provider.dart';
 import '/services/storage_service.dart';
 

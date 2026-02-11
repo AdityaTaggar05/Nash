@@ -1,89 +1,74 @@
-import 'package:app/pages/bet/widgets/bet_placement_section.dart';
-import 'package:app/providers/dio_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '/config/theme.dart';
+import '/controllers/bet.dart';
+import '/controllers/user.dart';
 import '/extensions/number.dart';
 import '/models/bet.dart';
+import '/pages/bet/widgets/bet_placement_section.dart';
+import '/providers/dio_provider.dart';
 
-class BetDetailsCard extends ConsumerStatefulWidget {
+class BetDetailsCard extends ConsumerWidget {
   final String groupID;
   final String betID;
 
   const BetDetailsCard({super.key, required this.groupID, required this.betID});
 
-  @override
-  ConsumerState<BetDetailsCard> createState() => _BetDetailsCardState();
-}
-
-class _BetDetailsCardState extends ConsumerState<BetDetailsCard> {
   Future<Bet> getBetDetails(WidgetRef ref) async {
     final dio = ref.read(dioProvider);
-    final res = await dio.get("/group/${widget.groupID}/bet/${widget.betID}");
+    final res = await dio.get("/group/$groupID/bet/$betID");
 
     return Bet.fromJSON(res.data);
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final state = ref.watch(
+      betControllerProvider(BetParams(groupID: groupID, betID: betID)),
+    );
+
     return Card(
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 32, vertical: 24),
-        child: FutureBuilder(
-          future: getBetDetails(ref),
-          builder: (context, asyncSnapshot) {
-            if (asyncSnapshot.connectionState == ConnectionState.waiting) {
-              return Center(child: CircularProgressIndicator());
-            }
-
-            if (asyncSnapshot.hasError) {
-              return Center(
-                child: Text(
-                  "Something went wrong",
-                  style: TextStyle(
-                    color: context.colorScheme.onSurface,
-                    fontSize: 18,
-                  ),
-                ),
-              );
-            }
-
-            final Bet bet = asyncSnapshot.data!;
-
-            return DetailsSection(bet: bet);
-          },
+        child: state.when(
+          data: (bet) => DetailsSection(
+            bet: bet,
+            userID: ref.read(userControllerProvider).value!.id,
+          ),
+          error: (error, stackTrace) => Center(
+            child: Text(
+              "Something went wrong",
+              style: TextStyle(
+                color: context.colorScheme.onSurface,
+                fontSize: 18,
+              ),
+            ),
+          ),
+          loading: () => Center(child: CircularProgressIndicator()),
         ),
       ),
     );
   }
 }
 
-class DetailsSection extends StatefulWidget {
-  const DetailsSection({super.key, required this.bet});
-
+class DetailsSection extends StatelessWidget {
   final Bet bet;
+  final String userID;
 
-  @override
-  State<DetailsSection> createState() => _DetailsSectionState();
-}
-
-class _DetailsSectionState extends State<DetailsSection> {
-  bool isBetPlaced = false;
-
-  @override
-  void initState() {
-    super.initState();
-    isBetPlaced = widget.bet.myBet != null;
-  }
+  const DetailsSection({super.key, required this.bet, required this.userID});
 
   @override
   Widget build(BuildContext context) {
+    final bool isBetPlaced = bet.myBet != null;
+    final bool isCreator = bet.createdBy == userID;
+    final bool isResolved = bet.status == Status.resolved;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          widget.bet.title,
+          bet.title,
           style: TextStyle(
             fontSize: 22,
             fontWeight: FontWeight.bold,
@@ -91,8 +76,9 @@ class _DetailsSectionState extends State<DetailsSection> {
           ),
         ),
         const SizedBox(height: 8),
-        widget.bet.totalPot.nashFormat(
+        bet.totalPot.nashFormat(
           iconSize: 52,
+          iconColor: context.colorScheme.secondary,
           style: TextStyle(
             fontSize: 52,
             color: context.colorScheme.secondary,
@@ -100,44 +86,78 @@ class _DetailsSectionState extends State<DetailsSection> {
           ),
         ),
         const SizedBox(height: 12),
-        isBetPlaced
-            ? Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  widget.bet.myBet!.expectedPayout.nashFormat(
-                    style: TextStyle(
-                      fontSize: 18,
-                      color: context.colorScheme.onSurfaceVariant,
-                    ),
-                    leading: Text(
-                      "EXPECTED PAYOUT: ",
+        if (!isCreator)
+          isBetPlaced
+              ? Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    bet.myBet!.expectedPayout.nashFormat(
+                      iconColor: context.colorScheme.onSurfaceVariant,
                       style: TextStyle(
                         fontSize: 18,
                         color: context.colorScheme.onSurfaceVariant,
                       ),
+                      leading: Text(
+                        "EXPECTED PAYOUT: ",
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: context.colorScheme.onSurfaceVariant,
+                        ),
+                      ),
                     ),
-                  ),
-                  widget.bet.myBet!.amount.nashFormat(
-                    style: TextStyle(
-                      fontSize: 18,
-                      color: context.colorScheme.onSurfaceVariant,
-                    ),
-                    leading: Text(
-                      "BET PLACED: ",
+                    bet.myBet!.amount.nashFormat(
+                      iconColor: context.colorScheme.onSurfaceVariant,
                       style: TextStyle(
                         fontSize: 18,
                         color: context.colorScheme.onSurfaceVariant,
                       ),
+                      leading: Text(
+                        "BET PLACED ON ${bet.myBet!.option.toUpperCase()}: ",
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: context.colorScheme.onSurfaceVariant,
+                        ),
+                      ),
+                    ),
+                  ],
+                )
+              : BetPlacementSection(bet: bet, onBetConfirmed: () {}),
+        if (isCreator) ...[
+          Text(
+            "YOU CREATED THIS BET",
+            style: TextStyle(color: context.colorScheme.onSurfaceVariant),
+          ),
+          if (isResolved)
+            Row(
+              children: [
+                Text(
+                  "THE WINNING OPTION: ",
+                  style: TextStyle(color: context.colorScheme.onSurfaceVariant),
+                ),
+                const SizedBox(width: 12),
+                Chip(
+                  labelPadding: const EdgeInsets.symmetric(horizontal: 16),
+                  label: Text(
+                    bet.winningOption!.toUpperCase(),
+                    style: TextStyle(
+                      color: bet.winningOption! == "for"
+                          ? context.colorScheme.onPrimary
+                          : context.colorScheme.onError,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 10,
                     ),
                   ),
-                ],
-              )
-            : BetPlacementSection(
-                bet: widget.bet,
-                onBetConfirmed: () => setState(() {
-                  isBetPlaced = true;
-                }),
-              ),
+                  backgroundColor: bet.winningOption! == "for"
+                      ? context.colorScheme.primary
+                      : context.colorScheme.error,
+                  side: BorderSide.none,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(50),
+                  ),
+                ),
+              ],
+            ),
+        ],
       ],
     );
   }

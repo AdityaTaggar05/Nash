@@ -1,19 +1,38 @@
-import 'package:app/config/theme.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
-class BetResolve extends StatefulWidget {
-  final String groupID;
-  final String betID;
-  const BetResolve({super.key, required this.betID, required this.groupID});
+import '/config/theme.dart';
+import '/controllers/bet.dart';
+import '/extensions/number.dart';
+import '/models/bet.dart';
+import '/providers/dio_provider.dart';
+
+class BetResolve extends ConsumerWidget {
+  final Bet bet;
+
+  const BetResolve({super.key, required this.bet});
+
+  Future<void> resolveBet(String option, WidgetRef ref) async {
+    final dio = ref.read(dioProvider);
+    try {
+      await dio.post(
+        "/group/${bet.groupID}/bet/${bet.id}/decide",
+        data: {"option": option},
+      );
+    } on DioException {}
+    ref
+        .read(
+          betControllerProvider(
+            BetParams(groupID: bet.groupID, betID: bet.id),
+          ).notifier,
+        )
+        .resolveBet(Status.resolved, option);
+  }
 
   @override
-  State<BetResolve> createState() => _BetResolveState();
-}
-
-class _BetResolveState extends State<BetResolve> {
-  String result = "";
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -43,7 +62,7 @@ class _BetResolveState extends State<BetResolve> {
                   children: [
                     const SizedBox(height: 8),
                     Text(
-                      "Will Keshav bathe today ?",
+                      bet.title,
                       style: TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
@@ -52,7 +71,7 @@ class _BetResolveState extends State<BetResolve> {
                     ),
                     const SizedBox(height: 12),
                     Text(
-                      "Current pot :",
+                      "Current Pot :",
                       style: TextStyle(
                         color: context.colorScheme.onSurface,
                         fontSize: 18,
@@ -61,8 +80,9 @@ class _BetResolveState extends State<BetResolve> {
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 8),
-                    Text(
-                      "\$ 5432.00",
+                    bet.totalPot.nashFormat(
+                      iconSize: 52,
+                      iconColor: context.colorScheme.secondary,
                       style: TextStyle(
                         fontSize: 52,
                         color: context.colorScheme.secondary,
@@ -83,10 +103,9 @@ class _BetResolveState extends State<BetResolve> {
                       children: [
                         Expanded(
                           child: ElevatedButton(
-                            onPressed: () {
-                              setState(() {
-                                result = "for";
-                              });
+                            onPressed: () async {
+                              await resolveBet("for", ref);
+                              context.pop();
                             },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: context.colorScheme.primary,
@@ -110,10 +129,9 @@ class _BetResolveState extends State<BetResolve> {
                         const SizedBox(width: 16),
                         Expanded(
                           child: ElevatedButton(
-                            onPressed: () {
-                              setState(() {
-                                result = "against";
-                              });
+                            onPressed: () async {
+                              await resolveBet("against", ref);
+                              context.pop();
                             },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.red[600],

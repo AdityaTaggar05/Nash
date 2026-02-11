@@ -1,7 +1,7 @@
-import 'package:app/models/bet_transaction.dart';
 import 'package:flutter/material.dart';
 
 import '/config/theme.dart';
+import '/models/bet_transaction.dart';
 import '/widgets/transaction_tile.dart';
 
 class TransactionsModalSheet extends StatelessWidget {

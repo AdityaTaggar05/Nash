@@ -1,11 +1,11 @@
-import 'package:app/controllers/user.dart';
-import 'package:app/models/user.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '/config/theme.dart';
+import '/controllers/user.dart';
 import '/extensions/number.dart';
+import '/models/user.dart';
 
 class MainScaffold extends ConsumerStatefulWidget {
   final StatefulNavigationShell navigationShell;
@@ -124,6 +124,7 @@ class _MainScaffoldState extends ConsumerState<MainScaffold> {
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: user.balance!.nashFormat(
+                      iconColor: context.colorScheme.primary,
                       style: TextStyle(
                         color: context.colorScheme.primary,
                         fontWeight: FontWeight.bold,

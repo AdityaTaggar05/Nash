@@ -1,14 +1,14 @@
-import 'package:app/controllers/auth.dart';
-import 'package:app/utils/validators.dart';
-import 'package:app/widgets/snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '/config/theme.dart';
+import '/controllers/auth.dart';
+import '/utils/validators.dart';
 import '/widgets/creation_button.dart';
 import '/widgets/normal_text_field.dart';
 import '/widgets/password_text_field.dart';
+import '/widgets/snackbar.dart';
 
 class LoginPage extends ConsumerStatefulWidget {
   const LoginPage({super.key});
@@ -31,20 +31,25 @@ class _LoginPageConsumerState extends ConsumerState<LoginPage> {
   Future<void> onSubmit() async {
     final emailError = emailValidator(emailController.text);
 
-    if(emailError != null) {
+    if (emailError != null) {
       showSnackBar(context, emailError);
       return;
     }
 
-    if(passwordController.text.isEmpty) {
-      showSnackBar(context, "Please enter a password");      
+    if (passwordController.text.isEmpty) {
+      showSnackBar(context, "Please enter a password");
       return;
     }
 
     try {
-      await ref.read(authControllerProvider.notifier).login(email: emailController.text, password: passwordController.text); 
-    } catch(_) {
-      if(context.mounted) {
+      await ref
+          .read(authControllerProvider.notifier)
+          .login(
+            email: emailController.text,
+            password: passwordController.text,
+          );
+    } catch (_) {
+      if (context.mounted) {
         showSnackBar(context, "Login Failed");
       }
     }
@@ -117,9 +122,7 @@ class _LoginPageConsumerState extends ConsumerState<LoginPage> {
                                 ),
                                 const SizedBox(height: 32.0),
                                 CreationButton(
-                                  onPressed: isLoading
-                                      ? null
-                                      : onSubmit,
+                                  onPressed: isLoading ? null : onSubmit,
                                   title: isLoading ? "Logging in..." : "Login",
                                 ),
                               ],

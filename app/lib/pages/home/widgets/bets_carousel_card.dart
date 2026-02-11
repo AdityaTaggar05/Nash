@@ -1,10 +1,10 @@
-import 'package:app/models/bet.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
 import '/config/theme.dart';
 import '/extensions/number.dart';
+import '/models/bet.dart';
 
 class BetsCarouselCard extends StatelessWidget {
   final Bet bet;
@@ -33,6 +33,7 @@ class BetsCarouselCard extends StatelessWidget {
                 children: [
                   bet.totalPot.nashFormat(
                     iconSize: 36,
+                    iconColor: context.colorScheme.onPrimary,
                     style: TextStyle(
                       fontSize: 36,
                       fontWeight: FontWeight.bold,
@@ -43,6 +44,7 @@ class BetsCarouselCard extends StatelessWidget {
                   if (bet.myBet != null) ...[
                     const SizedBox(height: 4),
                     bet.myBet!.amount.nashFormat(
+                      iconColor: Colors.black54,
                       iconSize: 12,
                       style: TextStyle(
                         fontSize: 12,
@@ -77,7 +79,7 @@ class BetsCarouselCard extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    "ENDS AT ${DateFormat('MMM d, yyyy').format(bet.expiresAt)}",
+                    "${bet.expiresAt.isBefore(DateTime.now()) ? 'ENDED AT' : 'ENDS AT'} ${DateFormat('MMM d, yyyy').format(bet.expiresAt)}",
                     style: const TextStyle(
                       fontSize: 10,
                       fontWeight: FontWeight.bold,

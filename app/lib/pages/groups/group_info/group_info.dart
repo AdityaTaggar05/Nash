@@ -1,25 +1,27 @@
+import 'package:app/controllers/user.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import '/config/theme.dart';
+import '/models/group.dart';
 import '/pages/groups/group_info/widgets/group_info_card.dart';
 import '/pages/groups/group_info/widgets/group_members_list.dart';
-import 'package:flutter/material.dart';
+import '/providers/dio_provider.dart';
 
-class GroupInfo extends StatelessWidget {
+class GroupInfo extends ConsumerWidget {
   final String groupID;
 
   const GroupInfo({super.key, required this.groupID});
 
+  Future<Group> getGroupInfo(WidgetRef ref) async {
+    final dio = ref.read(dioProvider);
+    final res = await dio.get("/group/$groupID");
+
+    return Group.fromJSON(res.data);
+  }
+
   @override
-  Widget build(BuildContext context) {
-    Map<String, dynamic> groupData = {
-      'title': "ChaCha chaudhary ke 4 chode",
-      'description': "This is a group for betting on keshav lab nahayega BKL",
-      'created_by': '1',
-    };
-    List<Map<String, dynamic>> memberData = [
-      {'username': 'keshav bhadwa', 'user_id': '1', 'role': 'ADMIN'},
-      {'username': 'taggar bhadwa', 'user_id': '0', 'role': 'member'},
-      {'username': 'Shasak baby', 'user_id': '2', 'role': 'member'},
-    ];
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -34,17 +36,41 @@ class GroupInfo extends StatelessWidget {
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsetsGeometry.all(16.0),
-          child: Column(
-            children: [
-              GroupInfoCard(data: groupData),
-              SizedBox(height: 8.0),
-              Expanded(
-                child: GroupMembersList(
-                  currentUserId: "1",
-                  members: memberData,
-                ),
-              ),
-            ],
+          child: FutureBuilder(
+            future: getGroupInfo(ref),
+            builder: (context, asyncSnapshot) {
+              if (asyncSnapshot.connectionState == ConnectionState.waiting) {
+                return Center(child: CircularProgressIndicator());
+              }
+
+              if (asyncSnapshot.hasError) {
+                return Center(
+                  child: Text(
+                    "Something went wrong",
+                    style: TextStyle(
+                      color: context.colorScheme.onSurface,
+                      fontSize: 18,
+                    ),
+                  ),
+                );
+              }
+
+              final Group group = asyncSnapshot.data!;
+
+              return Column(
+                children: [
+                  GroupInfoCard(group: group),
+                  SizedBox(height: 8.0),
+                  Expanded(
+                    child: GroupMembersList(
+                      userID: ref.read(userControllerProvider).value!.id,
+                      groupID: groupID,
+                      members: group.memberList,
+                    ),
+                  ),
+                ],
+              );
+            },
           ),
         ),
       ),

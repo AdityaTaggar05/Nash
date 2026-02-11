@@ -6,10 +6,15 @@ import '/models/group.dart';
 import '/providers/dio_provider.dart';
 import 'group_tab_card.dart';
 
-class GroupTabScrollView extends ConsumerWidget {
+class GroupTabScrollView extends ConsumerStatefulWidget {
   const GroupTabScrollView({super.key});
 
-  Future<List<Group>> getUserGroups(WidgetRef ref) async {
+  @override
+  ConsumerState<GroupTabScrollView> createState() => _GroupTabScrollViewState();
+}
+
+class _GroupTabScrollViewState extends ConsumerState<GroupTabScrollView> {
+  Future<List<Group>> getUserGroups() async {
     final dio = ref.read(dioProvider);
     final res = await dio.get("/users/groups");
 
@@ -17,9 +22,9 @@ class GroupTabScrollView extends ConsumerWidget {
   }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     return FutureBuilder(
-      future: getUserGroups(ref),
+      future: getUserGroups(),
       builder: (context, asyncSnapshot) {
         if (asyncSnapshot.connectionState == ConnectionState.waiting) {
           return Center(child: CircularProgressIndicator());

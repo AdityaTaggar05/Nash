@@ -7,19 +7,24 @@ import '/models/bet.dart';
 import '/pages/groups/group_bets/widgets/group_bet_details.dart';
 import '/providers/dio_provider.dart';
 
-class GroupBets extends ConsumerWidget {
+class GroupBets extends ConsumerStatefulWidget {
   final String groupID;
   const GroupBets({super.key, required this.groupID});
 
-  Future<List<Bet>> getGroupBets(WidgetRef ref) async {
+  @override
+  ConsumerState<GroupBets> createState() => _GroupBetsState();
+}
+
+class _GroupBetsState extends ConsumerState<GroupBets> {
+  Future<List<Bet>> getGroupBets() async {
     final dio = ref.read(dioProvider);
-    final res = await dio.get("/group/$groupID/bet");
+    final res = await dio.get("/group/${widget.groupID}/bet");
 
     return res.data.map<Bet>((bet) => Bet.fromJSON(bet)).toList();
   }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -35,7 +40,7 @@ class GroupBets extends ConsumerWidget {
             padding: const EdgeInsets.all(8.0),
             child: IconButton(
               onPressed: () {
-                context.push('/groups/$groupID');
+                context.push('/groups/${widget.groupID}');
               },
               icon: Icon(Icons.info_outline_rounded),
             ),
@@ -61,7 +66,7 @@ class GroupBets extends ConsumerWidget {
             SizedBox(height: 12),
             Expanded(
               child: FutureBuilder(
-                future: getGroupBets(ref),
+                future: getGroupBets(),
                 builder: (context, asyncSnapshot) {
                   if (asyncSnapshot.connectionState ==
                       ConnectionState.waiting) {
@@ -80,7 +85,8 @@ class GroupBets extends ConsumerWidget {
                     );
                   }
 
-                  if (asyncSnapshot.data == null) {
+                  if (asyncSnapshot.data == null ||
+                      asyncSnapshot.data!.isEmpty) {
                     return Center(
                       child: Text(
                         "No bets created in this group!",
@@ -108,9 +114,10 @@ class GroupBets extends ConsumerWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          context.push('/groups/:group_id/bet_creation');
-        },
+        onPressed: () => context.push(
+          '/groups/:group_id/bet_creation',
+          extra: () => setState(() {}),
+        ),
         backgroundColor: context.colorScheme.secondary,
         child: Icon(Icons.add, color: context.colorScheme.onSecondary),
       ),

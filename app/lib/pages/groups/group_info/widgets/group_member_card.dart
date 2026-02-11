@@ -1,28 +1,27 @@
-import '/config/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '/config/theme.dart';
+import '/models/member.dart';
+
 class GroupMemberCard extends StatelessWidget {
-  final Map<String, dynamic> data;
+  final GroupMember member;
   final bool isCurrentUserAdmin;
   final VoidCallback? onKicked;
 
   const GroupMemberCard({
     super.key,
-    required this.data,
+    required this.member,
     required this.isCurrentUserAdmin,
     this.onKicked,
   });
 
   @override
   Widget build(BuildContext context) {
-    final bool showActions = isCurrentUserAdmin && data['role'] != "ADMIN";
+    final bool showActions = isCurrentUserAdmin && member.role != Role.admin;
 
     return GestureDetector(
-      onTap: () => context.push(
-        "/profile/123",
-        extra: ["pfp-group-member", "wallet-group-member"],
-      ),
+      onTap: () => context.push("/profile/${member.userID}"),
       child: Container(
         margin: const EdgeInsets.only(bottom: 8),
         padding: const EdgeInsets.all(12),
@@ -33,14 +32,11 @@ class GroupMemberCard extends StatelessWidget {
         child: IntrinsicHeight(
           child: Row(
             children: [
-              Hero(
-                tag: 'pfp-group-member',
-                child: const CircleAvatar(
-                  backgroundImage: NetworkImage(
-                    "https://cdn.dribbble.com/users/18924830/avatars/normal/25cecaeb59d31d07887ff220ea9ab686.png?1728297612",
-                  ),
-                  radius: 24,
+              const CircleAvatar(
+                backgroundImage: NetworkImage(
+                  "https://cdn.dribbble.com/users/18924830/avatars/normal/25cecaeb59d31d07887ff220ea9ab686.png?1728297612",
                 ),
+                radius: 24,
               ),
               const SizedBox(width: 20),
               Column(
@@ -48,7 +44,7 @@ class GroupMemberCard extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    data['username'],
+                    member.username,
                     style: TextStyle(
                       color: context.colorScheme.onSurface,
                       fontSize: 14,
@@ -56,7 +52,7 @@ class GroupMemberCard extends StatelessWidget {
                   ),
                   const SizedBox(height: 2),
                   Text(
-                    data['role'] == 'ADMIN' ? "admin" : "member",
+                    member.role.name,
                     style: TextStyle(
                       color: context.colorScheme.onSurfaceVariant,
                       fontSize: 12.0,

@@ -26,9 +26,12 @@ class UserTransactionTile extends StatelessWidget {
             : null,
         title: Text(transaction.description, style: TextStyle(fontSize: 12)),
         trailing: transaction.amount.nashFormat(
+          iconColor: transaction.amount < 0
+              ? Colors.red[400]
+              : context.colorScheme.primary,
           style: TextStyle(
             color: transaction.amount < 0
-                ? context.colorScheme.error
+                ? Colors.red[400]
                 : context.colorScheme.primary,
           ),
         ),

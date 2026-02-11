@@ -3,7 +3,7 @@ import * as groupRepository from "../groups/groups.repository.js";
 import * as notificationRepository from "../notifications/notifications.repository.js";
 import * as transactionRepository from "../transactions/transactions.repository.js";
 import * as userRepository from "../users/users.repository.js";
-import { Bet, UserBet } from "./bets.model.js";
+import { Bet } from "./bets.model.js";
 import * as betRespository from "./bets.repository.js";
 import { BetResponseDTO } from "./dtos/bet-response.dto.js";
 
@@ -23,13 +23,13 @@ export const getBet = async (
     else pool_against += Number(singleBet.amount);
   });
 
-  const total_pot = pool_against + pool_for;
+  const total_pot = Number(pool_against) + Number(pool_for);
 
   const betMadeByUser = betsMade.find(
     (singleBet) => singleBet.user_id === authUserID,
   );
 
-  let payout = 0;
+  let payout: number = 0;
 
   let response: BetResponseDTO = {
     created_at: bet.created_at,
@@ -48,9 +48,11 @@ export const getBet = async (
 
   if (betMadeByUser != undefined) {
     if (betMadeByUser.selected_option === "for") {
-      payout = Math.round((betMadeByUser.amount / pool_for) * total_pot);
+      payout = Math.round((betMadeByUser.amount * total_pot * 0.8) / pool_for);
     } else {
-      payout = Math.round((betMadeByUser.amount / pool_against) * total_pot);
+      payout = Math.round(
+        (betMadeByUser.amount * total_pot * 0.8) / pool_against,
+      );
     }
 
     response.my_bet = {
@@ -89,7 +91,7 @@ export const placeBet = async (
   betId: string,
   amount: number,
   option: string,
-): Promise<UserBet> => {
+): Promise<any> => {
   const bet = await betRespository.getBetFromDB(betId);
   const user = await userRepository.getUserFromDB(authUserID);
   const group = await groupRepository.getGroupById(bet.group_id);
@@ -121,9 +123,23 @@ export const placeBet = async (
       placedBet.bet_id,
     );
 
-    emitToRoom(bet.id, "new_user_bet", placedBet);
+    emitToRoom(bet.id, "new_user_bet", {
+      bet_id: bet.id,
+      user_id: user.id,
+      username: user.username,
+      amount: amount,
+      selected_option: option,
+      created_at: placedBet.created_at,
+    });
 
-    return placedBet;
+    return {
+      bet_id: bet.id,
+      user_id: user.id,
+      username: user.username,
+      amount: amount,
+      selected_option: option,
+      created_at: placedBet.created_at,
+    };
   }
 };
 

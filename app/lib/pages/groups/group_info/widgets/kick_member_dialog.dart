@@ -1,18 +1,20 @@
-import '/config/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-void showAlertDialog(BuildContext context, Map<String, dynamic> member) {
+import '/config/theme.dart';
+import '/models/member.dart';
+
+void showKickMemberDialog(BuildContext context, GroupMember member) {
   showDialog(
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
         title: Text(
-          "Kick ${member['username']}?",
+          "Kick ${member.username}?",
           style: TextStyle(color: context.colorScheme.onSurface, fontSize: 24),
         ),
         content: Text(
-          "Are you sure you want to kick ${member['username']}?",
+          "Are you sure you want to kick ${member.username}?",
           style: TextStyle(
             color: context.colorScheme.onSurfaceVariant,
             fontSize: 16,
@@ -20,9 +22,7 @@ void showAlertDialog(BuildContext context, Map<String, dynamic> member) {
         ),
         actions: [
           TextButton(
-            onPressed: () {
-              context.pop('/groups/:group_id');
-            },
+            onPressed: () => context.pop(),
             child: Text(
               "Cancel",
               style: TextStyle(
@@ -32,10 +32,7 @@ void showAlertDialog(BuildContext context, Map<String, dynamic> member) {
             ),
           ),
           TextButton(
-            onPressed: () {
-              //remove member from list
-              context.pop('/groups/:group_id');
-            },
+            onPressed: () => context.pop(),
             child: Text(
               "Kick",
               style: TextStyle(color: context.colorScheme.error, fontSize: 16),

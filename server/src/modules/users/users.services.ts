@@ -34,9 +34,7 @@ export const dailyCheckIn = async (
 };
 
 export const getGroups = async (authUserID: string): Promise<Group[]> => {
-  const response = await userRepository.getGroupMembers(authUserID);
-  const groupIds = response.map((group) => group.group_id);
-  const groups = await userRepository.getGroups(groupIds);
+  const groups = await userRepository.getGroups(authUserID);
   return groups;
 };
 
