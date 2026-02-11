@@ -58,3 +58,23 @@ We built a self-sustaining economic model to keep the value of Nash coins regula
 | Home Feed | Bet Page | Discussion Thread | Profile |
 |:---:|:---:|:---:|:---:|
 | ![Home]() | ![Bet]() | ![Chat]() | ![Profile]() |
+
+## Team Members
+<table>
+  <tr>
+    <td align="center"><a href="https://github.com/AdityaTaggar05" target="_blank"><img src="https://avatars.githubusercontent.com/u/41536267?v=4" width="60" height="60" style="border-radius: 50%;"></td>
+    <td align="center"><a href="https://github.com/KeshavBansal42" target="_blank"><img src="https://avatars.githubusercontent.com/u/130533959?v=4" width="60" height="60" style="border-radius: 50%;"></td>
+    <td align="center"><a href="https://github.com/shasakarora" target="_blank"><img src="https://avatars.githubusercontent.com/u/228034908?v=4" width="60" height="60" style="border-radius: 50%;"></td>
+    <td align="center"><a href="https://github.com/Vedansh-Sethi" target="_blank"><img src="https://avatars.githubusercontent.com/u/214784934?v=4" width="60" height="60" style="border-radius: 50%;"></td>
+  </tr>
+  <tr>
+    <td align="center"><strong>Aditya Taggar</strong></td>
+    <td align="center"><strong>Keshav Bansal</strong></td>
+    <td align="center"><strong>Shasak Arora</strong></td>
+    <td align="center"><strong>Vedansh Sethi</strong></td>
+  </tr>
+</table><br>
+
+---
+
+🛠️ Built with ❤️ during **Syntax Error'25** by _**Team Committment Issues**_
