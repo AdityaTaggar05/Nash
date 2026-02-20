@@ -55,9 +55,9 @@ We built a self-sustaining economic model to keep the value of Nash coins regula
 
 ## 📸 Screenshots
 
-| Home Feed | Bet Page | Discussion Thread | Profile |
+| Home Page | Profile Page | Bet Page | Discussion Thread |
 |:---:|:---:|:---:|:---:|
-| ![Home]() | ![Bet]() | ![Chat]() | ![Profile]() |
+| <img width="589" height="1280" alt="Home Page" src="https://github.com/user-attachments/assets/d0317723-00a5-45c6-955c-b9c7e8492f27" /> | <img width="589" height="1280" alt="Profile Page" src="https://github.com/user-attachments/assets/94aac419-315d-4eb8-b793-7bfc7f57f0ed" /> | <img width="589" height="1280" alt="Bet Page" src="https://github.com/user-attachments/assets/2b13f120-63ea-4fd4-a2d8-88f60dc045d5" /> | <img width="589" height="1280" alt="Discussion Thread" src="https://github.com/user-attachments/assets/1adb9e02-9423-44a3-83f7-e3cd8a37562a" /> |
 
 ## Team Members
 <table>
