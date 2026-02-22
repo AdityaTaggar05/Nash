@@ -6,7 +6,7 @@ class SocketService {
 
   Future<void> connect({
     required String betID,
-    required Function(Map<String, dynamic>) onNewBet,
+    Function(Map<String, dynamic>)? onNewBet,
   }) async {
     socket = io.io(
       "https://nash-9qh7.onrender.com",
@@ -40,7 +40,12 @@ class SocketService {
 
     socket.on("new_user_bet", (data) {
       print("LOG: New Bet Placed");
-      onNewBet(Map<String, dynamic>.from(data));
+      onNewBet?.call(Map<String, dynamic>.from(data));
+    });
+
+    socket.on("new_message", (data) {
+      print("LOG: New Message Received");
+      // Handle new message if needed
     });
   }
 

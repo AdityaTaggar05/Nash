@@ -15,7 +15,7 @@ class GroupMember {
     required this.joinedAt,
   });
 
-  static fromJSON(Map<String, dynamic> data) {
+  static GroupMember fromJSON(Map<String, dynamic> data) {
     Role role = Role.member;
 
     if (data['role'] == 'admin') role = Role.admin;

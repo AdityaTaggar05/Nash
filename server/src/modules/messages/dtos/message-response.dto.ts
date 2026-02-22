@@ -1,7 +1,8 @@
 export interface MessageResponseDTO {
   id: string;
-  roomID: string;
-  senderID: string;
+  room_id: string;
+  sender_id: string;
+  username: string;
   content: string;
-  createdAt: Date;
+  created_at: Date;
 }

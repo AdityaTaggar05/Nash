@@ -1,11 +1,13 @@
+import 'package:app/controllers/user.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import '/config/theme.dart';
 import '/extensions/datetime.dart';
-import 'package:flutter/material.dart';
+import '/models/message.dart';
 
-const String currentUser = "id1";
-
-class MessageCard extends StatelessWidget {
-  final Map<String, dynamic> message;
+class MessageCard extends ConsumerWidget {
+  final Message message;
   final bool displayTime;
   final bool displayUsername;
 
@@ -17,8 +19,9 @@ class MessageCard extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    final bool ownMessage = currentUser == message["sender_id"];
+  Widget build(BuildContext context, WidgetRef ref) {
+    final bool ownMessage =
+        ref.read(userControllerProvider).value!.id == message.senderID;
 
     return Align(
       alignment: ownMessage ? Alignment.centerRight : Alignment.centerLeft,
@@ -29,7 +32,7 @@ class MessageCard extends StatelessWidget {
         children: [
           if (displayUsername)
             Text(
-              message["sender_id"],
+              message.username,
               style: TextStyle(color: context.colorScheme.onSurfaceVariant),
             ),
           Card(
@@ -48,14 +51,14 @@ class MessageCard extends StatelessWidget {
               width: MediaQuery.of(context).size.width * 0.6,
               padding: EdgeInsets.all(16),
               child: Text(
-                message["content"],
+                message.content,
                 style: TextStyle(color: context.colorScheme.onPrimary),
               ),
             ),
           ),
           if (displayTime)
             Text(
-              (message["created_at"] as DateTime).toReadableFormat(),
+              message.createdAt.toReadableFormat(),
               style: TextStyle(color: context.colorScheme.onSurfaceVariant),
             ),
         ],

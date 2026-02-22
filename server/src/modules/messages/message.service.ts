@@ -17,9 +17,32 @@ export const sendMessage = async (
 
   return {
     id: message.id,
-    roomID: message.roomID,
-    senderID: message.senderID,
+    room_id: message.roomID,
+    sender_id: message.senderID,
+    username: message.username,
     content: message.content,
-    createdAt: message.createdAt,
+    created_at: message.createdAt,
   };
+};
+
+export const getMessages = async (
+  userID: string,
+  groupID: string,
+  betID: string,
+): Promise<MessageResponseDTO[]> => {
+  if (!(await groupRepository.isMember(userID, groupID)))
+    throw new Error("User is not a member of this group");
+
+  const messages = await messageRepo.getMessages(betID);
+
+  return messages.map<MessageResponseDTO>((message) => {
+    return {
+      id: message.id,
+      room_id: message.roomID,
+      sender_id: message.senderID,
+      username: message.username,
+      content: message.content,
+      created_at: message.createdAt,
+    };
+  });
 };
