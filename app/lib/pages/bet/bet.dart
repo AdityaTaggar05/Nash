@@ -152,7 +152,10 @@ class _BetPageState extends ConsumerState<BetPage> {
                       groupID: widget.groupID,
                       betID: widget.betID,
                     ),
-                    BetDiscussionPage(),
+                    BetDiscussionPage(
+                      groupID: widget.groupID,
+                      betID: widget.betID,
+                    ),
                   ],
                 ),
               ),
