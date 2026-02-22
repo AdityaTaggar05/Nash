@@ -1,11 +1,12 @@
-import '/providers/auth_interceptor.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '/providers/auth_interceptor.dart';
 
 final dioProvider = Provider<Dio>((ref) {
   final dio = Dio(
     BaseOptions(
-      baseUrl: 'http://10.81.94.34:3000',
+      baseUrl: 'http://nash-9qh7.onrender.com',
       connectTimeout: const Duration(seconds: 10),
       receiveTimeout: const Duration(seconds: 10),
       headers: {

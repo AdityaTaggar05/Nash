@@ -9,7 +9,7 @@ class SocketService {
     Function(Map<String, dynamic>)? onNewBet,
   }) async {
     socket = io.io(
-      "http://10.81.94.34:3000",
+      "https://nash-9qh7.onrender.com",
       io.OptionBuilder()
           .setTransports(['websocket']) // use websocket
           .setPath("/socket.io/")
