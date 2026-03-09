@@ -25,12 +25,30 @@ export const createMessage = async (
   return mapRowToMessage(result.rows[0]);
 };
 
-export const getMessages = async (roomID: string): Promise<Message[]> => {
+export const getMessages = async (
+  roomID: string,
+  cursor?: Date,
+  limit: number = 20,
+): Promise<Message[]> => {
+  if (cursor) {
+    const result = await pool.query(
+      `SELECT * FROM messages
+        WHERE bet_id = $1
+        AND created_at < $2
+        ORDER BY created_at DESC
+        LIMIT $3`,
+      [roomID, cursor, limit],
+    );
+
+    return result.rows.map<Message>((row) => mapRowToMessage(row));
+  }
+
   const result = await pool.query(
     `SELECT * FROM messages 
     WHERE bet_id = $1
-    ORDER BY created_at DESC`,
-    [roomID],
+    ORDER BY created_at DESC
+    LIMIT $2`,
+    [roomID, limit],
   );
 
   return result.rows.map<Message>((row) => mapRowToMessage(row));

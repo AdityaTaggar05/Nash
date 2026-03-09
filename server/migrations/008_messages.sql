@@ -7,4 +7,4 @@ CREATE TABLE messages(
 	created_at TIMESTAMP NOT NULL DEFAULT NOW()
 );
 
-CREATE INDEX bet_messages_idx ON messages(bet_id);
+CREATE INDEX bet_messages_idx ON messages(bet_id, created_at DESC);

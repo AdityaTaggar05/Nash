@@ -29,11 +29,12 @@ export const getMessages = async (
   userID: string,
   groupID: string,
   betID: string,
+  cursor?: Date,
 ): Promise<MessageResponseDTO[]> => {
   if (!(await groupRepository.isMember(userID, groupID)))
     throw new Error("User is not a member of this group");
 
-  const messages = await messageRepo.getMessages(betID);
+  const messages = await messageRepo.getMessages(betID, cursor);
 
   return messages.map<MessageResponseDTO>((message) => {
     return {
