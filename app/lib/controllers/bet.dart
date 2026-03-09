@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:app/services/socket_service.dart';
+import 'package:app/providers/socket_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '/models/bet.dart';
@@ -27,19 +27,21 @@ final betControllerProvider = AsyncNotifierProvider.autoDispose
 
 class BetController extends AsyncNotifier<Bet> {
   late final BetParams params;
-  SocketService? _socketService;
 
   BetController(this.params);
 
   @override
   FutureOr<Bet> build() async {
     final dio = ref.read(dioProvider);
+    final socketService = ref.watch(socketProvider(params.betID));
+
+    socketService.whenData((service) {
+      socketService.value!.on("new_user_bet", _handleNewBet);
+    });
+
     var res = await dio.get("/group/${params.groupID}/bet/${params.betID}");
 
     final Bet bet = Bet.fromJSON(res.data);
-
-    _socketService = SocketService();
-    await _socketService!.connect(betID: bet.id, onNewBet: _handleNewBet);
 
     res = await dio.get("/transaction/bet/${params.betID}");
 

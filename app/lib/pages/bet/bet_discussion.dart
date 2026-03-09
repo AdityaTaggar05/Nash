@@ -29,12 +29,13 @@ class BetDiscussionPage extends ConsumerWidget {
         children: [
           Expanded(
             child: state.when(
-              data: (messages) => ListView.builder(
-                reverse: true,
-                shrinkWrap: true,
-                itemCount: messages.length,
-                itemBuilder: (context, index) {
-                  return MessageCard(
+              data: (messages) {
+                print("LOG: NEW DATA ARRIVED");
+                return ListView.builder(
+                  reverse: true,
+                  shrinkWrap: true,
+                  itemCount: messages.length,
+                  itemBuilder: (context, index) => MessageCard(
                     message: messages[index],
                     displayUsername:
                         index == messages.length - 1 ||
@@ -44,9 +45,9 @@ class BetDiscussionPage extends ConsumerWidget {
                         index == 0 ||
                         messages[index - 1].senderID !=
                             messages[index].senderID,
-                  );
-                },
-              ),
+                  ),
+                );
+              },
               loading: () => Center(child: CircularProgressIndicator()),
               error: (err, stack) => Center(child: Text('Error: $err')),
             ),
