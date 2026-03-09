@@ -13,13 +13,14 @@ const mapRowToMessage = (row: any): Message => ({
 export const createMessage = async (
   roomID: string,
   senderID: string,
+  username: string,
   content: string,
 ): Promise<Message> => {
   const result = await pool.query(
-    `INSERT INTO messages (bet_id, sender_id, content)
-     VALUES ($1, $2, $3)
+    `INSERT INTO messages (bet_id, sender_id, username, content)
+     VALUES ($1, $2, $3, $4)
      RETURNING *`,
-    [roomID, senderID, content],
+    [roomID, senderID, username, content],
   );
 
   return mapRowToMessage(result.rows[0]);
