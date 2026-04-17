@@ -37,15 +37,11 @@ class SocketService {
     socket.onDisconnect((_) {
       print("LOG ⚠️ SOCKET DISCONNECTED");
     });
+  }
 
-    socket.on("new_user_bet", (data) {
-      print("LOG: New Bet Placed");
-      onNewBet?.call(Map<String, dynamic>.from(data));
-    });
-
-    socket.on("new_message", (data) {
-      print("LOG: New Message Received");
-      // Handle new message if needed
+  void on(String event, Function(Map<String, dynamic>) callback) {
+    socket.on(event, (data) {
+      callback(Map<String, dynamic>.from(data));
     });
   }
 
